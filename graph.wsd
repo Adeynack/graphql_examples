@@ -1,0 +1,57 @@
+@startuml Graph
+
+@startmindmap
+
+* Schema
+** Query
+***[#orange] users: [User] ⇢
+***[#lightgreen] user(id: ID): User ⇢
+****[#lightblue] id: ID
+****[#lightblue] name: string
+****[#orange] posts: [Post] ⇢
+****[#orange] likes: [Like] ⇢
+***[#orange] posts: [Post] ⇢
+***[#lightgreen] post(id: ID): Post
+****[#lightblue] id: ID
+****[#lightblue] text: string
+****[#lightblue] createdOn: DateTime
+****[#lightgreen] author: User ⇢
+****[#orange] comments: [Message] ⇢
+****[#orange] likes: [Like] ⇢
+***[#lightgreen] like(id: ID): Like
+****[#lightblue] id: ID
+****[#lightblue] emotion: LikeEmotion
+*****_ LIKE
+*****_ LOVE
+*****_ LAUGH
+*****_ CRY
+*****_ WOW
+****[#lightgreen] message: Message ⇢
+****[#lightgreen] user: User ⇢
+
+left side
+
+** Mutations
+*** logIn(userId: ID)
+****_:Sets a session cookie, so all
+other mutations are authenticated;
+*** logOut
+****_:Clears the session cookie, so
+further mutations are not authenticated;
+*** createUser(...)
+*** updateUser(id: ID, ...)
+*** deleteUser(id: ID)
+*** createPost(...)
+*** deletePost(id: ID)
+*** likePost(postId: ID)
+*** unlikePost(postId: ID)
+
+legend top right
+  Green: Object
+  Orange: Arrays of objects
+  Blue Scalar or Arrays of scalars
+endlegend
+
+@endmindmap
+
+@enduml

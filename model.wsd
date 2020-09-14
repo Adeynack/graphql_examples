@@ -1,0 +1,25 @@
+@startuml Models
+
+hide empty methods
+hide circle
+
+class User {
+    email: string
+}
+
+class Post {
+    text: string
+    created_on: DateTime
+}
+
+Post "*" --* User: author
+Post "*" --* Post: parent
+
+class Like {
+    emotion: [Like | Love | Laugh | Cry | Wow]
+}
+
+Like "*" --* User
+Like "*" --* Post
+
+@enduml

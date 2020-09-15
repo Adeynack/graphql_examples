@@ -6,7 +6,8 @@ languages and frameworks.
 
 # Where to find implementations?
 
-In the [`examples`](example) folder.
+In the `examples` folder of this repository, named by convention `language_framework_library`
+(examples: `ruby_on_rails_ruby_graphql`, `rust_juniper`).
 
 # Application to build
 

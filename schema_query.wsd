@@ -1,0 +1,40 @@
+@startuml SchemaQuery
+
+@startmindmap
+
+* Query
+**[#orange] users: [User] ⇢
+**[#lightgreen] user(id: ID): User ⇢
+***[#lightblue] id: ID
+***[#lightblue] name: string
+***[#orange] posts: [Post] ⇢
+***[#orange] likes: [Like] ⇢
+**[#orange] posts: [Post] ⇢
+**[#lightgreen] post(id: ID): Post
+***[#lightblue] id: ID
+***[#lightblue] text: string
+***[#lightblue] createdOn: DateTime
+***[#lightgreen] author: User ⇢
+***[#orange] comments: [Message] ⇢
+***[#orange] likes: [Like] ⇢
+**[#lightgreen] like(id: ID): Like
+***[#lightblue] id: ID
+***[#lightblue] emotion: LikeEmotion
+****_ LIKE
+****_ LOVE
+****_ LAUGH
+****_ CRY
+****_ WOW
+***[#lightgreen] message: Message ⇢
+***[#lightgreen] user: User ⇢
+
+legend top left
+  Green: Object
+  Orange: Arrays of objects
+  Blue Scalar or Arrays of scalars
+  ⇢: Repeats an already defined element in the graph
+endlegend
+
+@endmindmap
+
+@enduml

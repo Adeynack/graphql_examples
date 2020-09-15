@@ -1,0 +1,22 @@
+@startuml SchemaMutations
+
+@startmindmap
+
+* Mutations
+** logIn(userId: ID)
+***_:Sets a session cookie, so all
+other mutations are authenticated;
+** logOut
+***_:Clears the session cookie, so
+further mutations are not authenticated;
+** createUser(...)
+** updateUser(id: ID, ...)
+** deleteUser(id: ID)
+** createPost(...)
+** deletePost(id: ID)
+** likePost(postId: ID)
+** unlikePost(postId: ID)
+
+@endmindmap
+
+@enduml

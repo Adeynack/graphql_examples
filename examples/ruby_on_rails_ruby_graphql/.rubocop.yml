@@ -2,6 +2,7 @@ AllCops:
   TargetRubyVersion: 2.6.1
   DisplayCopNames: true
   DisplayStyleGuide: true
+  NewCops: enable
   Exclude:
     - "vendor/bundle/**/*"
     - "bin/**/*"

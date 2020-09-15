@@ -46,3 +46,10 @@ A user
 ### Avoid N+1 Queries to the Database
 
 Use batch loading when available to the language and framework of choice.
+
+# Misc
+
+## Generate PlantUML Diagrams as Images
+
+At this moment, generating them using the [*PlantUML* plugin of *VSCode*](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml),
+calling the *PlantUML: Export Workspace Diagrams* command, and choosing *png*.

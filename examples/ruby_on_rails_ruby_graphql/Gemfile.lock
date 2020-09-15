@@ -66,6 +66,7 @@ GEM
     ar_outer_joins (0.2.0)
       activerecord (>= 3.2)
     ast (2.4.1)
+    awesome_print (1.8.0)
     bcrypt (3.1.16)
     bcrypt (3.1.16-java)
     binding_of_caller (0.8.0)
@@ -84,6 +85,10 @@ GEM
     crass (1.0.6)
     debug_inspector (0.0.3)
     diff-lcs (1.4.4)
+    dotenv (2.7.6)
+    dotenv-rails (2.7.6)
+      dotenv (= 2.7.6)
+      railties (>= 3.2)
     erubi (1.9.0)
     ffi (1.13.1)
     ffi (1.13.1-java)
@@ -305,10 +310,12 @@ PLATFORMS
 DEPENDENCIES
   active_record_extended
   annotate
+  awesome_print
   bcrypt (~> 3.1.7)
   bootsnap (>= 1.4.2)
   bullet
   byebug
+  dotenv-rails
   graphiql-rails
   graphql
   graphql-batch

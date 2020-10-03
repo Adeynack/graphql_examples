@@ -14,4 +14,6 @@
 class Like < ApplicationRecord
   belongs_to :post
   belongs_to :user
+
+  enum_a emotion: [:like, :love, :laugh, :cry, :wow]
 end

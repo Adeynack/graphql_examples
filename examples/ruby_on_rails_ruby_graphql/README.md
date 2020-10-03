@@ -1,24 +1,28 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Development Environment
 
-Things you may want to cover:
+### Service Depeendencies
 
-* Ruby version
+A _Docker Compose_ file is provided. All required database and other
+services are included in.
 
-* System dependencies
+```bash
+docker-compose up
+```
 
-* Configuration
+### Database Creation
 
-* Database creation
+Create and initialize the database for development like this.
 
-* Database initialization
+```bash
+bin/rails db:create db:migrate db:seed db:load_fixtures
+```
 
-* How to run the test suite
+In a staging or production environment, you want to skip `db:load_fixtures`.
 
-* Services (job queues, cache servers, search engines, etc.)
+#### Re-Create the Database
 
-* Deployment instructions
-
-* ...
+A _Rake_ task `db:full_reset` is included and is useful for quickly recreate
+the database from scratch to make sure migrations are applied properly. It performa
+a full reset of the database, loads seeds & fixtures, and re-annotate the models.

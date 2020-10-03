@@ -17,7 +17,6 @@ gem "dotenv-rails"
 gem "oj"
 gem "awesome_print"
 
-
 # GraphQL
 gem "graphql"
 gem "graphiql-rails"

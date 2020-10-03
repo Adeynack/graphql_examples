@@ -18,5 +18,7 @@ class Post < ApplicationRecord
   has_many :comments, dependent: :destroy, foreign_key: :parent_id, class_name: "Post", inverse_of: :parent
   has_many :likes, dependent: :destroy
 
+  validates :text, presence: true
+
   scope :root, -> { where(parent: nil) }
 end

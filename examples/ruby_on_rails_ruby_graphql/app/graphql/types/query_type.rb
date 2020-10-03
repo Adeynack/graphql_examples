@@ -2,25 +2,25 @@
 
 module Types
   class QueryType < Types::BaseObject
-    field :users, [UserType], null: false
+    field :users, [Types::UserType], null: false
     def users
       User.all
     end
 
-    field :user, UserType, null: false do
-      parameter id, ID, null: false
+    field :user, Types::UserType, null: false do
+      argument :id, ID, required: true
     end
     def user(id:)
       User.find(id)
     end
 
-    field :posts, [PostType], null: false
+    field :posts, [Types::PostType], null: false
     def posts
       Post.order(created_at: :desc)
     end
 
-    field :post, PostType, null: false do
-      parameter :id, ID, null: false
+    field :post, Types::PostType, null: false do
+      argument :id, ID, required: true
     end
     def post(id:)
       Post.find(id)

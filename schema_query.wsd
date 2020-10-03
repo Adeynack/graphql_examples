@@ -6,6 +6,7 @@
 **[#orange] users: [User] ⇢
 **[#lightgreen] user(id: ID): User! ⇢
 ***[#lightblue] id: ID
+***[#lightblue] email: string!
 ***[#lightblue] name: string!
 ***[#orange] posts: [Post] ⇢
 ***[#orange] reactions: [Reaction] ⇢
@@ -26,6 +27,7 @@
 *****_ LAUGH
 *****_ CRY
 *****_ WOW
+****[#lightblue] createdAt: DateTime!
 ****[#lightgreen] message: Message ⇢
 ****[#lightgreen] user: User ⇢
 

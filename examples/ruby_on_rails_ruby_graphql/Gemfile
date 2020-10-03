@@ -19,9 +19,10 @@ gem "awesome_print"
 
 # GraphQL
 gem "graphql"
-gem "graphiql-rails"
 gem "graphql-rails_logger"
 gem "graphql-batch"
+gem "graphiql-rails"
+gem "graphql_playground-rails"
 
 group :development, :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]

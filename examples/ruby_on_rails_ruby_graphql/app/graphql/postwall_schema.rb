@@ -8,6 +8,27 @@ class PostwallSchema < GraphQL::Schema
   use GraphQL::Execution::Interpreter
   use GraphQL::Analysis::AST
 
-  # Add built-in connections for pagination
+  # Opt in to other options
+  use GraphQL::Execution::Errors
   use GraphQL::Pagination::Connections
+  use GraphQL::Batch
+
+  # Handle general API Errors
+
+  rescue_from(ActiveRecord::RecordNotFound) do |_err, _obj, _args, _ctx, field|
+    raise GraphQL::ExecutionError, "#{field.type.unwrap.graphql_name} not found"
+  end
+
+  rescue_from(ActiveRecord::RecordInvalid) do |err, _obj, _args, _ctx, _field|
+    raise GraphQL::ExecutionError, "Validation Error: #{err.record.errors.full_messages.join(', ')}"
+  end
+
+  rescue_from(::StandardError) do |err, _obj, _args, _ctx, _field|
+    Rails.logger.error err.message
+    Rails.logger.error err.backtrace.join("\n")
+
+    Raven.capture_exception(err)
+
+    raise GraphQL::ExecutionError, "The server encountered an unexpected condition that prevented it from fulfilling the request"
+  end
 end

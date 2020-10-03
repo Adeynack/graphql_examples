@@ -19,12 +19,12 @@ class Post {
 Post "*" --* User: author
 Post "*" --* Post: parent
 
-class Like {
+class Reaction {
     id: uuid
     emotion: string
 }
 
-Like "*" --* User
-Like "*" --* Post
+Reaction "*" --* User
+Reaction "*" --* Post
 
 @enduml

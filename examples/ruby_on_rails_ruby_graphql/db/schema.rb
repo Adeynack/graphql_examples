@@ -16,17 +16,6 @@ ActiveRecord::Schema.define(version: 2020_09_15_230416) do
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "likes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "emotion"
-    t.uuid "post_id", null: false
-    t.uuid "user_id", null: false
-    t.index ["post_id", "user_id"], name: "index_likes_on_post_id_and_user_id", unique: true
-    t.index ["post_id"], name: "index_likes_on_post_id"
-    t.index ["user_id"], name: "index_likes_on_user_id"
-  end
-
   create_table "posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -35,6 +24,17 @@ ActiveRecord::Schema.define(version: 2020_09_15_230416) do
     t.uuid "author_id"
     t.index ["author_id"], name: "index_posts_on_author_id"
     t.index ["parent_id"], name: "index_posts_on_parent_id"
+  end
+
+  create_table "reactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "emotion"
+    t.uuid "post_id", null: false
+    t.uuid "user_id", null: false
+    t.index ["post_id", "user_id"], name: "index_reactions_on_post_id_and_user_id", unique: true
+    t.index ["post_id"], name: "index_reactions_on_post_id"
+    t.index ["user_id"], name: "index_reactions_on_user_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -46,8 +46,8 @@ ActiveRecord::Schema.define(version: 2020_09_15_230416) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key "likes", "posts"
-  add_foreign_key "likes", "users"
   add_foreign_key "posts", "posts", column: "parent_id"
   add_foreign_key "posts", "users", column: "author_id"
+  add_foreign_key "reactions", "posts"
+  add_foreign_key "reactions", "users"
 end

@@ -16,7 +16,7 @@ docker-compose up
 Create and initialize the database for development like this.
 
 ```bash
-bin/rails db:create db:migrate db:seed db:load_fixtures
+bin/rails db:create db:migrate db:seed db:fixtures:load
 ```
 
 In a staging or production environment, you want to skip `db:load_fixtures`.

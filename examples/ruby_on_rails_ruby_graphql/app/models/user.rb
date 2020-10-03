@@ -15,7 +15,7 @@ class User < ApplicationRecord
   has_secure_password
 
   has_many :posts, dependent: :restrict_with_exception, inverse_of: :author
-  has_many :likes, dependent: :restrict_with_exception
+  has_many :reactions, dependent: :restrict_with_exception
 
   validates :email, presence: true,
                     format: { with: /(.+)@(.+)/, message: "has invalid format" },

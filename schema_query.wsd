@@ -8,7 +8,7 @@
 ***[#lightblue] id: ID
 ***[#lightblue] name: string
 ***[#orange] posts: [Post] ⇢
-***[#orange] likes: [Like] ⇢
+***[#orange] reactionss: [Reaction] ⇢
 **[#orange] posts: [Post] ⇢
 **[#lightgreen] post(id: ID): Post
 ***[#lightblue] id: ID
@@ -16,11 +16,12 @@
 ***[#lightblue] createdOn: DateTime
 ***[#lightgreen] author: User ⇢
 ***[#orange] comments: [Message] ⇢
-***[#orange] likes: [Like] ⇢
-**[#lightgreen] like(id: ID): Like
+***[#orange] reactions: [Reaction] ⇢
+**[#lightgreen] reaction(id: ID): Reaction
 ***[#lightblue] id: ID
-***[#lightblue] emotion: LikeEmotion
+***[#lightblue] emotion: Emotion
 ****_ LIKE
+****_ DISLIKE
 ****_ LOVE
 ****_ LAUGH
 ****_ CRY

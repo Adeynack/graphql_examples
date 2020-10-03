@@ -16,7 +16,7 @@ class Post < ApplicationRecord
   belongs_to :parent, optional: true, class_name: "Post", touch: true
 
   has_many :comments, dependent: :destroy, foreign_key: :parent_id, class_name: "Post", inverse_of: :parent
-  has_many :likes, dependent: :destroy
+  has_many :reactions, dependent: :destroy
 
   validates :text, presence: true
 

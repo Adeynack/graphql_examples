@@ -3,12 +3,17 @@
 @startmindmap
 
 * Mutations
-** logIn(userId: ID)
-***_:Sets a session cookie, so all
-other mutations are authenticated;
+** logIn
+***_:Sets a user ID in the session cookie,
+so all other mutations are authenticated;
+*** Arguments:
+**** email: String!
+**** password: String!
+*** Fields:
+**** user: User (null if login fails)
 ** logOut
-***_:Clears the session cookie, so
-further mutations are not authenticated;
+***_:Clears the user ID from session cookie,
+so further mutations are not authenticated;
 ** createUser
 *** Arguments:
 **** email: String!
@@ -29,7 +34,12 @@ further mutations are not authenticated;
 **** id: ID!
 *** Fields:
 **** user: User!
-** createPost(...)
+** createPost
+*** Arguments:
+**** text: String!
+**** parent_id: ID
+*** Fields:
+**** post: Post!
 ** deletePost(id: ID)
 ** likePost(postId: ID)
 ** unlikePost(postId: ID)

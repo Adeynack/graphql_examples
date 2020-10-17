@@ -10,6 +10,7 @@
 ***[#lightblue] name: string!
 ***[#orange] posts: [Post] ⇢
 ***[#orange] reactions: [Reaction] ⇢
+**[#orange] me: User
 **[#orange] posts: [Post] ⇢
 **[#lightgreen] post(id: ID): Post!
 ***[#lightblue] id: ID

@@ -37,5 +37,7 @@ module Postwall
     config.api_only = true
 
     config.assets.prefix = "/api/assets"
+
+    config.autoload_paths += Dir[Rails.root.join("app", "refinements", "**/")]
   end
 end

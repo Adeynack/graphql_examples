@@ -2,6 +2,8 @@
 
 module Types
   class QueryType < Types::BaseObject
+    using EnumerableRefinements
+
     field :users, [Types::UserType], null: false
     def users
       User.all
@@ -12,9 +14,10 @@ module Types
       argument :email, String, required: false
     end
     def user(id: nil, email: nil)
-      identification = {}
-      identification[:id] = id if id.present?
-      identification[:email] = email if email.present?
+      identification = {
+        id: id,
+        email: email
+      }.deep_presence
       raise GraphQL::ExecutionError, "An ID or an email is require to identify a user" if identification.blank?
 
       User.find_by identification

@@ -18,13 +18,17 @@ further mutations are not authenticated;
 **** user: User!
 ** updateUser
 *** Arguments:
-**** id: String!
+**** id: ID!
 **** email: String
 **** name: String
 **** password: String
 *** Fields:
 **** user: User!
-** deleteUser(id: ID)
+** deleteUser
+*** Arguments:
+**** id: ID!
+*** Fields:
+**** user: User!
 ** createPost(...)
 ** deletePost(id: ID)
 ** likePost(postId: ID)

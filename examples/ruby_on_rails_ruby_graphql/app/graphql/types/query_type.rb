@@ -8,10 +8,16 @@ module Types
     end
 
     field :user, Types::UserType, null: false do
-      argument :id, ID, required: true
+      argument :id, ID, required: false
+      argument :email, String, required: false
     end
-    def user(id:)
-      User.find(id)
+    def user(id: nil, email: nil)
+      identification = {}
+      identification[:id] = id if id.present?
+      identification[:email] = email if email.present?
+      raise GraphQL::ExecutionError, "An ID or an email is require to identify a user" if identification.blank?
+
+      User.find_by identification
     end
 
     field :posts, [Types::PostType], null: false

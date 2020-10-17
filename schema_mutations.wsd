@@ -9,7 +9,13 @@ other mutations are authenticated;
 ** logOut
 ***_:Clears the session cookie, so
 further mutations are not authenticated;
-** createUser(...)
+** createUser
+*** Arguments:
+**** email: String!
+**** name: String!
+**** password: String!
+*** Fields:
+**** user: User!
 ** updateUser(id: ID, ...)
 ** deleteUser(id: ID)
 ** createPost(...)

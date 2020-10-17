@@ -1,0 +1,41 @@
+{
+  user(email: "joe@example.com") {
+    name
+    email
+    posts {
+      id
+      author {
+        email
+      }
+      text
+      createdAt
+      parent {
+        id
+      }
+      reactions {
+        user {
+          name
+        }
+        emotion
+        post {
+          id
+        }
+        createdAt
+      }
+      comments {
+        createdAt
+        author {
+          name
+        }
+        text
+        reactions {
+          user {
+            name
+          }
+          emotion
+          createdAt
+        }
+      }
+    }
+  }
+}

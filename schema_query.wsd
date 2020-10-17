@@ -4,7 +4,7 @@
 
 * Query
 **[#orange] users: [User] ⇢
-**[#lightgreen] user(id: ID): User! ⇢
+**[#lightgreen] user(id: ID, email: String): User! ⇢
 ***[#lightblue] id: ID
 ***[#lightblue] email: string!
 ***[#lightblue] name: string!

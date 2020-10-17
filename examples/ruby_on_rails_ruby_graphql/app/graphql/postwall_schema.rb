@@ -27,8 +27,6 @@ class PostwallSchema < GraphQL::Schema
     Rails.logger.error err.message
     Rails.logger.error err.backtrace.join("\n")
 
-    Raven.capture_exception(err)
-
     raise GraphQL::ExecutionError, "The server encountered an unexpected condition that prevented it from fulfilling the request"
   end
 end

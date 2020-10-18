@@ -1,9 +1,13 @@
-const { exception } = require("console");
 const fs = require("fs");
 const { execSync } = require("child_process");
+const { GraphQLClient } = require("graphql-request");
+const fetchCookie = require("fetch-cookie");
+const crossFetch = require("cross-fetch");
+const assert = require("assert");
 
 let config;
 let examplePath;
+let graphQLClient;
 
 function init() {
   if (!config) {
@@ -19,7 +23,12 @@ function init() {
 }
 
 function dataCleanState() {
+  // Clean up database
   execSync(config.dataInitCommand, { cwd: examplePath });
+
+  // Clean up cookie jar
+  const fetch = fetchCookie(crossFetch);
+  graphQLClient = new GraphQLClient(config.graphQLEndpoint, { fetch });
 }
 
 function scenario(name, body) {
@@ -34,6 +43,15 @@ function scenario(name, body) {
   });
 }
 
+async function gqlRequest(expectErrors, query) {
+  const result = await graphQLClient.request(query);
+  if (!expectErrors && result.errors) {
+    assert.strictEqual(result.errors, []);
+  }
+  return result;
+}
+
 module.exports = {
   scenario,
+  gqlRequest,
 };

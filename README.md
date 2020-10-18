@@ -12,22 +12,25 @@ In the `examples` folder of this repository, named by convention `language_frame
 # Application to build
 
 A minimalist post system, à la Facebook, with users, posts, comments and a possibility
-to *like* the posts.
+to _like_ the posts.
 
 ## Data Model
 
 ![Data model](out/model/Models.png)
 
 A post
+
 - belongs to a user
 - has many likes
 - may belong to a parent post, if its a comment
 
 A like
+
 - belongs to a post
 - belongs to a user
 
 A user
+
 - has many posts
 - has many likes
 
@@ -51,5 +54,17 @@ Use batch loading when available to the language and framework of choice.
 
 ## Generate PlantUML Diagrams as Images
 
-At this moment, generating them using the [*PlantUML* plugin of *VSCode*](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml),
-calling the *PlantUML: Export Workspace Diagrams* command, and choosing *png*.
+At this moment, generating them using the [_PlantUML_ plugin of _VSCode_](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml),
+calling the _PlantUML: Export Workspace Diagrams_ command, and choosing _png_.
+
+# Tests
+
+An implementation agnostic test suite, in _JavaScript_, is in `tests`.
+
+To execute, set the `EXAMPLE` environment variable to the directory name
+you want to test (subdirectory of `examples`) and call `yarn mocha` from
+the `tests` directory.
+
+```bash
+EXAMPLE=ruby_on_rails_ruby_graphql yarn mocha -r mocha-steps -t 5000 scenarios/*.js
+```

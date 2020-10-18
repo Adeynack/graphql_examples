@@ -36,7 +36,7 @@ module Postwall
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore, key: "_flink", expire_after: 14.days
+    config.middleware.use ActionDispatch::Session::CookieStore, key: "_postwall", expire_after: 14.days
 
     config.assets.prefix = "/api/assets"
 

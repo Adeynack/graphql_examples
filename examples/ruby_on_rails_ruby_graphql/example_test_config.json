@@ -1,0 +1,4 @@
+{
+  "dataInitCommand": "rvm 2.7.1 do bundle exec rails db:truncate_all db:fixtures:load",
+  "graphQLEndpoint": "http://localhost:3000/api/graphql"
+}

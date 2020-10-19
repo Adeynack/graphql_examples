@@ -1,9 +1,10 @@
 const fs = require("fs");
 const { execSync } = require("child_process");
-const { GraphQLClient } = require("graphql-request");
+const { GraphQLClient, gql } = require("graphql-request");
 const fetchCookie = require("fetch-cookie");
 const crossFetch = require("cross-fetch");
 const assert = require("assert");
+const { step } = require("mocha-steps");
 
 let config;
 let examplePath;
@@ -51,7 +52,23 @@ async function gqlRequest(expectErrors, query) {
   return result;
 }
 
+function login(user) {
+  step(`login as #{user}`, async () => {
+    await gqlRequest(
+      false,
+      gql`
+        mutation {
+          login(input: { email: "${user}@example.com", password: "${user}" }) {
+            clientMutationId
+          }
+        }
+      `
+    );
+  });
+}
+
 module.exports = {
   scenario,
   gqlRequest,
+  login,
 };

@@ -1,8 +1,6 @@
-# README
+# Development Environment
 
-## Development Environment
-
-### Service Depeendencies
+## Service Dependencies
 
 A _Docker Compose_ file is provided. All required database and other
 services are included in.
@@ -11,7 +9,45 @@ services are included in.
 docker-compose up
 ```
 
-### Database Creation
+## Library Dependencies
+
+### Docker & docker-compose
+
+#### Linux
+
+```bash
+sudo apt-get install -y docker docker-compose
+```
+
+#### macOS
+
+Follow [this link](https://docs.docker.com/docker-for-mac/install/) for install instructions.
+
+### PostgreSQL
+
+PostgreSQL libraries are needed for this to work.
+
+#### Linux
+
+```bash
+sudo apt-get install libpq-dev
+```
+
+If this is not enough, try also this.
+
+```bash
+echo 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main' | sudo tee /etc/apt/sources.list.d/pgdg.list
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo apt update && sudo apt install -y postgresql-client-11
+```
+
+#### macOS
+
+```bash
+brew install postgresql
+```
+
+## Database Creation
 
 Create and initialize the database for development like this.
 
@@ -21,15 +57,15 @@ bin/rails db:create db:migrate db:seed db:fixtures:load
 
 In a staging or production environment, you want to skip `db:load_fixtures`.
 
-#### Re-Create the Database
+### Re-Create the Database
 
 A _Rake_ task `db:full_reset` is included and is useful for quickly recreate
 the database from scratch to make sure migrations are applied properly. It performa
 a full reset of the database, loads seeds & fixtures, and re-annotate the models.
 
-## GraphQL
+# GraphQL
 
-### Development Notes
+## Development Notes
 
 Most of the files are generated.
 

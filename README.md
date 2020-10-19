@@ -66,5 +66,11 @@ you want to test (subdirectory of `examples`) and call `yarn mocha` from
 the `tests` directory.
 
 ```bash
-EXAMPLE=ruby_on_rails_ruby_graphql yarn mocha -r mocha-steps -t 5000 scenarios/*.js
+EXAMPLE=ruby_on_rails_ruby_graphql yarn test
+```
+
+For watch file and only execute a single file on save:
+
+```bash
+EXAMPLE=ruby_on_rails_ruby_graphql yarn watch
 ```

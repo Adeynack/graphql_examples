@@ -7,8 +7,7 @@ module Mutations
     argument :id, ID, required: true
 
     def resolve(id:)
-      user = User.find(id)
-      # TODO: Make sure user is admin or is deleting himself
+      user = User.find_by(id: id) || raise(GraphQL::ExecutionError, "no user found with ID #{id}")
       user.destroy!
       { user: user }
     end

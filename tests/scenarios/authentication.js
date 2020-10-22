@@ -6,7 +6,6 @@ const { gql } = require("graphql-request");
 scenario("Authentication", () => {
   step("me is null before first login", async () => {
     result = await gqlRequest(
-      false,
       gql`
         {
           me {
@@ -20,7 +19,6 @@ scenario("Authentication", () => {
 
   step("login succeeds with valid credentials", async () => {
     result = await gqlRequest(
-      false,
       gql`
         mutation {
           login(input: { email: "joe@example.com", password: "joe" }) {
@@ -42,7 +40,6 @@ scenario("Authentication", () => {
 
   step("me is set to the user who just logged in", async () => {
     result = await gqlRequest(
-      false,
       gql`
         {
           me {
@@ -62,7 +59,6 @@ scenario("Authentication", () => {
 
   step("logout succeeds", async () => {
     result = await gqlRequest(
-      false,
       gql`
         mutation {
           logout(input: { clientMutationId: "foo" }) {
@@ -76,7 +72,6 @@ scenario("Authentication", () => {
 
   step("me is null after logout", async () => {
     result = await gqlRequest(
-      false,
       gql`
         {
           me {
@@ -90,7 +85,6 @@ scenario("Authentication", () => {
 
   step("login returns null if user email does not exist", async () => {
     result = await gqlRequest(
-      false,
       gql`
         mutation {
           login(input: { email: "foo@bar.com", password: "joe" }) {
@@ -106,7 +100,6 @@ scenario("Authentication", () => {
 
   step("login returns null if user password does not match", async () => {
     result = await gqlRequest(
-      false,
       gql`
         mutation {
           login(input: { email: "joe@example.com", password: "foobar" }) {

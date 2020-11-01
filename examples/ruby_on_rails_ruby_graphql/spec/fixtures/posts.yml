@@ -1,0 +1,51 @@
+# == Schema Information
+#
+# Table name: posts
+#
+#  id         :uuid             not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  text       :string
+#  parent_id  :uuid
+#  author_id  :uuid
+#
+startrek:
+  author: joe
+  text: Have you guys seen the new Star Trek series?
+  created_at: "2020-09-15T23:35:00Z"
+  updated_at: "2020-09-15T23:35:00Z"
+startrek_comment_1:
+  author: linda
+  parent: startrek
+  text: Yep, and I did not like it 😴
+  created_at: "2020-09-15T23:36:00Z"
+  updated_at: "2020-09-15T23:36:00Z"
+startrek_comment_2:
+  author: joe
+  parent: startrek
+  text: Awww, come on!!! Give it a chance!
+  created_at: "2020-09-15T23:37:00Z"
+  updated_at: "2020-09-15T23:37:00Z"
+b5:
+  author: linda
+  text: Awwww, I so miss Babylon 5!
+  created_at: "2020-09-15T20:37:00Z"
+  updated_at: "2020-09-15T20:37:00Z"
+b5_comment_1:
+  author: joe
+  parent: b5
+  text: Guuuuurl ... me too !!!!
+  created_at: "2020-09-15T20:38:00Z"
+  updated_at: "2020-09-15T20:38:00Z"
+b5_comment_2:
+  author: joe
+  parent: b5
+  text: They do not make them as good as that anymore.
+  created_at: "2020-09-15T20:39:00Z"
+  updated_at: "2020-09-15T20:39:00Z"
+b5_comment_3:
+  author: linda
+  parent: b5
+  text: True...!
+  created_at: "2020-09-15T20:40:00Z"
+  updated_at: "2020-09-15T20:40:00Z"

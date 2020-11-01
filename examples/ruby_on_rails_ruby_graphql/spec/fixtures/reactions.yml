@@ -1,0 +1,31 @@
+# == Schema Information
+#
+# Table name: reactions
+#
+#  id         :uuid             not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  emotion    :string
+#  post_id    :uuid             not null
+#  user_id    :uuid             not null
+#
+joe_likes_startrek_comment_1:
+  user: joe
+  post: startrek_comment_1
+  emotion: wow
+linda_dislikes_startrek_comment_2:
+  user: linda
+  post: startrek_comment_2
+  emotion: dislike
+joe_likes_b5:
+  user: joe
+  post: b5
+  emotion: like
+linda_loves_b5_comment_1:
+  user: linda
+  post: b5_comment_1
+  emotion: love
+linda_cries_b5_comment_2:
+  user: linda
+  post: b5_comment_2
+  emotion: cry

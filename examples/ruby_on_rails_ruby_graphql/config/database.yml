@@ -1,0 +1,20 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: 127.0.0.1
+  username: postgres
+
+development:
+  <<: *default
+  database: postwall_development
+
+test:
+  <<: *default
+  database: postwall_test
+
+production:
+  <<: *default
+  database: postwall_production
+  username: postwall
+  password: <%= ENV['POSTWALL_DATABASE_PASSWORD'] %>

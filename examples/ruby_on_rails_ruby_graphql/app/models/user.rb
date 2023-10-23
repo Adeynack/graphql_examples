@@ -17,9 +17,10 @@ class User < ApplicationRecord
   has_many :posts, foreign_key: "author_id", dependent: :restrict_with_exception, inverse_of: :author
   has_many :reactions, dependent: :restrict_with_exception
 
-  validates :email, presence: true,
-                    format: { with: /(.+)@(.+)/, message: "has invalid format" },
-                    uniqueness: { case_sensitive: false },
-                    length: { minimum: 4, maximum: 254 }
+  validates :email,
+    presence: true,
+    format: {with: /(.+)@(.+)/, message: "has invalid format"},
+    uniqueness: {case_sensitive: false},
+    length: {minimum: 4, maximum: 254}
   validates :name, presence: true
 end

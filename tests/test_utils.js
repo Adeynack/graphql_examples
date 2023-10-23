@@ -15,7 +15,7 @@ function init() {
   if (!config) {
     exampleName = process.env.EXAMPLE;
     if (!exampleName) {
-      throw "Environment varialbe EXAMPLE must be set.";
+      throw "Environment variable EXAMPLE must be set.";
     }
     examplePath = `../examples/${exampleName}`;
     config = JSON.parse(

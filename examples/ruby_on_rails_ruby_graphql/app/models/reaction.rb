@@ -15,5 +15,5 @@ class Reaction < ApplicationRecord
   belongs_to :post
   belongs_to :user
 
-  enum_a emotion: [:like, :dislike, :love, :laugh, :cry, :wow]
+  enum emotion: ["like", "dislike", "love", "laugh", "cry", "wow"].index_by(&:itself)
 end

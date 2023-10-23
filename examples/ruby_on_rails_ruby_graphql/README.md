@@ -8,28 +8,7 @@ This app was created with this command.
 rails new ruby_on_rails_ruby_graphql --database=postgresql
 ```
 
-## Service Dependencies
-
-A _Docker Compose_ file is provided. All required database and other
-services are included in.
-
-```bash
-docker-compose up
-```
-
 ## Library Dependencies
-
-### Docker & docker-compose
-
-#### Linux
-
-```bash
-sudo apt-get install -y docker docker-compose
-```
-
-#### macOS
-
-Follow [this link](https://docs.docker.com/docker-for-mac/install/) for install instructions.
 
 ### PostgreSQL
 

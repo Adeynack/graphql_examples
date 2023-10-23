@@ -10,13 +10,11 @@
 #  password_digest :string
 #
 joe:
-  id: d3830e3c-1f33-4a03-b24c-7b2a94fdaa44
   email: joe@example.com
   name: Joe
   # password: joe
   password_digest: "$2a$12$sXtSq5VKRNT8awtMVcRg3.NdH18BFkwmxrbWwwmM.zXjmgO7YhcOe"
 linda:
-  id: b4db7b4e-7dd6-448f-a3a4-8ccf4fcfe522
   email: linda@example.com
   name: Linda
   # password: linda

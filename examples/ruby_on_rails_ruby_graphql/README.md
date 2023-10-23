@@ -1,4 +1,12 @@
-# Development Environment
+# README
+
+## Creation
+
+This app was created with this command.
+
+```bash
+rails new ruby_on_rails_ruby_graphql --database=postgresql
+```
 
 ## Service Dependencies
 

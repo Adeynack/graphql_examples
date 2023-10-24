@@ -4,6 +4,25 @@ Compare different implementations of GraphQL on the server side. A bit like Todo
 with a different example, showing features of GraphQL and how to implement them in various
 languages and frameworks.
 
+- [graphql\_examples](#graphql_examples)
+  - [Where to find implementations?](#where-to-find-implementations)
+  - [Application to build](#application-to-build)
+    - [Data Model](#data-model)
+    - [GraphQL Schema](#graphql-schema)
+      - [Query Object](#query-object)
+      - [Mutations](#mutations)
+    - [Goals](#goals)
+      - [Avoid N+1 Queries to the Database](#avoid-n1-queries-to-the-database)
+  - [Misc](#misc)
+    - [Generate PlantUML Diagrams as Images](#generate-plantuml-diagrams-as-images)
+  - [Tests](#tests)
+  - [Service Dependencies](#service-dependencies)
+    - [Docker \& docker-compose](#docker--docker-compose)
+      - [Linux](#linux)
+      - [macOS](#macos)
+  - [Ideas for the future](#ideas-for-the-future)
+
+
 ## Where to find implementations?
 
 In the `examples` folder of this repository, named by convention `language_framework_library`

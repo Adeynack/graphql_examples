@@ -16,7 +16,7 @@ to _like_ the posts.
 
 ### Data Model
 
-![Data model](out/model/Models.png)
+![Data model](out/model/Models.svg)
 
 A post
 
@@ -38,11 +38,11 @@ A user
 
 #### Query Object
 
-![GraphQL Query Object](out/schema_query/schema_query-1.png)
+![GraphQL Query Object](out/schema_query/schema_query-1.svg)
 
 #### Mutations
 
-![GraphQL Mutations Object](out/schema_mutations/schema_mutations-1.png)
+![GraphQL Mutations Object](out/schema_mutations/schema_mutations-1.svg)
 
 ### Goals
 
@@ -95,3 +95,12 @@ sudo apt-get install -y docker docker-compose
 #### macOS
 
 Follow [this link](https://docs.docker.com/docker-for-mac/install/) for install instructions.
+
+## Ideas for the future
+
+- Connections/Nodes/Edges
+  - Arrays can be paginated
+- Relay-Style Object Identification
+  - Objects export their GID
+  - Objects are obtainable from their GID
+

@@ -10,7 +10,7 @@
 ***[#lightblue] name: string!
 ***[#orange] posts: [Post] ⇢
 ***[#orange] reactions: [Reaction] ⇢
-**[#orange] me: User
+**[#lightblue] me: User
 **[#orange] posts: [Post] ⇢
 **[#lightgreen] post(id: ID): Post!
 ***[#lightblue] id: ID
@@ -29,7 +29,7 @@
 *****_ CRY
 *****_ WOW
 ****[#lightblue] createdAt: DateTime!
-****[#lightgreen] message: Message ⇢
+****[#lightgreen] post: Post ⇢
 ****[#lightgreen] user: User ⇢
 
 legend top left

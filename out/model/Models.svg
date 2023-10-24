@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="462px" preserveAspectRatio="none" style="width:396px;height:462px;background:#FFFFFF;" version="1.1" viewBox="0 0 396 462" width="396px" zoomAndPan="magnify"><defs/><g><!--MD5=[3fd616f346a44cd59a91eb10b19e157c]
+class User--><g id="elem_User"><rect codeLine="5" fill="#F1F1F1" height="100.4414" id="User" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="175" x="11" y="355"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31" x="83" y="373.5352">User</text><line style="stroke:#181818;stroke-width:0.5;" x1="12" x2="185" y1="381.4883" y2="381.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="52" x="17" y="399.0234">id: uuid</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="85" x="17" y="415.5117">email: string</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86" x="17" y="432">name: string</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="163" x="17" y="448.4883">password_digest: string</text></g><!--MD5=[9bb0bdd047fba1a3c8d48282c35b4537]
+class Post--><g id="elem_Post"><rect codeLine="12" fill="#F1F1F1" height="83.9531" id="Post" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="156" x="122.5" y="175"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="29" x="186" y="193.5352">Post</text><line style="stroke:#181818;stroke-width:0.5;" x1="123.5" x2="277.5" y1="201.4883" y2="201.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="52" x="128.5" y="219.0234">id: uuid</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75" x="128.5" y="235.5117">text: string</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="144" x="128.5" y="252">created_at: DateTime</text></g><!--MD5=[ddc36e88a2144077ea4257ea6b073d34]
+class Reaction--><g id="elem_Reaction"><rect codeLine="21" fill="#F1F1F1" height="67.4648" id="Reaction" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="117" x="7" y="7"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="59" x="36" y="25.5352">Reaction</text><line style="stroke:#181818;stroke-width:0.5;" x1="8" x2="123" y1="33.4883" y2="33.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="52" x="13" y="51.0234">id: uuid</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="105" x="13" y="67.5117">emotion: string</text></g><!--MD5=[53e973d04dd87d2db99c017d615abca2]
+link Post to User--><g id="link_Post_User"><path codeLine="18" d="M178.62,257.55 C165.17,282.18 147.65,314.25 132.43,342.11 " fill="none" id="Post-to-User" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="126.34,353.25,132.7253,349.8992,132.0881,342.7163,125.7028,346.0671,126.34,353.25" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="41" x="150.5" y="321.5684">author</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="6" x="154.271" y="279.6245">*</text></g><!--MD5=[a3ca5a1e742bc035bb6d18f0ca29a9fb]
+link Post to Post--><g id="link_Post_Post"><path codeLine="19" d="M278.31,199.39 C310.38,198.26 337.5,203.97 337.5,216.5 C337.5,227.12 318.01,232.84 292.54,233.65 " fill="none" id="Post-to-Post" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="279.82,233.61,285.8112,237.6232,291.82,233.6364,285.8288,229.6232,279.82,233.61" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="40" x="343.5" y="221.5684">parent</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="6" x="286.5707" y="192.2058">*</text></g><!--MD5=[ca30951a3e2077390cafe3d7739cb5f9]
+link Reaction to User--><g id="link_Reaction_User"><path codeLine="26" d="M67,73.69 C69.28,119.25 74.13,205.12 81.5,278 C83.56,298.36 86.35,320.49 89.07,340.45 " fill="none" id="Reaction-to-User" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="90.83,353.05,93.9675,346.5572,89.181,341.1638,86.0434,347.6566,90.83,353.05" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="6" x="59.6125" y="94.9502">*</text></g><!--MD5=[3c478ade2d460054105a0f151dff7fed]
+link Reaction to Post--><g id="link_Reaction_Post"><path codeLine="27" d="M90.58,73.82 C110.17,99.07 137.77,134.65 160.42,163.83 " fill="none" id="Reaction-to-Post" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="168.21,173.89,167.6976,166.6971,160.861,164.4036,161.3734,171.5965,168.21,173.89" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="6" x="105.004" y="95.2005">*</text></g><!--MD5=[bd2896a7f0d22f52d47a9fa951f349e2]
+@startuml Models
+
+hide empty methods
+hide circle
+
+class User {
+    id: uuid
+    email: string
+    name: string
+    password_digest: string
+}
+
+class Post {
+    id: uuid
+    text: string
+    created_at: DateTime
+}
+
+Post "*" - -* User: author
+Post "*" - -* Post: parent
+
+class Reaction {
+    id: uuid
+    emotion: string
+}
+
+Reaction "*" - -* User
+Reaction "*" - -* Post
+
+@enduml
+
+PlantUML version 1.2022.7(Mon Aug 22 19:01:30 CEST 2022)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: DE
+--></g></svg>

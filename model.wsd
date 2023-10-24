@@ -10,6 +10,12 @@ class User {
     password_digest: string
 }
 
+class ApiSession {
+    token: string
+}
+
+ApiSession "*" --* User
+
 class Post {
     id: uuid
     text: string

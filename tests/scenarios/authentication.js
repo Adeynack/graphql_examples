@@ -1,6 +1,6 @@
 const expect = require("expect.js");
 const { step } = require("mocha-steps");
-const { scenario, gqlRequest } = require("../test_utils");
+const { scenario, gqlRequest, setToken } = require("../test_utils");
 const { gql } = require("graphql-request");
 
 scenario("Authentication", () => {
@@ -17,11 +17,13 @@ scenario("Authentication", () => {
     expect(result.me).to.be.null;
   });
 
+  let joeId = null;
   step("login succeeds with valid credentials", async () => {
     result = await gqlRequest(
       gql`
         mutation {
-          login(input: { email: "joe@example.com", password: "joe" }) {
+          logIn(input: { email: "joe@example.com", password: "joe" }) {
+            token
             user {
               id
               name
@@ -31,8 +33,13 @@ scenario("Authentication", () => {
         }
       `
     );
-    expect(result.login.user).to.eql({
-      id: "d3830e3c-1f33-4a03-b24c-7b2a94fdaa44",
+
+    expect(result.logIn.token).not.to.be(null);
+    setToken(result.logIn.token);
+
+    joeId = result.logIn.user.id;
+    expect(result.logIn.user).to.eql({
+      id: joeId,
       name: "Joe",
       email: "joe@example.com",
     });
@@ -51,7 +58,7 @@ scenario("Authentication", () => {
       `
     );
     expect(result.me).to.eql({
-      id: "d3830e3c-1f33-4a03-b24c-7b2a94fdaa44",
+      id: joeId,
       name: "Joe",
       email: "joe@example.com",
     });

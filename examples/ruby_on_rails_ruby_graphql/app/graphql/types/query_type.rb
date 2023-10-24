@@ -22,7 +22,7 @@ module Types
 
     field :me, Types::UserType, null: true
     def me
-      nil # TODO
+      context[:current_api_session]&.user
     end
 
     field :posts, [Types::PostType], null: false

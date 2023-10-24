@@ -9,9 +9,10 @@ const expect = require("expect.js");
 
 let config;
 let examplePath;
-let graphQLClient;
+let bearerToken;
 
 function init() {
+  bearerToken = null;
   if (!config) {
     exampleName = process.env.EXAMPLE;
     if (!exampleName) {
@@ -28,9 +29,9 @@ function dataCleanState() {
   // Clean up database
   execSync(config.dataInitCommand, { cwd: examplePath });
 
-  // Clean up cookie jar
-  const fetch = fetchCookie(crossFetch);
-  graphQLClient = new GraphQLClient(config.graphQLEndpoint, { fetch });
+  // // Clean up cookie jar
+  // const fetch = fetchCookie(crossFetch);
+  // graphQLClient = new GraphQLClient(config.graphQLEndpoint, { fetch });
 }
 
 function scenario(name, body) {
@@ -45,7 +46,16 @@ function scenario(name, body) {
   });
 }
 
+function setToken(token) {
+  bearerToken = token;
+}
+
 async function gqlRequest(query) {
+  let headers = {};
+  if (bearerToken) {
+    headers["Authorization"] = `Bearer ${bearerToken}`;
+  }
+  let graphQLClient = new GraphQLClient(config.graphQLEndpoint, { headers });
   return await graphQLClient.request(query);
 }
 
@@ -95,6 +105,7 @@ async function expectAsyncException(failing_function) {
 
 module.exports = {
   scenario,
+  setToken,
   gqlRequest,
   login,
   expectAsyncException,

@@ -61,7 +61,7 @@ A user
 
 #### Mutations
 
-![GraphQL Mutations Object](out/schema_mutations/schema_mutations-1.svg)
+See [mutations](mutation.md).
 
 ### Goals
 

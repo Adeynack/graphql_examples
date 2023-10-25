@@ -28,10 +28,6 @@ function init() {
 function dataCleanState() {
   // Clean up database
   execSync(config.dataInitCommand, { cwd: examplePath });
-
-  // // Clean up cookie jar
-  // const fetch = fetchCookie(crossFetch);
-  // graphQLClient = new GraphQLClient(config.graphQLEndpoint, { fetch });
 }
 
 function scenario(name, body) {
@@ -50,24 +46,21 @@ function setToken(token) {
   bearerToken = token;
 }
 
-async function gqlRequest(query) {
+async function gqlRequest({query, variables = null}) {
   let headers = {};
   if (bearerToken) {
     headers["Authorization"] = `Bearer ${bearerToken}`;
   }
   let graphQLClient = new GraphQLClient(config.graphQLEndpoint, { headers });
-  return await graphQLClient.request(query);
+  return await graphQLClient.request(query, variables);
 }
 
-async function expectGqlToFail(query, expectedErrorMessages) {
-  error = await expectAsyncException(async () => {
-    await gqlRequest(query);
+async function expectGqlToFail({query, variables = null, expectedMessages}) {
+  const error = await expectAsyncException(async () => {
+    await gqlRequest({query, variables});
   });
-  if (typeof expectedErrorMessages !== "array") {
-    expectedErrorMessages = [expectedErrorMessages];
-  }
   const messages = error.response.errors.map((e) => e.message);
-  for (let expectedErrorMsg of expectedErrorMessages) {
+  for (let expectedErrorMsg of expectedMessages) {
     const matchingErrorMsg = messages.find((m) => m.includes(expectedErrorMsg));
     if (matchingErrorMsg === undefined) {
       expect().fail(

@@ -1,10 +1,8 @@
-import expect = require('expect.js');
-import { step } from 'mocha-steps';
-import { scenario, gqlRequest, setToken, expectGqlToFail } from '../test_utils';
 import { gql } from 'graphql-request';
+import { expectGqlToFail, gqlRequest, scenario, setToken } from '../test_utils';
 
 scenario('Authentication', () => {
-  step('me is null before first login', async () => {
+  test('me is null before first login', async () => {
     const result = await gqlRequest({
       query: gql`
         {
@@ -14,11 +12,11 @@ scenario('Authentication', () => {
         }
       `,
     });
-    expect(result.me).to.be(null);
+    expect(result.me).toBe(null);
   });
 
-  let joeId = null;
-  step('login succeeds with valid credentials', async () => {
+  let joeId: string;
+  test('login succeeds with valid credentials', async () => {
     const result = await gqlRequest({
       query: gql`
         mutation {
@@ -34,18 +32,18 @@ scenario('Authentication', () => {
       `,
     });
 
-    expect(result.logIn.token).not.to.be(null);
+    expect(result.logIn.token).not.toBe(null);
     setToken(result.logIn.token);
 
     joeId = result.logIn.user.id;
-    expect(result.logIn.user).to.eql({
+    expect(result.logIn.user).toMatchObject({
+      email: 'joe@example.com',
       id: joeId,
       name: 'Joe',
-      email: 'joe@example.com',
     });
   });
 
-  step('me is set to the user who just logged in', async () => {
+  test('me is set to the user who just logged in', async () => {
     const result = await gqlRequest({
       query: gql`
         {
@@ -57,14 +55,14 @@ scenario('Authentication', () => {
         }
       `,
     });
-    expect(result.me).to.eql({
+    expect(result.me).toMatchObject({
       id: joeId,
       name: 'Joe',
       email: 'joe@example.com',
     });
   });
 
-  step('logout succeeds', async () => {
+  test('logout succeeds', async () => {
     const result = await gqlRequest({
       query: gql`
         mutation {
@@ -74,11 +72,11 @@ scenario('Authentication', () => {
         }
       `,
     });
-    expect(result.logOut.clientMutationId).to.eql('foo');
+    expect(result.logOut.clientMutationId).toBe('foo');
   });
 
-  step('request with invalidated token fails with 401 and a JSON error', async () => {
-    let error = null;
+  test('request with invalidated token fails with 401 and a JSON error', async () => {
+    let error: any = null;
     try {
       await gqlRequest({
         query: gql`
@@ -92,14 +90,16 @@ scenario('Authentication', () => {
     } catch (e) {
       error = e;
     }
-    expect(error.response.status).to.equal(401);
-    expect(error.response.status).to.equal(401);
-    expect(error.response.title).to.equal('Invalid bearer token');
+    expect(error).not.toBe(null);
+    if (!error) return;
+    expect(error.response.status).toBe(401);
+    expect(error.response.status).toBe(401);
+    expect(error.response.title).toBe('Invalid bearer token');
 
     setToken(null);
   });
 
-  step('me is null after logout', async () => {
+  test('me is null after logout', async () => {
     const result = await gqlRequest({
       query: gql`
         {
@@ -109,11 +109,11 @@ scenario('Authentication', () => {
         }
       `,
     });
-    expect(result).to.have.property('me');
-    expect(result.me).to.be(null);
+    expect(result).toHaveProperty('me');
+    expect(result.me).toBe(null);
   });
 
-  step('login fails if user email does not exist', async () => {
+  test('login fails if user email does not exist', async () => {
     await expectGqlToFail({
       query: gql`
         mutation {
@@ -130,7 +130,7 @@ scenario('Authentication', () => {
     });
   });
 
-  step('login returns null if user password does not match', async () => {
+  test('login returns null if user password does not match', async () => {
     await expectGqlToFail({
       query: gql`
         mutation {

@@ -1,9 +1,6 @@
 import { readFileSync } from 'fs';
 import { execSync } from 'child_process';
 import { GraphQLClient, Variables, gql } from 'graphql-request';
-import { step } from 'mocha-steps';
-import expect = require('expect.js');
-import { before, describe } from 'mocha';
 import { compact } from 'lodash';
 
 interface ExampleConfig {
@@ -11,46 +8,54 @@ interface ExampleConfig {
   graphQLEndpoint: string;
 }
 
-let config: ExampleConfig;
-let examplePath: string;
-let bearerToken: string;
-
-function init(): void {
-  bearerToken = null;
-  if (!config) {
-    const exampleName = process.env.EXAMPLE;
-    if (!exampleName) {
-      throw 'Environment variable EXAMPLE must be set.';
-    }
-    examplePath = `../examples/${exampleName}`;
-    config = JSON.parse(readFileSync(`${examplePath}/example_test_config.json`).toString());
+const examplePath: string = (function () {
+  const exampleName = process.env.EXAMPLE;
+  if (!exampleName) {
+    throw 'Environment variable EXAMPLE must be set.';
   }
-}
+  return `examples/${exampleName}`;
+})();
+
+const config: ExampleConfig = JSON.parse(readFileSync(`${examplePath}/example_test_config.json`).toString());
+
+let bearerToken: string | null;
 
 function dataCleanState(): void {
   // Clean up database
-  execSync(config.dataInitCommand, { cwd: examplePath });
+  // execSync(config.dataInitCommand, { cwd: examplePath });
 }
 
-export function scenario(name: string, body: () => void): void {
-  init();
-
-  describe(name, () => {
-    before(() => {
+function declareScenario(only: boolean, name: string, body: () => void): void {
+  const describeBodyWrapper = (): void => {
+    beforeAll(() => {
+      bearerToken = null;
       dataCleanState();
     });
 
     body();
-  });
+  };
+  if (only) {
+    describe.only(name, describeBodyWrapper);
+  } else {
+    describe(name, describeBodyWrapper);
+  }
 }
 
-export function setToken(token: string): void {
+export function scenario(name: string, body: () => void): void {
+  declareScenario(false, name, body);
+}
+
+export function fscenario(name: string, body: () => void): void {
+  declareScenario(true, name, body);
+}
+
+export function setToken(token: string | null): void {
   bearerToken = token;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function gqlRequest({ query, variables = null }: { query: string; variables?: Variables }): Promise<any> {
-  const headers = {};
+export async function gqlRequest({ query, variables = {} }: { query: string; variables?: Variables }): Promise<any> {
+  const headers: Record<string, string> = {};
   if (bearerToken) {
     headers['Authorization'] = `Bearer ${bearerToken}`;
   }
@@ -60,7 +65,7 @@ export async function gqlRequest({ query, variables = null }: { query: string; v
 
 export async function expectGqlToFail({
   query,
-  variables = null,
+  variables = {},
   expectedMessages,
 }: {
   query: string;
@@ -74,7 +79,7 @@ export async function expectGqlToFail({
   for (const expectedErrorMsg of expectedMessages) {
     const matchingErrorMsg = messages.find((m) => m.includes(expectedErrorMsg));
     if (matchingErrorMsg === undefined) {
-      expect().fail(
+      fail(
         `no error returned containing: ${expectedErrorMsg}\n     Message:\n${messages.map((m) => `        - "${m}"`)}`
       );
     }
@@ -83,7 +88,7 @@ export async function expectGqlToFail({
 }
 
 export function login(userName: string): void {
-  step(`login as ${userName}`, async () => {
+  test(`login as ${userName}`, async () => {
     const result = await gqlRequest({
       query: gql`
         mutation {
@@ -101,7 +106,7 @@ export function login(userName: string): void {
 export async function expectAsyncException(failing_function: () => Promise<void>): Promise<any> {
   try {
     await failing_function();
-    expect().fail('expecting a failure');
+    fail('expecting a failure');
   } catch (e) {
     return e;
   }

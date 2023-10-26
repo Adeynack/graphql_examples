@@ -1,12 +1,10 @@
-import expect = require('expect.js');
-import { step } from 'mocha-steps';
-import { scenario, gqlRequest, login } from '../test_utils';
 import { gql } from 'graphql-request';
+import { gqlRequest, login, scenario } from '../test_utils';
 
 scenario('Users', () => {
   login('joe');
 
-  step('users returns all known users', async () => {
+  test('users returns all known users', async () => {
     const result = await gqlRequest({
       query: gql`
         {
@@ -28,15 +26,15 @@ scenario('Users', () => {
         name: 'Joe',
       },
     ];
-    expect(result.users.length).to.eql(expected.length);
+    expect(result.users).toHaveLength(expected.length);
     for (const expectedUser of expected) {
-      const actualUser = result.users.find((u) => u.email === expectedUser.email);
-      expect(actualUser).not.to.be.empty();
+      const actualUser = result.users.find((u: any) => u.email === expectedUser.email);
+      expect(actualUser).not.toBeNull();
     }
   });
 
   // let sylvia_id;
-  // step("add user Sylvia", async () => {
+  // test("add user Sylvia", async () => {
   //   const result = await gqlRequest(
   //     gql`
   //       mutation {
@@ -67,7 +65,7 @@ scenario('Users', () => {
   //   });
   // });
 
-  // step("users now returns Sylvia as well", async () => {
+  // test("users now returns Sylvia as well", async () => {
   //   const result = await gqlRequest(
   //     gql`
   //       {
@@ -104,7 +102,7 @@ scenario('Users', () => {
   //   }
   // });
 
-  // step("trying to add sylvia@example.com again fails", async () => {
+  // test("trying to add sylvia@example.com again fails", async () => {
   //   await expectGqlToFail(
   //     gql`
   //       mutation {
@@ -123,7 +121,7 @@ scenario('Users', () => {
   //   );
   // });
 
-  // step("delete an ID that doesn't exist fails", async () => {
+  // test("delete an ID that doesn't exist fails", async () => {
   //   await expectGqlToFail(
   //     gql`
   //       mutation {
@@ -136,7 +134,7 @@ scenario('Users', () => {
   //   );
   // });
 
-  // step("delete Linda succeeds", async () => {
+  // test("delete Linda succeeds", async () => {
   //   const result = await gqlRequest(
   //     gql`
   //       mutation {
@@ -157,7 +155,7 @@ scenario('Users', () => {
   //   });
   // });
 
-  // step("users no longer returns Linda", async () => {
+  // test("users no longer returns Linda", async () => {
   //   const result = await gqlRequest(
   //     gql`
   //       {

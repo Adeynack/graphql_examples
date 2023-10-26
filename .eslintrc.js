@@ -1,16 +1,16 @@
 module.exports = {
   env: {
     browser: true,
-    es6: true,
+    es2021: true,
   },
-  ignorePatterns: ['node_modules/'],
-  parser: '@typescript-eslint/parser',
   extends: ['plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
+  plugins: ['@typescript-eslint'],
+  overrides: [],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint'],
   rules: {
     'no-console': 2,
     '@typescript-eslint/explicit-function-return-type': [
@@ -19,7 +19,5 @@ module.exports = {
         allowExpressions: true,
       },
     ],
-    eqeqeq: 2,
-    '@typescript-eslint/ban-types': 0,
   },
 };

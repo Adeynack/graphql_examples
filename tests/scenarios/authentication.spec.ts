@@ -1,15 +1,10 @@
-const expect = require("expect.js");
-const { step } = require("mocha-steps");
-const {
-  scenario,
-  gqlRequest,
-  setToken,
-  expectGqlToFail,
-} = require("../test_utils");
-const { gql } = require("graphql-request");
+import expect = require('expect.js');
+import { step } from 'mocha-steps';
+import { scenario, gqlRequest, setToken, expectGqlToFail } from '../test_utils';
+import { gql } from 'graphql-request';
 
-scenario("Authentication", () => {
-  step("me is null before first login", async () => {
+scenario('Authentication', () => {
+  step('me is null before first login', async () => {
     const result = await gqlRequest({
       query: gql`
         {
@@ -19,11 +14,11 @@ scenario("Authentication", () => {
         }
       `,
     });
-    expect(result.me).to.be.null;
+    expect(result.me).to.be(null);
   });
 
   let joeId = null;
-  step("login succeeds with valid credentials", async () => {
+  step('login succeeds with valid credentials', async () => {
     const result = await gqlRequest({
       query: gql`
         mutation {
@@ -45,12 +40,12 @@ scenario("Authentication", () => {
     joeId = result.logIn.user.id;
     expect(result.logIn.user).to.eql({
       id: joeId,
-      name: "Joe",
-      email: "joe@example.com",
+      name: 'Joe',
+      email: 'joe@example.com',
     });
   });
 
-  step("me is set to the user who just logged in", async () => {
+  step('me is set to the user who just logged in', async () => {
     const result = await gqlRequest({
       query: gql`
         {
@@ -64,12 +59,12 @@ scenario("Authentication", () => {
     });
     expect(result.me).to.eql({
       id: joeId,
-      name: "Joe",
-      email: "joe@example.com",
+      name: 'Joe',
+      email: 'joe@example.com',
     });
   });
 
-  step("logout succeeds", async () => {
+  step('logout succeeds', async () => {
     const result = await gqlRequest({
       query: gql`
         mutation {
@@ -79,36 +74,33 @@ scenario("Authentication", () => {
         }
       `,
     });
-    expect(result.logOut.clientMutationId).to.eql("foo");
+    expect(result.logOut.clientMutationId).to.eql('foo');
   });
 
-  step(
-    "request with invalidated token fails with 401 and a JSON error",
-    async () => {
-      let error = null;
-      try {
-        await gqlRequest({
-          query: gql`
-            {
-              me {
-                id
-              }
+  step('request with invalidated token fails with 401 and a JSON error', async () => {
+    let error = null;
+    try {
+      await gqlRequest({
+        query: gql`
+          {
+            me {
+              id
             }
-          `,
-        });
-      } catch (e) {
-        error = e;
-      }
-      expect(error.response.status).to.equal(401);
-      expect(error.response.status).to.equal(401);
-      expect(error.response.title).to.equal("Invalid bearer token");
-
-      setToken(null);
+          }
+        `,
+      });
+    } catch (e) {
+      error = e;
     }
-  );
+    expect(error.response.status).to.equal(401);
+    expect(error.response.status).to.equal(401);
+    expect(error.response.title).to.equal('Invalid bearer token');
 
-  step("me is null after logout", async () => {
-    result = await gqlRequest({
+    setToken(null);
+  });
+
+  step('me is null after logout', async () => {
+    const result = await gqlRequest({
       query: gql`
         {
           me {
@@ -117,11 +109,11 @@ scenario("Authentication", () => {
         }
       `,
     });
-    expect(result).to.have.property("me");
+    expect(result).to.have.property('me');
     expect(result.me).to.be(null);
   });
 
-  step("login fails if user email does not exist", async () => {
+  step('login fails if user email does not exist', async () => {
     await expectGqlToFail({
       query: gql`
         mutation {
@@ -134,11 +126,11 @@ scenario("Authentication", () => {
       `,
       // Of course, in a production system, you would simply say that the user/pass combination is invalid;
       // but here, we want to test that it failed for the right reason, hence the security-breach-y approach.
-      expectedMessages: ["User not found"],
+      expectedMessages: ['User not found'],
     });
   });
 
-  step("login returns null if user password does not match", async () => {
+  step('login returns null if user password does not match', async () => {
     await expectGqlToFail({
       query: gql`
         mutation {
@@ -151,7 +143,7 @@ scenario("Authentication", () => {
       `,
       // Of course, in a production system, you would simply say that the user/pass combination is invalid;
       // but here, we want to test that it failed for the right reason, hence the security-breach-y approach.
-      expectedMessages: ["Incorrect password"],
+      expectedMessages: ['Incorrect password'],
     });
   });
 });

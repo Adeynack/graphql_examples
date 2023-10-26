@@ -1,17 +1,12 @@
-const expect = require("expect.js");
-const { step } = require("mocha-steps");
-const {
-  scenario,
-  gqlRequest,
-  login,
-  expectGqlToFail,
-} = require("../test_utils");
-const { gql } = require("graphql-request");
+import expect = require('expect.js');
+import { step } from 'mocha-steps';
+import { scenario, gqlRequest, login } from '../test_utils';
+import { gql } from 'graphql-request';
 
-scenario("Users", () => {
-  login("joe");
+scenario('Users', () => {
+  login('joe');
 
-  step("users returns all known users", async () => {
+  step('users returns all known users', async () => {
     const result = await gqlRequest({
       query: gql`
         {
@@ -25,18 +20,18 @@ scenario("Users", () => {
     });
     const expected = [
       {
-        email: "linda@example.com",
-        name: "Linda",
+        email: 'linda@example.com',
+        name: 'Linda',
       },
       {
-        email: "joe@example.com",
-        name: "Joe",
+        email: 'joe@example.com',
+        name: 'Joe',
       },
     ];
     expect(result.users.length).to.eql(expected.length);
-    for (let expectedUser of expected) {
+    for (const expectedUser of expected) {
       const actualUser = result.users.find((u) => u.email === expectedUser.email);
-      expect(actualUser).not.to.be.empty()
+      expect(actualUser).not.to.be.empty();
     }
   });
 

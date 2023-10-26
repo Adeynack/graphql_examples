@@ -1,9 +1,6 @@
 const fs = require("fs");
 const { execSync } = require("child_process");
 const { GraphQLClient, gql } = require("graphql-request");
-const fetchCookie = require("fetch-cookie");
-const crossFetch = require("cross-fetch");
-const assert = require("assert");
 const { step } = require("mocha-steps");
 const expect = require("expect.js");
 
@@ -46,7 +43,7 @@ function setToken(token) {
   bearerToken = token;
 }
 
-async function gqlRequest({query, variables = null}) {
+async function gqlRequest({ query, variables = null }) {
   let headers = {};
   if (bearerToken) {
     headers["Authorization"] = `Bearer ${bearerToken}`;
@@ -55,9 +52,9 @@ async function gqlRequest({query, variables = null}) {
   return await graphQLClient.request(query, variables);
 }
 
-async function expectGqlToFail({query, variables = null, expectedMessages}) {
+async function expectGqlToFail({ query, variables = null, expectedMessages }) {
   const error = await expectAsyncException(async () => {
-    await gqlRequest({query, variables});
+    await gqlRequest({ query, variables });
   });
   const messages = error.response.errors.map((e) => e.message);
   for (let expectedErrorMsg of expectedMessages) {
@@ -75,15 +72,16 @@ async function expectGqlToFail({query, variables = null, expectedMessages}) {
 
 function login(user) {
   step(`login as ${user}`, async () => {
-    await gqlRequest(
-      gql`
+    const result = await gqlRequest({
+      query: gql`
         mutation {
-          login(input: { email: "${user}@example.com", password: "${user}" }) {
-            clientMutationId
+          logIn(input: { email: "joe@example.com", password: "joe" }) {
+            token
           }
         }
-      `
-    );
+      `,
+    });
+    setToken(result.logIn.token);
   });
 }
 

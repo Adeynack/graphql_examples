@@ -22,7 +22,6 @@ languages and frameworks.
       - [macOS](#macos)
   - [Ideas for the future](#ideas-for-the-future)
 
-
 ## Where to find implementations?
 
 In the `examples` folder of this repository, named by convention `language_framework_library`
@@ -94,6 +93,12 @@ For watch file and only execute a single file on save:
 EXAMPLE=ruby_on_rails_ruby_graphql yarn watch
 ```
 
+To work on a specific scneario:
+
+```bash
+EXAMPLE=ruby_on_rails_ruby_graphql yarn mocha -r mocha-steps -t 5000 --watch scenarios/authentication.js
+```
+
 ## Service Dependencies
 
 A _Docker Compose_ file is provided. All required database and other
@@ -122,4 +127,3 @@ Follow [this link](https://docs.docker.com/docker-for-mac/install/) for install 
 - Relay-Style Object Identification
   - Objects export their GID
   - Objects are obtainable from their GID
-

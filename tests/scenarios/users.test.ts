@@ -1,7 +1,28 @@
 import { gql } from 'graphql-request';
-import { gqlRequest, login, scenario } from '../test_utils';
+import { expectGqlToFail, gqlRequest, login, scenario } from '../test_utils';
+
+const MUTATION_CREATE_USER = gql`
+  mutation CreateUser($email: String!, $name: String!, $password: String!) {
+    createUser(input: { email: $email, name: $name, password: $password }) {
+      user {
+        id
+        email
+        name
+      }
+    }
+  }
+`;
 
 scenario('Users', () => {
+  // TODO: Before login in, ensuring that the mutations are not accessible
+  test('createUser is not accessible', async () => {
+    await expectGqlToFail({
+      query: MUTATION_CREATE_USER,
+      variables: { email: 'foo@example.com', name: 'Foo', password: 'bar' },
+      expectedMessages: ['Not authorized'],
+    });
+  });
+
   login('joe');
 
   test('users returns all known users', async () => {
@@ -28,42 +49,31 @@ scenario('Users', () => {
     ];
     expect(result.users).toHaveLength(expected.length);
     for (const expectedUser of expected) {
-      const actualUser = result.users.find((u: any) => u.email === expectedUser.email);
+      const actualUser = result.users.find((u: { email: string }) => u.email === expectedUser.email);
       expect(actualUser).not.toBeNull();
     }
   });
 
-  // let sylvia_id;
-  // test("add user Sylvia", async () => {
-  //   const result = await gqlRequest(
-  //     gql`
-  //       mutation {
-  //         createUser(
-  //           input: {
-  //             email: "sylvia@example.com"
-  //             name: "Sylvia"
-  //             password: "sylvia"
-  //           }
-  //         ) {
-  //           user {
-  //             id
-  //             email
-  //             name
-  //           }
-  //         }
-  //       }
-  //     `
-  //   );
-  //   sylvia_id = result.createUser.user.id;
-  //   expect(sylvia_id).not.to.be.empty();
-  //   expect(result.createUser).to.eql({
-  //     user: {
-  //       id: sylvia_id, // given by the server
-  //       email: "sylvia@example.com",
-  //       name: "Sylvia",
-  //     },
-  //   });
-  // });
+  let sylvia_id: string;
+  test('add user Sylvia', async () => {
+    const result = await gqlRequest({
+      variables: {
+        email: 'sylvia@example.com',
+        name: 'Sylvia',
+        password: 'sylvia',
+      },
+      query: MUTATION_CREATE_USER,
+    });
+    sylvia_id = result.createUser.user.id;
+    expect(sylvia_id).toMatch(/^\w+/);
+    expect(result.createUser).toMatchObject({
+      user: {
+        id: sylvia_id, // given by the server
+        email: 'sylvia@example.com',
+        name: 'Sylvia',
+      },
+    });
+  });
 
   // test("users now returns Sylvia as well", async () => {
   //   const result = await gqlRequest(

@@ -22,7 +22,7 @@ let bearerToken: string | null;
 
 function dataCleanState(): void {
   // Clean up database
-  // execSync(config.dataInitCommand, { cwd: examplePath });
+  execSync(config.dataInitCommand, { cwd: examplePath });
 }
 
 function declareScenario(only: boolean, name: string, body: () => void): void {

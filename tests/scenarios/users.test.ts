@@ -1,26 +1,15 @@
 import { gql } from 'graphql-request';
 import { expectGqlToFail, gqlRequest, login, scenario } from '../test_utils';
 
-const MUTATION_CREATE_USER = gql`
-  mutation CreateUser($email: String!, $name: String!, $password: String!) {
-    createUser(input: { email: $email, name: $name, password: $password }) {
-      user {
-        id
-        email
-        name
-      }
-    }
-  }
-`;
-
 scenario('Users', () => {
   // TODO: Before login in, ensuring that the mutations are not accessible
   test('createUser is not accessible', async () => {
-    await expectGqlToFail({
+    const errors = await expectGqlToFail({
       query: MUTATION_CREATE_USER,
       variables: { email: 'foo@example.com', name: 'Foo', password: 'bar' },
-      expectedMessages: ['Not authorized'],
+      expectedMessages: [], //['Not authorized'],
     });
+    expect(errors.map((e) => e.message)).toContain('Not authorized');
   });
 
   login('joe');
@@ -64,6 +53,7 @@ scenario('Users', () => {
       },
       query: MUTATION_CREATE_USER,
     });
+    console.log('result', result);
     sylvia_id = result.createUser.user.id;
     expect(sylvia_id).toMatch(/^\w+/);
     expect(result.createUser).toMatchObject({
@@ -197,3 +187,15 @@ scenario('Users', () => {
   //   }
   // });
 });
+
+const MUTATION_CREATE_USER = gql`
+  mutation CreateUser($email: String!, $name: String!, $password: String!) {
+    createUser(input: { email: $email, name: $name, password: $password }) {
+      user {
+        id
+        email
+        name
+      }
+    }
+  }
+`;

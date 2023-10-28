@@ -2,6 +2,10 @@
 
 module Mutations
   class LogOut < BaseMutation
+    def authorized?(**args)
+      true
+    end
+
     def resolve
       context[:current_api_session]&.destroy!
       {}

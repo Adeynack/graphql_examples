@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { execSync } from 'child_process';
 import { GraphQLClient, Variables, gql } from 'graphql-request';
-import { compact } from 'lodash';
+import { GraphQLError } from 'graphql';
 
 interface ExampleConfig {
   dataInitCommand: string;
@@ -32,6 +32,10 @@ function declareScenario(only: boolean, name: string, body: () => void): void {
       dataCleanState();
     });
 
+    afterAll(() => {
+      dataCleanState(); // leave a clean state behind
+    });
+
     body();
   };
   if (only) {
@@ -40,6 +44,8 @@ function declareScenario(only: boolean, name: string, body: () => void): void {
     describe(name, describeBodyWrapper);
   }
 }
+
+export const graphQLClient = new GraphQLClient(config.graphQLEndpoint, { errorPolicy: 'all' });
 
 export function scenario(name: string, body: () => void): void {
   declareScenario(false, name, body);
@@ -53,38 +59,31 @@ export function setToken(token: string | null): void {
   bearerToken = token;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function gqlRequest({ query, variables = {} }: { query: string; variables?: Variables }): Promise<any> {
+function prepareHeaders(): Record<string, string> {
   const headers: Record<string, string> = {};
   if (bearerToken) {
     headers['Authorization'] = `Bearer ${bearerToken}`;
   }
-  const graphQLClient = new GraphQLClient(config.graphQLEndpoint, { headers });
-  return await graphQLClient.request(query, variables);
+  return headers;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function gqlRequest({ query, variables = {} }: { query: string; variables?: Variables }): Promise<any> {
+  return await graphQLClient.request(query, variables, prepareHeaders());
 }
 
 export async function expectGqlToFail({
   query,
   variables = {},
-  expectedMessages,
 }: {
   query: string;
   variables?: Variables;
   expectedMessages: string[];
-}): Promise<void> {
-  const error = await expectAsyncException(async () => {
-    await gqlRequest({ query, variables });
-  });
-  const messages: string[] = compact((error.response.errors || []).map((e: { message: string }) => e.message));
-  for (const expectedErrorMsg of expectedMessages) {
-    const matchingErrorMsg = messages.find((m) => m.includes(expectedErrorMsg));
-    if (matchingErrorMsg === undefined) {
-      fail(
-        `no error returned containing: ${expectedErrorMsg}\n     Message:\n${messages.map((m) => `        - "${m}"`)}`
-      );
-    }
-  }
-  return error;
+}): Promise<GraphQLError[]> {
+  const { status, errors } = await graphQLClient.rawRequest(query, variables, prepareHeaders());
+  if (status !== 200) throw new Error(`Expected status 200, got ${status}`);
+  if (!errors || errors.length === 0) throw new Error('Expected errors, got none');
+  return errors;
 }
 
 export function login(userName: string): void {
@@ -104,10 +103,15 @@ export function login(userName: string): void {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function expectAsyncException(failing_function: () => Promise<void>): Promise<any> {
-  try {
-    await failing_function();
-    fail('expecting a failure');
-  } catch (e) {
-    return e;
-  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let error: any = null;
+  expect(async () => {
+    try {
+      await failing_function();
+    } catch (e) {
+      error = e;
+      throw e;
+    }
+  }).toThrow();
+  return error;
 }

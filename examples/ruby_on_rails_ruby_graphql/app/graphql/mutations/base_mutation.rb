@@ -6,5 +6,10 @@ module Mutations
     field_class Types::BaseField
     input_object_class Types::BaseInputObject
     object_class Types::BaseObject
+
+    def authorized?(**args)
+      # by default, require authentication for all mutations
+      raise GraphQL::ExecutionError, "Not authorized" unless context[:current_api_session].present?
+    end
   end
 end

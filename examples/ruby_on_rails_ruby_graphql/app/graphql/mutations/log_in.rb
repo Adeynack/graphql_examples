@@ -8,6 +8,10 @@ module Mutations
     field :token, String, null: false
     field :user, Types::UserType, null: false
 
+    def authorized?(**args)
+      true
+    end
+
     def resolve(email:, password:)
       api_session = User.create_new_session(email:, password:, session: context[:session])
       {token: api_session.token, user: api_session.user}

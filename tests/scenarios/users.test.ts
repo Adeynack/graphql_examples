@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { gql } from 'graphql-request';
 import { expectGqlToFail, gqlRequest, login, scenario } from '../test_utils';
 

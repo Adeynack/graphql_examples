@@ -1,13 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { gql } from 'graphql-request';
-import { expectGqlToFail, gqlRequest, scenario, setToken } from '../test_utils';
+import { expectGqlToFail, getToken, gqlRequest, scenario, setToken } from '../test_utils';
 
 scenario('Authentication', () => {
   test('me is null before first login', async () => {
     const result = await gqlRequest({
       query: gql`
-        {
+        query {
           me {
             id
+            name
+            email
           }
         }
       `,
@@ -18,9 +21,10 @@ scenario('Authentication', () => {
   let joeId: string;
   test('login succeeds with valid credentials', async () => {
     const result = await gqlRequest({
+      variables: { email: 'joe@example.com', password: 'joe' },
       query: gql`
-        mutation {
-          logIn(input: { email: "joe@example.com", password: "joe" }) {
+        mutation ($email: String!, $password: String!) {
+          logIn(input: { email: $email, password: $password }) {
             token
             user {
               id
@@ -31,7 +35,6 @@ scenario('Authentication', () => {
         }
       `,
     });
-
     expect(result.logIn.token).not.toBe(null);
     setToken(result.logIn.token);
 
@@ -43,10 +46,29 @@ scenario('Authentication', () => {
     });
   });
 
+  test('login while already logged in does not create a new token', async () => {
+    const result = await gqlRequest({
+      variables: { email: 'joe@example.com', password: 'joe' },
+      query: gql`
+        mutation ($email: String!, $password: String!) {
+          logIn(input: { email: $email, password: $password }) {
+            token
+            user {
+              id
+              name
+              email
+            }
+          }
+        }
+      `,
+    });
+    expect(result.logIn.token).toEqual(getToken());
+  });
+
   test('me is set to the user who just logged in', async () => {
     const result = await gqlRequest({
       query: gql`
-        {
+        query {
           me {
             id
             name

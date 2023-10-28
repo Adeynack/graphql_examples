@@ -13,7 +13,12 @@ module Mutations
     end
 
     def resolve(email:, password:)
-      api_session = User.create_new_session(email:, password:, session: context[:session])
+      api_session = User.create_new_session(
+        email:,
+        password:,
+        rails_session: context[:session],
+        current_api_session: context[:current_api_session]
+      )
       {token: api_session.token, user: api_session.user}
     rescue User::CreateNewSessionError => e
       raise GraphQL::ExecutionError, e.message

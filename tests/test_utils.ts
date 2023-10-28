@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { readFileSync } from 'fs';
 import { execSync } from 'child_process';
 import { GraphQLClient, Variables, gql } from 'graphql-request';
@@ -55,6 +56,10 @@ export function fscenario(name: string, body: () => void): void {
   declareScenario(true, name, body);
 }
 
+export function getToken(): string | null {
+  return bearerToken;
+}
+
 export function setToken(token: string | null): void {
   bearerToken = token;
 }
@@ -67,7 +72,6 @@ function prepareHeaders(): Record<string, string> {
   return headers;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function gqlRequest({ query, variables = {} }: { query: string; variables?: Variables }): Promise<any> {
   return await graphQLClient.request(query, variables, prepareHeaders());
 }
@@ -101,9 +105,7 @@ export function login(userName: string): void {
   });
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function expectAsyncException(failing_function: () => Promise<void>): Promise<any> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let error: any = null;
   expect(async () => {
     try {

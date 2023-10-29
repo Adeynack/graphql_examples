@@ -82,7 +82,6 @@ export async function expectGqlToFail({
 }: {
   query: string;
   variables?: Variables;
-  expectedMessages: string[];
 }): Promise<GraphQLError[]> {
   const { status, errors } = await graphQLClient.rawRequest(query, variables, prepareHeaders());
   if (status !== 200) throw new Error(`Expected status 200, got ${status}`);
@@ -97,6 +96,9 @@ export function login(userName: string): void {
         mutation {
           logIn(input: { email: "joe@example.com", password: "joe" }) {
             token
+            user {
+              id
+            }
           }
         }
       `,

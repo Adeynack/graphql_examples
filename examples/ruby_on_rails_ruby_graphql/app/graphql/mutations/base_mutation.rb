@@ -10,6 +10,7 @@ module Mutations
     def authorized?(**args)
       # by default, require authentication for all mutations
       raise GraphQL::ExecutionError, "Not authorized" unless context[:current_api_session].present?
+      true
     end
   end
 end

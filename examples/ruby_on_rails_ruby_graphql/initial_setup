@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+bundle install
+echo ""
+echo "To start developping:"
+echo "bin/rails s"
+echo ""

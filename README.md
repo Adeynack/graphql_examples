@@ -13,9 +13,10 @@ languages and frameworks.
       - [Mutations](#mutations)
     - [Goals](#goals)
       - [Avoid N+1 Queries to the Database](#avoid-n1-queries-to-the-database)
-  - [Misc](#misc)
-    - [Generate PlantUML Diagrams as Images](#generate-plantuml-diagrams-as-images)
   - [Tests](#tests)
+  - [Development](#development)
+    - [Generate PlantUML Diagrams as Images](#generate-plantuml-diagrams-as-images)
+    - [Maintaining Initial Database State](#maintaining-initial-database-state)
   - [Service Dependencies](#service-dependencies)
     - [Docker \& docker-compose](#docker--docker-compose)
       - [Linux](#linux)
@@ -68,13 +69,6 @@ See [mutations](mutation.md).
 
 Use batch loading when available to the language and framework of choice.
 
-## Misc
-
-### Generate PlantUML Diagrams as Images
-
-At this moment, generating them using the [_PlantUML_ plugin of _VSCode_](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml),
-calling the _PlantUML: Export Workspace Diagrams_ command, and choosing _png_.
-
 ## Tests
 
 An implementation agnostic test suite, in _JavaScript_, is in `tests`.
@@ -93,6 +87,19 @@ For watch file and only execute a single file on save:
 ```bash
 EXAMPLE=ruby_on_rails_ruby_graphql yarn watch
 EXAMPLE=ruby_on_rails_ruby_graphql yarn watch tests/scenarios/users.test.ts
+```
+
+## Development
+
+### Generate PlantUML Diagrams as Images
+
+At this moment, generating them using the [_PlantUML_ plugin of _VSCode_](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml),
+calling the _PlantUML: Export Workspace Diagrams_ command, and choosing _png_.
+
+### Maintaining Initial Database State
+
+```bash
+pg_dump --format=p --file=tests/initial_test_data.sql --clean
 ```
 
 ## Service Dependencies

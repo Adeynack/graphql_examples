@@ -11,23 +11,21 @@
 			"version": "lts",
 			"nvmVersion": "latest"
 		},
-		"ghcr.io/devcontainers/features/ruby": {
-			"version": "3.2"
-		},
+		// "ghcr.io/devcontainers/features/ruby": {
+		// 	"version": "3.2"
+		// },
 		"ghcr.io/itsmechlark/features/postgresql:1": {
-			"version": "15"
+			"version": "16"
 		},
 		"ghcr.io/robbert229/devcontainer-features/postgresql-client:1": {
-			"version": "15"
-		},
-		"ghcr.io/devcontainers-contrib/features/apt-packages": {
-			"packages": "libpq-dev, tmux"
+			"version": "16"
 		}
 	},
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+	"containerEnv": {
+		"LANG": "en_US.UTF-8"
+	},
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "/usr/bin/zsh .devcontainer/post_create.sh",
+	"postCreateCommand": "/usr/bin/zsh .devcontainer/post_create",
 	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
@@ -41,6 +39,8 @@
 			}
 		}
 	},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
 	"portsAttributes": {
 		"3000": {
 			"label": "Rails Dev Server"

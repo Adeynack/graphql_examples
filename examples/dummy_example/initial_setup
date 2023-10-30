@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+echo ""
+echo "Dummy example to test init scripts"
+echo ""

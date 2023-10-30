@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env sh
 echo ""
 echo "Install Bundle Packages"
 bundle install

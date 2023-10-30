@@ -136,7 +136,7 @@ scenario('Authentication', () => {
   });
 
   test('login fails if user email does not exist', async () => {
-    await expectGqlToFail({
+    const errors = await expectGqlToFail({
       query: gql`
         mutation {
           logIn(input: { email: "foo@bar.com", password: "joe" }) {
@@ -146,14 +146,14 @@ scenario('Authentication', () => {
           }
         }
       `,
-      // Of course, in a production system, you would simply say that the user/pass combination is invalid;
-      // but here, we want to test that it failed for the right reason, hence the security-breach-y approach.
-      expectedMessages: ['User not found'],
     });
+    // Of course, in a production system, you would simply say that the user/pass combination is invalid;
+    // but here, we want to test that it failed for the right reason, hence the security-breach-y approach.
+    expect(errors.map((e) => e.message)).toContain('User not found');
   });
 
   test('login returns null if user password does not match', async () => {
-    await expectGqlToFail({
+    const errors = await expectGqlToFail({
       query: gql`
         mutation {
           logIn(input: { email: "joe@example.com", password: "foobar" }) {
@@ -163,9 +163,9 @@ scenario('Authentication', () => {
           }
         }
       `,
-      // Of course, in a production system, you would simply say that the user/pass combination is invalid;
-      // but here, we want to test that it failed for the right reason, hence the security-breach-y approach.
-      expectedMessages: ['Incorrect password'],
     });
+    // Of course, in a production system, you would simply say that the user/pass combination is invalid;
+    // but here, we want to test that it failed for the right reason, hence the security-breach-y approach.
+    expect(errors.map((e) => e.message)).toContain('Incorrect password');
   });
 });

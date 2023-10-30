@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/usr/bin/env sh
 
 echo "Launching background initializations --> tmux attach"
 if tmux has-session -t Examples > /dev/null 2> /dev/null; then

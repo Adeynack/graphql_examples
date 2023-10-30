@@ -6,6 +6,6 @@ echo ""
 echo "Setup Rails Database"
 bin/rails db:setup db:migrate db:fixtures:load
 echo ""
-echo "To start developping:"
-echo "bin/rails s"
+echo "Starting Rails Server"
 echo ""
+bin/rails s

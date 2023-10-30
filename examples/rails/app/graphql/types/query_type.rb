@@ -14,7 +14,7 @@ module Types
     def user(id: nil, email: nil)
       raise GraphQL::ExecutionError, "Must provide one of id or email" if [id, email].all?(&:blank?)
 
-      users = User.all
+      users = User.order(:name)
       users.where!(id:) if id.present?
       users.where!(email:) if email.present?
       users.first || raise(GraphQL::ExecutionError, "User not found")

@@ -1,6 +1,21 @@
 {
-    "recommendations": [
-        "ms-vscode-remote.remote-containers",
-        "shopify.ruby-lsp"
-    ]
+  "recommendations": [
+    "ms-vscode-remote.remote-containers",
+    "shopify.ruby-lsp",
+    "ms-azuretools.vscode-docker",
+    "darkriszty.markdown-table-prettify",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "rvest.vs-code-prettier-eslint",
+    "wmaurer.change-case",
+    "zombocom.dead-end-vscode",
+    "kaiwood.endwise",
+    "mquandalle.graphql",
+    "yzhang.markdown-all-in-one",
+    "darkriszty.markdown-table-prettify",
+    "jebbs.plantuml",
+    "trybick.terminal-zoom",
+    "netcorext.uuid-generator",
+    "redhat.vscode-yaml"
+  ]
 }

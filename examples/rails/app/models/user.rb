@@ -15,8 +15,8 @@ class User < ApplicationRecord
   has_secure_password
 
   has_many :api_sessions, dependent: :delete_all
-  has_many :posts, foreign_key: "author_id", dependent: :restrict_with_exception, inverse_of: :author
-  has_many :reactions, dependent: :restrict_with_exception
+  has_many :posts, foreign_key: "author_id", dependent: :destroy, inverse_of: :author
+  has_many :reactions, dependent: :destroy
 
   validates :email,
     presence: true,

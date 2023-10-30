@@ -46,7 +46,8 @@ function declareScenario(only: boolean, name: string, body: () => void): void {
   }
 }
 
-export const graphQLClient = new GraphQLClient(config.graphQLEndpoint, { errorPolicy: 'all' });
+export const graphQLClient = new GraphQLClient(config.graphQLEndpoint);
+export const graphQLClientForFailures = new GraphQLClient(config.graphQLEndpoint, { errorPolicy: 'all' });
 
 export function scenario(name: string, body: () => void): void {
   declareScenario(false, name, body);
@@ -83,7 +84,7 @@ export async function expectGqlToFail({
   query: string;
   variables?: Variables;
 }): Promise<GraphQLError[]> {
-  const { status, errors } = await graphQLClient.rawRequest(query, variables, prepareHeaders());
+  const { status, errors } = await graphQLClientForFailures.rawRequest(query, variables, prepareHeaders());
   if (status !== 200) throw new Error(`Expected status 200, got ${status}`);
   if (!errors || errors.length === 0) throw new Error('Expected errors, got none');
   return errors;

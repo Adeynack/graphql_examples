@@ -3,7 +3,6 @@ import { gql } from 'graphql-request';
 import { expectGqlToFail, gqlRequest, login, scenario } from '../test_utils';
 
 scenario('Users', () => {
-  // TODO: Before login in, ensuring that the mutations are not accessible
   test('createUser is not accessible', async () => {
     const errors = await expectGqlToFail({
       query: gql`

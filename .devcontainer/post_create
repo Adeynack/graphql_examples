@@ -1,26 +1,16 @@
 #!/usr/bin/sh
 
-# This script runs as user `vscode`.
-echo "I am $USER, executing in $PWD"
+echo "Launching background initializations --> tmux attach"
+if tmux has-session -t Examples > /dev/null 2> /dev/null; then
+    echo "tmux session Examples already exists"
+else
+    echo "Starting tmux session Examples"
+    tmux new-session -d -s Examples -n "base" -c /workspaces/graphql_examples "yarn install;zsh"
+fi
 
-echo Setting ZSH as default shell
-sudo chsh --shell /usr/bin/zsh vscode
-
-echo Setting default ZSH theme
-sed -i -e 's/^ZSH_THEME=.*/ZSH_THEME="amuse"/' ~/.zshrc
-
-echo "Updating & Upgrading Packages"
-sudo apt update
-sudo apt upgrade -y
-
-echo "Installing additional packages"
-sudo apt install -y libpq-dev tmux
-
-echo "Starting PostgreSQL Server"
-sudo service postgresql start
-
-# echo Installing base JS/TS dependencies
-yarn install
-
-# echo "Launching background initializations --> tmux attach -t Examples"
-.devcontainer/examples_inits
+# Start the init of every single example
+for exampleDirectory in `find /workspaces/graphql_examples/examples -mindepth 1 -maxdepth 1 -type d`; do
+    exampleName=$(basename $exampleDirectory)
+    echo "Starting in tmux the initial setup for $exampleName"
+    tmux new-window -t Examples -n $exampleName -c $exampleDirectory "./initial_setup;zsh"
+done

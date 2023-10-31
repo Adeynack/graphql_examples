@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+
+if tmux has-session -t Examples > /dev/null 2> /dev/null; then
+    echo "tmux session 'Examples' already exists"
+    echo "connect using 'tmux -t Examples"
+    echo ""
+    exit
+else
+    echo "Starting tmux session 'Examples'"
+    tmux new-session -d -s Examples -n "base" -c /workspaces/graphql_examples "yarn install;zsh"
+fi
+
+# Start the init of every single example
+for exampleDirectory in `find /workspaces/graphql_examples/examples -mindepth 1 -maxdepth 1 -type d`; do
+    exampleName=$(basename $exampleDirectory)
+    echo "Starting in tmux the initial setup for $exampleName"
+    tmux new-window -t Examples -n $exampleName -c $exampleDirectory
+    tmux send-keys -t Examples:$exampleName './initial_setup' Enter
+done
+
+tmux select-window -t Examples:base
+tmux choose-tree -Zw -t Examples

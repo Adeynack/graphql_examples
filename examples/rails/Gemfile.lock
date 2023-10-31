@@ -198,6 +198,7 @@ GEM
       ast (~> 2.4.1)
       racc
     pg (1.5.4)
+    prism (0.15.1)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -309,6 +310,14 @@ GEM
       rubocop-factory_bot (~> 2.22)
     rubocop-rspec-focused (1.0.0)
       rubocop (>= 0.51)
+    ruby-lsp (0.12.1)
+      language_server-protocol (~> 3.17.0)
+      prism (>= 0.15.1, < 0.16)
+      sorbet-runtime (>= 0.5.5685)
+    ruby-lsp-rails (0.2.7)
+      rails (>= 6.0)
+      ruby-lsp (>= 0.12.0, < 0.13.0)
+      sorbet-runtime (>= 0.5.9897)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
@@ -318,6 +327,7 @@ GEM
       websocket (~> 1.0)
     shellany (0.0.1)
     shimmer (0.0.31)
+    sorbet-runtime (0.5.11108)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -393,6 +403,8 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   rubocop-rspec-focused
+  ruby-lsp
+  ruby-lsp-rails
   selenium-webdriver
   shimmer
   sprockets-rails

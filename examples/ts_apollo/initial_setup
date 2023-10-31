@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+echo ""
+echo "Intalling Yarn Packages"
+yarn install
+echo ""
+echo "Starting NodeJS/Apollo Server"
+yarn start

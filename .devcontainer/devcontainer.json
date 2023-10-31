@@ -6,5 +6,36 @@
   "service": "devcontainer",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "remoteUser": "root",
-  "postCreateCommand": ".devcontainer/post_create"
+  "postCreateCommand": ".devcontainer/post_create",
+  "portsAttributes": {
+    "3000": {
+      "label": "rails"
+    },
+    "4000": {
+      "label": "ts-apollo"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode-remote.remote-containers",
+        "shopify.ruby-lsp",
+        "ms-azuretools.vscode-docker",
+        "darkriszty.markdown-table-prettify",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "rvest.vs-code-prettier-eslint",
+        "wmaurer.change-case",
+        "zombocom.dead-end-vscode",
+        "kaiwood.endwise",
+        "mquandalle.graphql",
+        "yzhang.markdown-all-in-one",
+        "darkriszty.markdown-table-prettify",
+        "jebbs.plantuml",
+        "trybick.terminal-zoom",
+        "netcorext.uuid-generator",
+        "redhat.vscode-yaml"
+      ]
+    }
+  }
 }

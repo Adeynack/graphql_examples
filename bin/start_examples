@@ -7,7 +7,7 @@ if tmux has-session -t Examples > /dev/null 2> /dev/null; then
     exit
 else
     echo "Starting tmux session 'Examples'"
-    tmux new-session -d -s Examples -n "base" -c /workspaces/graphql_examples "yarn install;zsh"
+    tmux new-session -d -s Examples -n "base"
 fi
 
 # Start the init of every single example

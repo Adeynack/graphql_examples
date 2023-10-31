@@ -16,10 +16,7 @@ languages and frameworks.
   - [Tests](#tests)
   - [Development](#development)
     - [Generate PlantUML Diagrams as Images](#generate-plantuml-diagrams-as-images)
-  - [Service Dependencies](#service-dependencies)
-    - [Docker \& docker-compose](#docker--docker-compose)
-      - [Linux](#linux)
-      - [macOS](#macos)
+  - [Service Depdencies and Development Container](#service-depdencies-and-development-container)
   - [Ideas for the future](#ideas-for-the-future)
 
 ## Where to find implementations?
@@ -95,26 +92,11 @@ EXAMPLE=ruby_on_rails_ruby_graphql yarn watch tests/scenarios/users.test.ts
 At this moment, generating them using the [_PlantUML_ plugin of _VSCode_](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml),
 calling the _PlantUML: Export Workspace Diagrams_ command, and choosing _svg_.
 
-## Service Dependencies
+## Service Depdencies and Development Container
 
-A _Docker Compose_ file is provided. All required database and other
-services are included in.
+This workspace is set up for _Visual Studio Code_ and includes a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers).
 
-```bash
-docker-compose up
-```
-
-### Docker & docker-compose
-
-#### Linux
-
-```bash
-sudo apt-get install -y docker docker-compose
-```
-
-#### macOS
-
-Follow [this link](https://docs.docker.com/docker-for-mac/install/) for install instructions.
+Upon opening it up in _Visual Studio Code_, click _Open in container_ in the bottom-right popup that appears. The required services (eg: _PostgreSQL_) and the development environment itself will build (only once) and then you're all set to work on this project, without installing anything else than _Docker_ and _Visual Studio Code_ on your computer.
 
 ## Ideas for the future
 

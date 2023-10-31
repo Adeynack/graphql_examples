@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# Quickly attach to the Examples `tmux` session
+
+tmux a -t Examples

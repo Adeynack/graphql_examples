@@ -4,29 +4,33 @@
 
 * Query
 **[#orange] users: [User] ⇢
-**[#lightgreen] user(id: ID): User ⇢
+**[#lightgreen] user(id: ID, email: String): User! ⇢
 ***[#lightblue] id: ID
-***[#lightblue] name: string
+***[#lightblue] email: string!
+***[#lightblue] name: string!
 ***[#orange] posts: [Post] ⇢
-***[#orange] likes: [Like] ⇢
+***[#orange] reactions: [Reaction] ⇢
+**[#lightgreen] me: User ⇢
 **[#orange] posts: [Post] ⇢
-**[#lightgreen] post(id: ID): Post
+**[#lightgreen] post(id: ID): Post!
 ***[#lightblue] id: ID
-***[#lightblue] text: string
-***[#lightblue] createdOn: DateTime
-***[#lightgreen] author: User ⇢
+***[#lightgreen] author: User! ⇢
+***[#lightgreen] parent: Post ⇢
+***[#lightblue] text: string!
+***[#lightblue] createdAt: DateTime!
 ***[#orange] comments: [Message] ⇢
-***[#orange] likes: [Like] ⇢
-**[#lightgreen] like(id: ID): Like
-***[#lightblue] id: ID
-***[#lightblue] emotion: LikeEmotion
-****_ LIKE
-****_ LOVE
-****_ LAUGH
-****_ CRY
-****_ WOW
-***[#lightgreen] message: Message ⇢
-***[#lightgreen] user: User ⇢
+***[#orange] reactions: [Reaction] ⇢
+****[#lightblue] id: ID
+****[#lightblue] emotion: Emotion
+*****_ LIKE
+*****_ DISLIKE
+*****_ LOVE
+*****_ LAUGH
+*****_ CRY
+*****_ WOW
+****[#lightblue] createdAt: DateTime!
+****[#lightgreen] post: Post ⇢
+****[#lightgreen] user: User ⇢
 
 legend top left
   Green: Object

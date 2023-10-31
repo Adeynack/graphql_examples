@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+echo "Launching every example's environment"
+/workspaces/graphql_examples/bin/start_examples

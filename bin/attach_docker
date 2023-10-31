@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# Attach from the Docker host to the devcontainer.
+
+docker exec -i -t -w /workspaces/graphql_examples graphql_examples_devcontainer-devcontainer-1 zsh

@@ -4,22 +4,33 @@ hide empty methods
 hide circle
 
 class User {
+    id: uuid
     email: string
+    name: string
+    password_digest: string
 }
 
+class ApiSession {
+    token: string
+}
+
+ApiSession "*" --* User
+
 class Post {
+    id: uuid
     text: string
-    created_on: DateTime
+    created_at: DateTime
 }
 
 Post "*" --* User: author
 Post "*" --* Post: parent
 
-class Like {
-    emotion: [Like | Love | Laugh | Cry | Wow]
+class Reaction {
+    id: uuid
+    emotion: string
 }
 
-Like "*" --* User
-Like "*" --* Post
+Reaction "*" --* User
+Reaction "*" --* Post
 
 @enduml

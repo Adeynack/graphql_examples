@@ -1,0 +1,12 @@
+AllCops:
+  TargetRubyVersion:
+  Exclude:
+    - 'storage/**/*'
+    - 'tmp/**/*'
+    - 'vendor/bundle/**/*'
+    - 'bin/**/*'
+    - 'db/schema.rb'
+    - 'node_modules/**/*'
+
+inherit_gem:
+  shimmer: config/rubocop_base.yml

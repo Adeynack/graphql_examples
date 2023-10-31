@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+echo ""
+echo "Install Bundle Packages"
+bundle install
+echo ""
+echo "Setup Rails Database"
+bin/rails db:setup db:migrate db:fixtures:load
+echo ""
+echo "Starting Rails Server"
+echo ""
+bin/rails s

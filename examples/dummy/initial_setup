@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-echo ""
-echo "Dummy example to test init scripts"
-echo ""

@@ -16,7 +16,6 @@ languages and frameworks.
   - [Tests](#tests)
   - [Development](#development)
     - [Generate PlantUML Diagrams as Images](#generate-plantuml-diagrams-as-images)
-    - [Maintaining Initial Database State](#maintaining-initial-database-state)
   - [Service Dependencies](#service-dependencies)
     - [Docker \& docker-compose](#docker--docker-compose)
       - [Linux](#linux)
@@ -94,13 +93,7 @@ EXAMPLE=ruby_on_rails_ruby_graphql yarn watch tests/scenarios/users.test.ts
 ### Generate PlantUML Diagrams as Images
 
 At this moment, generating them using the [_PlantUML_ plugin of _VSCode_](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml),
-calling the _PlantUML: Export Workspace Diagrams_ command, and choosing _png_.
-
-### Maintaining Initial Database State
-
-```bash
-pg_dump --format=p --file=tests/initial_test_data.sql --clean
-```
+calling the _PlantUML: Export Workspace Diagrams_ command, and choosing _svg_.
 
 ## Service Dependencies
 

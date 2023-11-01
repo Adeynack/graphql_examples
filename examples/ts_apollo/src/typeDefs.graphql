@@ -1,0 +1,42 @@
+scalar ISO8601DateTime
+
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  posts: [Post!]!
+  reactions: [Reaction!]!
+}
+
+type Post {
+  id: ID!
+  author: User!
+  parent: Post
+  text: String!
+  createdAt: ISO8601DateTime!
+}
+
+enum Emotion {
+  LIKE
+  DISLIKE
+  LOVE
+  LAUGH
+  CRY
+  WOW
+}
+
+type Reaction {
+  id: ID!
+  emotion: Emotion!
+  createdAt: ISO8601DateTime!
+  post: Post!
+  user: User!
+}
+
+type Query {
+  me: User
+  post(id: ID!): Post!
+  posts: [Post!]!
+  user(id: ID, email: String): User!
+  users: [User!]!
+}

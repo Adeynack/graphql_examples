@@ -3,5 +3,5 @@ echo ""
 echo "Intalling Yarn Packages"
 yarn install
 echo ""
-echo "Starting NodeJS/Apollo Server"
-yarn start
+echo "Starting NodeJS/Apollo Develoment Server"
+yarn dev

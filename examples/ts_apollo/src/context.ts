@@ -1,4 +1,3 @@
-import { BaseContext } from '@apollo/server';
 import { IncomingMessage } from 'http';
 
 // Temporary in-memory store, until database support is implemented.
@@ -17,6 +16,7 @@ const store = {
       password: 'linda',
     },
   ],
+  posts: [],
 };
 
 export interface Context {

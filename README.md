@@ -71,7 +71,7 @@ Use batch loading when available to the language and framework of choice.
 An implementation agnostic test suite, in _JavaScript_, is in `tests`.
 
 To execute, set the `EXAMPLE` environment variable to the directory name
-you want to test (subdirectory of `examples`) and call `yarn mocha` from
+you want to test (subdirectory of `examples`) and call `yarn test` from
 the `tests` directory.
 
 ```bash

@@ -6,17 +6,25 @@
   "type": "module",
   "scripts": {
     "compile": "tsc",
-    "dev": "nodemon",
-    "start": "ts-node src/index.ts"
+    "dev": "concurrently --names 'CodeGen,Nodemon' -c 'bgYello,bgBlue' \"graphql-codegen --watch 'src/**/*'\" \"nodemon\"",
+    "start": "ts-node src/index.ts",
+    "generate": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "@apollo/server": "^4.9.5",
     "graphql": "^16.8.1"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "5.0.0",
+    "@graphql-codegen/typescript": "4.0.1",
+    "@graphql-codegen/typescript-resolvers": "4.0.1",
     "@types/node": "^20.8.10",
+    "concurrently": "^8.2.2",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
+  },
+  "peerDependencies": {
+    "@parcel/watcher": "^2.3.0"
   }
 }

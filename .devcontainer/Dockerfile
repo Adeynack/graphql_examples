@@ -16,7 +16,6 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && apt -y install --
     libpq-dev \
     default-jre
 RUN npm install -g yarn@1
-RUN yarn install
 
 # Set zsh as default shell, with oh-my-zsh
 RUN chsh --shell /usr/bin/zsh && \
@@ -25,4 +24,3 @@ RUN chsh --shell /usr/bin/zsh && \
 
 # Setup tmux
 COPY tmux.conf /root/.tmux.conf
-

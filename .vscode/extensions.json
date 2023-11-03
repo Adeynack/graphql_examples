@@ -16,6 +16,7 @@
     "jebbs.plantuml",
     "trybick.terminal-zoom",
     "netcorext.uuid-generator",
-    "redhat.vscode-yaml"
+    "redhat.vscode-yaml",
+    "prisma.prisma"
   ]
 }

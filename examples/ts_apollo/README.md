@@ -9,24 +9,25 @@
 
 ### Database / Models
 
-Run `npx sequelize-cli` to see a list of commands.
+TODO
 
 #### History of models creation
 
-```bash
-npx sequelize-cli model:generate --name User --attributes email:string,name:string,password_digest:string
-```
+TODO
 
 ## Solving N+1
 
 Not implemented yet.
 
-### Solutions within this stack
+### Potential solutions within this stack
 
+- [Prisma](https://www.prisma.io/)
+  - TODO: Find a way to solve N+1 with _Prisma_
 - [Sequelize](https://sequelize.org/) + [sequelize-proxy](https://github.com/oney/sequelize-proxy)
+  - 🛑 Its generated code (from its CLI) do not play well with the current TS setup of this project
   - https://dev.to/zipy/sequelize-and-typescript-integration-a-practical-tutorial-5ha3
 
-### Solutions in other stacks
+### Potential solutions in other stacks
 
 - https://www.scalablepath.com/full-stack/graphql-api-full-stack-tutorial-part-1
   - https://www.graphile.org/postgraphile/performance/

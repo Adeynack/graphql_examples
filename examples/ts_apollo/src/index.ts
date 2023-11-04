@@ -2,7 +2,7 @@ import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import { readFileSync } from 'fs';
 // import { queryResolver } from './queryResolver.js';
-import { context } from './context.js';
+import { createContext } from './context.js';
 import { Resolvers } from './__generated__/graphql.js';
 import queryResolver from './queryResolver.js';
 
@@ -19,7 +19,7 @@ const server = new ApolloServer({
 
 const { url } = await startStandaloneServer(server, {
   listen: { port: 4000 },
-  context,
+  context: createContext,
 });
 
 // eslint-disable-next-line no-console

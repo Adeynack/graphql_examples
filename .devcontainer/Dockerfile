@@ -29,6 +29,7 @@ RUN <<EOF cat >> ~/.zshrc
 # Will automatically connect to the devcontainer's attached PostgreSQL
 # database (see "docker-compose.yml") by typing "psql".
 export PGHOST=127.0.0.1 PGPORT=5432 PGUSER=postgres
+export PAGER=pspg
 EOF
 
 # Setup tmux

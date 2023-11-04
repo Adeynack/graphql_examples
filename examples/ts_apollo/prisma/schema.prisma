@@ -9,8 +9,8 @@ datasource db {
 
 model User {
   id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt      DateTime
-  updatedAt      DateTime
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
   email          String   @unique
   name           String
   passwordDigest String?
@@ -22,8 +22,8 @@ model User {
 
 model ApiSession {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   userId    String   @db.Uuid
   token     String   @unique
 
@@ -34,8 +34,8 @@ model ApiSession {
 
 model Post {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   text      String?
   parentId  String?  @db.Uuid
   authorId  String?  @db.Uuid
@@ -51,8 +51,8 @@ model Post {
 
 model Reaction {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   emotion   Emotion
   postId    String   @db.Uuid
   userId    String   @db.Uuid

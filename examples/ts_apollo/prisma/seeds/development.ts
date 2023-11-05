@@ -1,93 +1,122 @@
-import { Post, PrismaClient, User } from '@prisma/client';
+import { Post, PrismaClient, User, Emotion } from '@prisma/client';
 import { generatePasswordDigest } from '../../src/models/user.js';
 import * as YAML from 'yaml';
 import { readFileSync } from 'fs';
 
 export async function seedDevelopment(db: PrismaClient): Promise<void> {
-  // const file = readFileSync('/workspaces/graphql_examples/examples/rails/test/fixtures/files/users.yml', 'utf8');
+  // There is probably a more Prisma-pragmatic way of doing it, but since I want to
+  // reuse the same data in all examples, this loads the fixtures from the "rails" example.
+  const users = await createUsers(db, loadFixtures('users'));
+  const posts = await createPosts(db, loadFixtures('posts'), users);
+  await createReactions(db, loadFixtures('reactions'), users, posts);
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function loadFixtures(name: string): any {
+  return YAML.parse(readFileSync(`../rails/test/fixtures/${name}.yml`, 'utf8'));
+}
+
+type UserFixture = {
+  email: string;
+  name: string;
+};
+
+async function createUsers(db: PrismaClient, fixtures: Record<string, UserFixture>): Promise<Map<string, User>> {
   const users = new Map<string, User>();
-  for (const fixtureName in YAML.parse(readFileSync('../rails/test/fixtures/users.yml', 'utf8'))) {
-    const userFixture = YAML.parse(readFileSync('../rails/test/fixtures/users.yml', 'utf8'))[fixtureName];
-    const user = await db.user.create({
-      data: {
-        email: userFixture.email,
-        name: userFixture.name,
-        passwordDigest: generatePasswordDigest(userFixture.name),
-      },
-    });
-    users.set(userFixture.name, user);
+
+  for (const [fixtureName, userFixture] of Object.entries(fixtures)) {
+    users.set(
+      fixtureName,
+      await db.user.create({
+        data: {
+          email: userFixture.email,
+          name: userFixture.name,
+          passwordDigest: generatePasswordDigest(userFixture.name),
+        },
+      })
+    );
   }
 
-  // const joe = await db.user.create({
-  //   data: { email: 'joe@example.com', name: 'Joe', passwordDigest: generatePasswordDigest('joe') },
-  // });
-  // const linda = await db.user.create({
-  //   data: { email: 'linda@example.com', name: 'Linda', passwordDigest: generatePasswordDigest('linda') },
-  // });
-  // const joe = await upsertUser(db, { email: 'joe@example.com', name: 'Joe', password: 'joe' });
-  // const linda = await upsertUser(db, { email: 'linda@example.com', name: 'Linda', password: 'linda' });
+  return users;
+}
+type PostFixture = {
+  author: string; // fixture name
+  parent: string; // fixture name
+  text: string;
+  created_at: string;
+  updated_at: string;
+};
 
-  // await upsertPost(db, {
-  //   id: '2e3dec43-a9cb-4ba9-a4ae-8290025dbaf1',
-  //   author: joe,
-  //   text: 'Have you guys seen the new Star Trek series?',
-  // });
-  // await upsertPost(db, {
-  //   id: '2e3dec43-a9cb-4ba9-a4ae-8290025dbaf1',
-  //   author: joe,
-  //   text: 'Have you guys seen the new Star Trek series?',
-  // });
-  // startrek_comment_1:
-  //   author: linda
-  //   parent: startrek
-  //   text: Yep, and I did not like it 😴
-  //   created_at: "2020-09-15T23:36:00Z"
-  //   updated_at: "2020-09-15T23:36:00Z"
-  // startrek_comment_2:
-  //   author: joe
-  //   parent: startrek
-  //   text: Awww, come on!!! Give it a chance!
-  //   created_at: "2020-09-15T23:37:00Z"
-  //   updated_at: "2020-09-15T23:37:00Z"
-  // b5:
-  //   author: linda
-  //   text: Awwww, I so miss Babylon 5!
-  //   created_at: "2020-09-15T20:37:00Z"
-  //   updated_at: "2020-09-15T20:37:00Z"
-  // b5_comment_1:
-  //   author: joe
-  //   parent: b5
-  //   text: Guuuuurl ... me too !!!!
-  //   created_at: "2020-09-15T20:38:00Z"
-  //   updated_at: "2020-09-15T20:38:00Z"
-  // b5_comment_2:
-  //   author: joe
-  //   parent: b5
-  //   text: They do not make them as good as that anymore.
-  //   created_at: "2020-09-15T20:39:00Z"
-  //   updated_at: "2020-09-15T20:39:00Z"
-  // b5_comment_3:
-  //   author: linda
-  //   parent: b5
-  //   text: True...!
-  //   created_at: "2020-09-15T20:40:00Z"
-  //   updated_at: "2020-09-15T20:40:00Z"
+async function createPosts(
+  db: PrismaClient,
+  fixtures: Record<string, PostFixture>, // | Map<string, PostFixture>,
+  users: Map<string, User>,
+  posts: Map<string, Post> = new Map()
+): Promise<Map<string, Post>> {
+  let postsCreated = false;
+  const nextLevelPostFixtures: Record<string, PostFixture> = {};
+  for (const [fixtureName, fixture] of Object.entries(fixtures)) {
+    let parent: Post | undefined = undefined;
+    if (fixture.parent) {
+      parent = posts.get(fixture.parent);
+      if (!parent) {
+        nextLevelPostFixtures[fixtureName] = fixture;
+        continue;
+      }
+    }
+
+    const author = users.get(fixture.author);
+    if (!author) throw new Error('author not found');
+
+    const post = await db.post.create({
+      data: {
+        authorId: author.id,
+        createdAt: fixture.created_at,
+        updatedAt: fixture.updated_at,
+        parentId: parent?.id,
+        text: fixture.text,
+      },
+    });
+    posts.set(fixtureName, post);
+    postsCreated = true;
+  }
+
+  if (!postsCreated) {
+    throw new Error('no post were created (maybe invalid parent reference)');
+  }
+
+  if (Object.getOwnPropertyNames(nextLevelPostFixtures).length > 0) {
+    await createPosts(db, nextLevelPostFixtures, users, posts);
+  }
+
+  return posts;
 }
 
-function upsertUser(db: PrismaClient, user: { email: string; name: string; password: string }): Promise<User> {
-  const data = { ...user, passwordDigest: generatePasswordDigest(user.password) };
-  return db.user.upsert({
-    where: { email: user.email },
-    update: data,
-    create: data,
-  });
-}
+type ReactionFixture = {
+  user: string; // fixture name
+  post: string; // fixture name
+  emotion: Emotion;
+};
 
-function upsertPost(db: PrismaClient, post: { id: string; text: string; author: User }): Promise<Post> {
-  const data = { text: post.text, authorId: post.author.id };
-  return db.post.upsert({
-    where: { id: post.id },
-    update: data,
-    create: { id: post.id, ...data },
-  });
+async function createReactions(
+  db: PrismaClient,
+  fixtures: Record<string, ReactionFixture>,
+  users: Map<string, User>,
+  posts: Map<string, Post>
+): Promise<void> {
+  for (const fixture of Object.values(fixtures)) {
+    const user = users.get(fixture.user);
+    if (!user) throw new Error(`unknown user fixture '${fixture.user}`);
+
+    const post = posts.get(fixture.post);
+    if (!post) throw new Error(`unknown post fixture '${fixture.post}`);
+
+    await db.reaction.create({
+      data: {
+        userId: user.id,
+        postId: post.id,
+        emotion: fixture.emotion,
+      },
+    });
+  }
 }

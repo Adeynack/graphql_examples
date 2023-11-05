@@ -7,11 +7,16 @@ const queries: QueryResolvers = {
     return { ...me, posts: [], reactions: [] };
   },
 
-  // async post(_parent, { id }, { store }) {
-  //   const post = store.posts.find((post) => post.id === id);
-  //   if (!post) throw new GraphQLError('Post not found');
-  //   return post;
-  // },
+  async post(_parent, { id }, { db }, info) {
+    console.log('post / info', info);
+    const post = await db.post.findUnique({ where: { id }, include: { author: true } });
+    if (!post) throw new GraphQLError('Post not found');
+    const author = post.author;
+    return {
+      ...post,
+      author: { ...author, posts: [], reactions: [] },
+    };
+  },
 
   // async posts() {
   //   return [];

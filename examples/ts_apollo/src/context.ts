@@ -14,5 +14,5 @@ export async function createContext({ req }: { req: IncomingMessage }): Promise<
 }
 
 function initializeDatabaseClient(): PrismaClient {
-  return new PrismaClient();
+  return new PrismaClient({ log: ['query'] });
 }

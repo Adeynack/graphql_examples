@@ -4,12 +4,14 @@ import { readFileSync } from 'fs';
 // import { queryResolver } from './queryResolver.js';
 import { createContext } from './context.js';
 import { Resolvers } from './__generated__/graphql.js';
-import queryResolver from './queryResolver.js';
+import queryResolver from './resolvers/query.js';
+import postResolvers from './resolvers/post.js';
 
 const typeDefs = readFileSync('src/typeDefs.graphql').toString();
 
 const resolvers: Resolvers = {
   Query: queryResolver,
+  Post: postResolvers,
 };
 
 const server = new ApolloServer({

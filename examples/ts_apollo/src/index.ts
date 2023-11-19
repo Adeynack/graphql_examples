@@ -6,7 +6,9 @@ import { createContext } from './context.js';
 import { Resolvers } from './__generated__/graphql.js';
 import queryResolver from './resolvers/query.js';
 import postResolvers from './resolvers/post.js';
+import { config } from 'dotenv';
 
+config({ path: '.env' });
 const typeDefs = readFileSync('src/typeDefs.graphql').toString();
 
 const resolvers: Resolvers = {

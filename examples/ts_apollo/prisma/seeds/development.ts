@@ -3,10 +3,10 @@ import { generatePasswordDigest } from '../../src/models/user.js';
 import * as YAML from 'yaml';
 import { readFileSync } from 'fs';
 
-export async function seedDevelopment(db: PrismaClient): Promise<void> {
+export async function seedDevelopment(db: PrismaClient, serverSalt: string): Promise<void> {
   // There is probably a more Prisma-pragmatic way of doing it, but since I want to
   // reuse the same data in all examples, this loads the fixtures from the "rails" example.
-  const users = await createUsers(db, loadFixtures('users'));
+  const users = await createUsers(db, serverSalt, loadFixtures('users'));
   const posts = await createPosts(db, loadFixtures('posts'), users);
   await createReactions(db, loadFixtures('reactions'), users, posts);
 }
@@ -21,7 +21,11 @@ type UserFixture = {
   name: string;
 };
 
-async function createUsers(db: PrismaClient, fixtures: Record<string, UserFixture>): Promise<Map<string, User>> {
+async function createUsers(
+  db: PrismaClient,
+  serverSalt: string,
+  fixtures: Record<string, UserFixture>
+): Promise<Map<string, User>> {
   const users = new Map<string, User>();
 
   for (const [fixtureName, userFixture] of Object.entries(fixtures)) {
@@ -31,7 +35,7 @@ async function createUsers(db: PrismaClient, fixtures: Record<string, UserFixtur
         data: {
           email: userFixture.email,
           name: userFixture.name,
-          passwordDigest: generatePasswordDigest(userFixture.name),
+          passwordDigest: generatePasswordDigest(serverSalt, userFixture.name),
         },
       })
     );
@@ -39,6 +43,7 @@ async function createUsers(db: PrismaClient, fixtures: Record<string, UserFixtur
 
   return users;
 }
+
 type PostFixture = {
   author: string; // fixture name
   parent: string; // fixture name

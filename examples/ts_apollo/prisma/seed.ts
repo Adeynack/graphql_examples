@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { seedDevelopment } from './seeds/development.js';
 import { seedProduction } from './seeds/production.js';
 import { parseArgs } from 'util';
+import { env } from 'process';
 
 const options = {
   environment: { type: 'string', default: 'development' },
@@ -25,9 +26,12 @@ async function main(): Promise<void> {
 
   if (truncateAllData) await doTruncateAllData(db);
 
+  const serverSalt = env['SERVER_SALT'];
+  if (!serverSalt) throw "missing configuration 'SERVER_SALT'";
+
   switch (environment) {
     case 'development':
-      await seedDevelopment(db);
+      await seedDevelopment(db, serverSalt);
       break;
     case 'production':
       await seedProduction();

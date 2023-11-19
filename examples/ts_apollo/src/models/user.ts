@@ -1,5 +1,5 @@
-import { createHash } from 'crypto';
+import { createHmac } from 'crypto';
 
-export function generatePasswordDigest(plainTextPassword: string): string {
-  return createHash('md5').update(plainTextPassword).digest('hex');
+export function generatePasswordDigest(salt: string, plainTextPassword: string): string {
+  return createHmac('md5', salt).update(plainTextPassword).digest('hex');
 }

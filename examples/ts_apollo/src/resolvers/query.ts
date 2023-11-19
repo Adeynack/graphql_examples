@@ -16,7 +16,7 @@ const queries: QueryResolvers = {
 
   async posts(_parent, {}, { db }) {
     const posts = await db.post.findMany();
-    // return await posts;
+    // return posts;
     // return (await posts).map((p) => ({ ...p, author: undefined }));
     return posts as unknown[] as Post[];
   },

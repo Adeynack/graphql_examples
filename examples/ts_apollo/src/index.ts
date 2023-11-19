@@ -4,9 +4,10 @@ import { readFileSync } from 'fs';
 // import { queryResolver } from './queryResolver.js';
 import { createContext } from './context.js';
 import { Resolvers } from './__generated__/graphql.js';
+import { config } from 'dotenv';
 import queryResolver from './resolvers/query.js';
 import postResolvers from './resolvers/post.js';
-import { config } from 'dotenv';
+import userResolvers from './resolvers/users.js';
 
 config({ path: '.env' });
 const typeDefs = readFileSync('src/typeDefs.graphql').toString();
@@ -14,6 +15,7 @@ const typeDefs = readFileSync('src/typeDefs.graphql').toString();
 const resolvers: Resolvers = {
   Query: queryResolver,
   Post: postResolvers,
+  User: userResolvers,
 };
 
 const server = new ApolloServer({

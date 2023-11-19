@@ -1,21 +1,27 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import { readFileSync } from 'fs';
-// import { queryResolver } from './queryResolver.js';
-import { createContext } from './context.js';
+import { createContextFactory } from './context.js';
 import { Resolvers } from './__generated__/graphql.js';
 import { config } from 'dotenv';
-import queryResolver from './resolvers/query.js';
-import postResolvers from './resolvers/post.js';
-import userResolvers from './resolvers/users.js';
+import query from './resolvers/query.js';
+import post from './resolvers/post.js';
+import user from './resolvers/users.js';
+import mutation from './resolvers/mutation.js';
 
 config({ path: '.env' });
 const typeDefs = readFileSync('src/typeDefs.graphql').toString();
 
 const resolvers: Resolvers = {
-  Query: queryResolver,
-  Post: postResolvers,
-  User: userResolvers,
+  Query: query,
+  Mutation: mutation,
+  //   async logIn(): Promise<LogInResult> {
+  //     console.log('logIn Inline');
+  //     return null;
+  //   },
+  // },
+  Post: post,
+  User: user,
 };
 
 const server = new ApolloServer({
@@ -25,7 +31,7 @@ const server = new ApolloServer({
 
 const { url } = await startStandaloneServer(server, {
   listen: { port: 4000 },
-  context: createContext,
+  context: createContextFactory(),
 });
 
 // eslint-disable-next-line no-console

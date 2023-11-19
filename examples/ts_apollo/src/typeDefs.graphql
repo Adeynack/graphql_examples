@@ -42,3 +42,17 @@ type Query {
   user(id: ID, email: String): User!
   users: [User!]!
 }
+
+type Mutation {
+  logIn(input: LogInInput!): LogInResult!
+}
+
+input LogInInput {
+  email: String!
+  password: String!
+}
+
+type LogInResult {
+  token: String!
+  user: User!
+}

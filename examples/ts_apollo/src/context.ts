@@ -6,13 +6,15 @@ export type Context = {
   authorizationHeader: string;
 };
 
-export async function createContext({ req }: { req: IncomingMessage }): Promise<Context> {
-  return {
-    db: initializeDatabaseClient(),
-    authorizationHeader: req.headers.authorization,
-  };
-}
+type ContextFactory = (input: { req: IncomingMessage }) => Promise<Context>;
 
-function initializeDatabaseClient(): PrismaClient {
-  return new PrismaClient({ log: ['query'] });
+const prismaClient = new PrismaClient({ log: ['query'] });
+
+export function createContextFactory(): ContextFactory {
+  return async ({ req }: { req: IncomingMessage }) => {
+    return {
+      db: prismaClient,
+      authorizationHeader: req.headers.authorization,
+    };
+  };
 }

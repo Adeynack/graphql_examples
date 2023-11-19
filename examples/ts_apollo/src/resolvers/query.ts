@@ -2,9 +2,8 @@ import { GraphQLError } from 'graphql';
 import { Post, QueryResolvers } from '../__generated__/graphql.js';
 
 const queries: QueryResolvers = {
-  async me(_parent, _args, { db }) {
-    const me = await db.user.findFirstOrThrow({ where: { email: 'joe@example.com' } });
-    return { ...me, posts: undefined, reactions: undefined };
+  async me() {
+    return null;
   },
 
   async post(_parent, { id }, { db }) {

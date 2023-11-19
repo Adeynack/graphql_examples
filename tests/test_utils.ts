@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { readFileSync } from 'fs';
 import { execSync } from 'child_process';
-import { GraphQLClient, Variables, gql } from 'graphql-request';
+import { ClientError, GraphQLClient, Variables, gql } from 'graphql-request';
 import { GraphQLError } from 'graphql';
 
 interface ExampleConfig {
@@ -84,10 +84,22 @@ export async function expectGqlToFail({
   query: string;
   variables?: Variables;
 }): Promise<GraphQLError[]> {
-  const { status, errors } = await graphQLClientForFailures.rawRequest(query, variables, prepareHeaders());
-  if (status !== 200) throw new Error(`Expected status 200, got ${status}`);
-  if (!errors || errors.length === 0) throw new Error('Expected errors, got none');
-  return errors;
+  try {
+    const { status, errors } = await graphQLClientForFailures.rawRequest(query, variables, prepareHeaders());
+    if (status !== 200) throw new Error(`Expected status 200, got ${status}`);
+    if (!errors || errors.length === 0) throw new Error('Expected errors, got none');
+    return errors;
+  } catch (e) {
+    // todo: `rawRequest` works with the `rails` example, but not with the `ts_apollo` (still throws `ClientError`).
+    if (e instanceof ClientError) {
+      const { status, errors } = e.response;
+      if (status !== 200) throw new Error(`Expected status 200, got ${status}`);
+      if (!errors || errors.length === 0) throw new Error('Expected errors, got none');
+      return errors;
+    } else {
+      throw e;
+    }
+  }
 }
 
 export function login(userName: string): void {

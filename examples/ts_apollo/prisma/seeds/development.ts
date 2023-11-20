@@ -35,7 +35,7 @@ async function createUsers(
         data: {
           email: userFixture.email,
           name: userFixture.name,
-          passwordDigest: generatePasswordDigest(serverSalt, userFixture.name),
+          passwordDigest: generatePasswordDigest(serverSalt, userFixture.name.toLowerCase()),
         },
       })
     );

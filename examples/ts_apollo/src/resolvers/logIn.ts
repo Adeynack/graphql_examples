@@ -12,8 +12,9 @@ export default async function (
   const user = await db.user.findUnique({ where: { email } });
   if (!user) throw new GraphQLError('User not found');
 
-  const hashedInputPassword = generatePasswordDigest(password, serverSalt);
-  if (hashedInputPassword !== user.passwordDigest) throw new GraphQLError('Incorrect password');
+  const hashedInputPassword = generatePasswordDigest(serverSalt, password);
+  if (!timingSafeEqual(Buffer.from(hashedInputPassword), Buffer.from(user.passwordDigest)))
+    throw new GraphQLError('Incorrect password');
 
   return {
     token: 'token 123456',

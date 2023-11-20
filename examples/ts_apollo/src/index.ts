@@ -15,11 +15,6 @@ const typeDefs = readFileSync('src/typeDefs.graphql').toString();
 const resolvers: Resolvers = {
   Query: query,
   Mutation: mutation,
-  //   async logIn(): Promise<LogInResult> {
-  //     console.log('logIn Inline');
-  //     return null;
-  //   },
-  // },
   Post: post,
   User: user,
 };

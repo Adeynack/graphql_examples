@@ -1,4 +1,4 @@
-scalar ISO8601DateTime
+scalar ISO8601DateTime # TODO: Tell CodeGen that it maps to/from `string` (right now, codegen is `ISO8601DateTime: { input: any; output: any; }`)
 
 type User {
   id: ID!

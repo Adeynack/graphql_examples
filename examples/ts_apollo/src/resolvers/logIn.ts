@@ -18,6 +18,6 @@ export default async function (
 
   return {
     token: 'token 123456',
-    user: user as unknown as User,
+    user: user as unknown as User, // TODO: Why is the `Partial<{T}>` option of `codegen.ts` not affecting the mutations' return value?
   };
 }

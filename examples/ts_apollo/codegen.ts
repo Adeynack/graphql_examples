@@ -11,6 +11,7 @@ const config: CodegenConfig = {
   config: {
     useIndexSignature: true,
     contextType: '../context#Context',
+    defaultMapper: 'Partial<{T}>',
   },
 };
 

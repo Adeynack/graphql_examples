@@ -47,3 +47,15 @@ Not implemented yet.
 - https://www.scalablepath.com/full-stack/graphql-api-full-stack-tutorial-part-1
   - https://www.graphile.org/postgraphile/performance/
 - https://hackernoon.com/the-easiest-way-to-solve-n1-problem-on-graphql-s8283tgz
+
+## Problems & Solutions
+
+### Generated Type Force Complete Resolution Of Objects
+
+By default, the types generated are "complete", meaning that for the GraphQL type `User!`, every field has to be resolved directly in the generator method. However, _Apollo Server_ allows a type to be resolved by its resolver class. Example: the root query resolver has a `user(id: ID!): User!` attribute, and a `User` has `posts: [Post!]!`. The generated types will force you to provide the `posts` values. Doing so at the root level is not desired, as we do not even know if that information was selected in the actual query. _Apollo Server_ allows those attribute to simply not be defined, telling it to go to the next resolver step in the chain (example: `const userResolvers: UserResolvers`).
+
+For this to work properly with the _TypeScript_ generated types, we should be allowed to return a `Partial<User>` without failing to type-check.
+
+See [this section](https://the-guild.dev/blog/better-type-safety-for-resolvers-with-graphql-codegen#whats-next) of the `graphql-codegen` documentation. In `codegen.ts` (or `.yaml` or `.js` or `.json`), inside of the `config` element, add `defaultMapper: 'Partial<{T}>'`.
+
+See [this _StackOverflow_ post](https://stackoverflow.com/questions/77511383/forced-to-specify-relation-values-in-resolvers-with-apolloserver-and-typescript/77558629#77558629) for more.

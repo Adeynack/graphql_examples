@@ -1,14 +1,15 @@
 import { GraphQLError } from 'graphql';
-import { LogInResult, MutationLogInArgs, User } from '../__generated__/graphql';
+import { LogInResult, MutationLogInArgs } from '../__generated__/graphql';
 import { Context } from '../context';
 import { generatePasswordDigest } from '../models/user.js';
 import { timingSafeEqual } from 'crypto';
+import { DeepPartial } from 'utility-types';
 
 export default async function (
   _parent: unknown,
   { input: { email, password } }: MutationLogInArgs,
   { db, serverSalt }: Context
-): Promise<LogInResult> {
+): Promise<DeepPartial<LogInResult>> {
   const user = await db.user.findUnique({ where: { email } });
   if (!user) throw new GraphQLError('User not found');
 
@@ -18,6 +19,6 @@ export default async function (
 
   return {
     token: 'token 123456',
-    user: user as unknown as User, // TODO: Why is the `Partial<{T}>` option of `codegen.ts` not affecting the mutations' return value?
+    user,
   };
 }

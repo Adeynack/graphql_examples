@@ -5,14 +5,18 @@ const config: CodegenConfig = {
   schema: './src/typeDefs.graphql',
   generates: {
     'src/__generated__/graphql.ts': {
-      plugins: ['typescript', 'typescript-resolvers'],
+      plugins: [
+        'typescript',
+        'typescript-resolvers',
+        { add: { content: "import { DeepPartial } from 'utility-types';" } },
+      ],
+      config: {
+        useIndexSignature: true,
+        contextType: '../context#Context',
+        defaultMapper: 'DeepPartial<{T}>',
+        enumsAsConst: true,
+      },
     },
-  },
-  config: {
-    useIndexSignature: true,
-    contextType: '../context#Context',
-    defaultMapper: 'Partial<{T}>',
-    enumsAsConst: true,
   },
 };
 

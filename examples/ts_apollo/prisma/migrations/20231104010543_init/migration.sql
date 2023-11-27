@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Emotion" AS ENUM ('like', 'dislike', 'love', 'laugh', 'cry', 'wow');
+CREATE TYPE "Emotion" AS ENUM ('LIKE', 'DISLIKE', 'LOVE', 'LAUGH', 'CRY', 'WOW');
 
 -- CreateTable
 CREATE TABLE "User" (

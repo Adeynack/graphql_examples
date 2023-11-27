@@ -100,7 +100,7 @@ async function createPosts(
 type ReactionFixture = {
   user: string; // fixture name
   post: string; // fixture name
-  emotion: Emotion;
+  emotion: string;
 };
 
 async function createReactions(
@@ -120,7 +120,7 @@ async function createReactions(
       data: {
         userId: user.id,
         postId: post.id,
-        emotion: fixture.emotion,
+        emotion: fixture.emotion.toUpperCase() as Emotion,
       },
     });
   }

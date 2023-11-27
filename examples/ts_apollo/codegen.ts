@@ -12,6 +12,7 @@ const config: CodegenConfig = {
     useIndexSignature: true,
     contextType: '../context#Context',
     defaultMapper: 'Partial<{T}>',
+    enumsAsConst: true,
   },
 };
 

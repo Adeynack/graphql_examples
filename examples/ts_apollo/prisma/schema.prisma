@@ -66,10 +66,10 @@ model Reaction {
 }
 
 enum Emotion {
-  like
-  dislike
-  love
-  laugh
-  cry
-  wow
+  LIKE
+  DISLIKE
+  LOVE
+  LAUGH
+  CRY
+  WOW
 }

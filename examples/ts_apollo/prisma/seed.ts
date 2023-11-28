@@ -45,6 +45,7 @@ async function doTruncateAllData(db: PrismaClient): Promise<void> {
   // Delete in order of foreign keys dependencies
   await db.reaction.deleteMany();
   await db.post.deleteMany();
+  await db.apiSession.deleteMany();
   await db.user.deleteMany();
 
   // Then, make sure all models are deleted.

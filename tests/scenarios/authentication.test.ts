@@ -82,6 +82,7 @@ scenario('Authentication', () => {
 
   test('login while already logged in does not create a new token', async () => {
     const result = await gqlRequest({
+      queryIdentifier: 'login again with same user',
       variables: { email: 'joe@example.com', password: 'joe' },
       query: gql`
         mutation ($email: String!, $password: String!) {
@@ -148,7 +149,6 @@ scenario('Authentication', () => {
     }
     expect(error).not.toBe(null);
     if (!error) return;
-    expect(error.response.status).toBe(401);
     expect(error.response.status).toBe(401);
     expect(error.response.title).toBe('Invalid bearer token');
 

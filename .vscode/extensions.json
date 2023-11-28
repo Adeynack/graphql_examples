@@ -17,6 +17,7 @@
     "trybick.terminal-zoom",
     "netcorext.uuid-generator",
     "redhat.vscode-yaml",
-    "prisma.prisma"
+    "prisma.prisma",
+    "eamodio.gitlens"
   ]
 }

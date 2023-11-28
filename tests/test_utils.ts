@@ -65,27 +65,42 @@ export function setToken(token: string | null): void {
   bearerToken = token;
 }
 
-function prepareHeaders(): Record<string, string> {
+function prepareHeaders({ queryIdentifier }: { queryIdentifier?: string }): Record<string, string> {
   const headers: Record<string, string> = {};
   if (bearerToken) {
     headers['Authorization'] = `Bearer ${bearerToken}`;
   }
+  headers['X-Query-Identifier'] = queryIdentifier || '';
   return headers;
 }
 
-export async function gqlRequest({ query, variables = {} }: { query: string; variables?: Variables }): Promise<any> {
-  return await graphQLClient.request(query, variables, prepareHeaders());
-}
-
-export async function expectGqlToFail({
+export async function gqlRequest({
+  queryIdentifier,
   query,
   variables = {},
 }: {
+  queryIdentifier?: string;
+  query: string;
+  variables?: Variables;
+}): Promise<any> {
+  return await graphQLClient.request(query, variables, prepareHeaders({ queryIdentifier }));
+}
+
+export async function expectGqlToFail({
+  queryIdentifier,
+  query,
+  variables = {},
+}: {
+  queryIdentifier?: string;
   query: string;
   variables?: Variables;
 }): Promise<GraphQLError[]> {
   try {
-    const { status, errors } = await graphQLClientForFailures.rawRequest(query, variables, prepareHeaders());
+    const { status, errors } = await graphQLClientForFailures.rawRequest(
+      query,
+      variables,
+      prepareHeaders({ queryIdentifier })
+    );
     if (status !== 200) throw new Error(`Expected status 200, got ${status}`);
     if (!errors || errors.length === 0) throw new Error('Expected errors, got none');
     return errors;

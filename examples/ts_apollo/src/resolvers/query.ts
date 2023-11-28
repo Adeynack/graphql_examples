@@ -2,8 +2,8 @@ import { GraphQLError } from 'graphql';
 import { QueryResolvers } from '../__generated__/graphql.js';
 
 const queries: QueryResolvers = {
-  async me() {
-    return null;
+  async me(_parent, _args, { getCurrentUser }) {
+    return await getCurrentUser();
   },
 
   async post(_parent, { id }, { db }) {

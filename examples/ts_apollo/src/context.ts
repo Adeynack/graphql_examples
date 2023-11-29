@@ -68,7 +68,7 @@ async function extractCurrentSession(req: IncomingMessage): Promise<ApiSession |
 }
 
 function failFromInvalidToken(): void {
-  throw new GraphQLError('Invalid bearer token');
+  throw new GraphQLError('Invalid bearer token', { extensions: { http: { status: 401 } } });
 }
 
 function extractQueryIdentifier(req: IncomingMessage): string {

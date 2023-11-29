@@ -1,5 +1,3 @@
-scalar ISO8601DateTime # TODO: Tell CodeGen that it maps to/from `string` (right now, codegen is `ISO8601DateTime: { input: any; output: any; }`)
-
 type User {
   id: ID!
   email: String!
@@ -45,14 +43,27 @@ type Query {
 
 type Mutation {
   logIn(input: LogInInput!): LogInResult!
+  logOut(input: LogOutInput!): LogOutResponse!
 }
 
 input LogInInput {
+  clientMutationId: ID
   email: String!
   password: String!
 }
 
 type LogInResult {
+  clientMutationId: ID
   token: String!
   user: User!
 }
+
+input LogOutInput {
+  clientMutationId: ID
+}
+
+type LogOutResponse {
+  clientMutationId: ID
+}
+
+scalar ISO8601DateTime # TODO: Tell CodeGen that it maps to/from `string` (right now, codegen is `ISO8601DateTime: { input: any; output: any; }`)

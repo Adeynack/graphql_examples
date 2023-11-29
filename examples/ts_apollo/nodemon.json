@@ -1,5 +1,5 @@
 {
-  "ignore": ["**/*.test.ts", "**/*.spec.ts", "node_modules"],
+  "ignore": ["**/*.test.ts", "**/*.spec.ts", "node_modules", "**/*.graphql"],
   "watch": ["src", "./codegen.ts"],
   "exec": "yarn start",
   "ext": "ts"

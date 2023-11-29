@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { gql } from 'graphql-request';
 import { expectGqlToFail, getToken, gqlRequest, scenario, setToken } from '../test_utils';
+import { GraphQLError } from 'graphql';
 
 scenario('Authentication', () => {
   test('me is null before first login', async () => {
@@ -150,7 +151,7 @@ scenario('Authentication', () => {
     expect(error).not.toBe(null);
     if (!error) return;
     expect(error.response.status).toBe(401);
-    expect(error.response.title).toBe('Invalid bearer token');
+    expect(error.response.errors[0].message).toBe('Invalid bearer token');
 
     setToken(null);
   });

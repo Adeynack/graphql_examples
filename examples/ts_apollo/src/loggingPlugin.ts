@@ -22,18 +22,22 @@ function logErrors({
   queryIdentifier,
 }: {
   logger: Logger;
-  errors: ReadonlyArray<GraphQLError>;
+  errors: ReadonlyArray<Error>;
   queryIdentifier: string;
 }): void {
   errors.forEach((error) => {
-    const errorLines = error.toString().split('\n');
-    errorLines.forEach((errorLine) => {
-      logger.error(`[${queryIdentifier}] ${errorLine}`);
-    });
-    if (error.stack) {
-      error.stack.split('\n').forEach((stackLine) => {
-        logger.error(`[${queryIdentifier}] ${stackLine}`);
+    if (error instanceof GraphQLError) {
+      return;
+    } else if (error instanceof Error) {
+      const errorLines = error.toString().split('\n');
+      errorLines.forEach((errorLine) => {
+        logger.error(`[${queryIdentifier}] ${errorLine}`);
       });
+      if (error.stack) {
+        error.stack.split('\n').forEach((stackLine) => {
+          logger.error(`[${queryIdentifier}] ${stackLine}`);
+        });
+      }
     }
   });
 }

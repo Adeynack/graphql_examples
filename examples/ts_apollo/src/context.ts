@@ -1,6 +1,6 @@
 import { StandaloneServerContextFunctionArgument } from '@apollo/server/dist/esm/standalone';
 import { ApiSession, PrismaClient } from '@prisma/client';
-import { getRandomValues, randomBytes } from 'crypto';
+import { randomBytes } from 'crypto';
 import { GraphQLError } from 'graphql';
 import { IncomingMessage } from 'http';
 import once from 'lodash/once.js';

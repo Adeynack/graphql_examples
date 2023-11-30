@@ -23,7 +23,7 @@ languages and frameworks.
 ## Where to find implementations?
 
 In the `examples` folder of this repository, named by convention `language_framework_library`
-(examples: `ruby_on_rails_ruby_graphql`, `rust_juniper`).
+(examples: `rails`, `ts_apollo`).
 
 ## Application to build
 
@@ -75,15 +75,15 @@ you want to test (subdirectory of `examples`) and call `yarn test` from
 the `tests` directory.
 
 ```bash
-EXAMPLE=ruby_on_rails_ruby_graphql yarn test
-EXAMPLE=ruby_on_rails_ruby_graphql yarn test tests/scenarios/users.test.ts
+EXAMPLE=rails yarn test
+EXAMPLE=rails yarn test tests/scenarios/users.test.ts
 ```
 
 For watch file and only execute a single file on save:
 
 ```bash
-EXAMPLE=ruby_on_rails_ruby_graphql yarn watch
-EXAMPLE=ruby_on_rails_ruby_graphql yarn watch tests/scenarios/users.test.ts
+EXAMPLE=rails yarn watch
+EXAMPLE=rails yarn watch tests/scenarios/users.test.ts
 ```
 
 ## Development

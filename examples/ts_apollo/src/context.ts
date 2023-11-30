@@ -1,5 +1,6 @@
 import { StandaloneServerContextFunctionArgument } from '@apollo/server/dist/esm/standalone';
 import { ApiSession, PrismaClient } from '@prisma/client';
+import { getRandomValues, randomBytes } from 'crypto';
 import { GraphQLError } from 'graphql';
 import { IncomingMessage } from 'http';
 import once from 'lodash/once.js';
@@ -58,10 +59,9 @@ function failFromInvalidToken(): void {
 }
 
 function extractQueryIdentifier(req: IncomingMessage): string {
-  const queryIdentifier = req.headers['x-query-identifier'];
-  if (Array.isArray(queryIdentifier)) {
-    return queryIdentifier[0];
-  } else {
-    return queryIdentifier;
-  }
+  const queryIdentifiers = req.headers['x-query-identifier'];
+  const queryIdentifier = Array.isArray(queryIdentifiers) ? queryIdentifiers[0] : queryIdentifiers;
+  const namedPart = queryIdentifier === '' ? Math.floor(Date.now() / 1000).toString() : queryIdentifier;
+  const idSuffix = randomBytes(2).toString('hex');
+  return `${namedPart}-${idSuffix}`;
 }

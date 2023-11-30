@@ -8,6 +8,7 @@ import query from './resolvers/query.js';
 import post from './resolvers/post.js';
 import user from './resolvers/users.js';
 import mutation from './resolvers/mutation.js';
+import { LoggingPlugin } from './loggingPlugin.js';
 
 config({ path: '.env' });
 const typeDefs = readFileSync('src/typeDefs.graphql').toString();
@@ -22,6 +23,7 @@ const resolvers: Resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  plugins: [new LoggingPlugin()],
 });
 
 const { url } = await startStandaloneServer(server, {

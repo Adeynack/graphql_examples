@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "compile": "tsc",
-    "dev": "concurrently --names 'CodeGen,Nodemon' -c 'bgYello,bgBlue' \"graphql-codegen --watch 'src/**/*'\" \"nodemon\"",
+    "dev": "concurrently --names 'CodeGen,Nodemon' -c 'bgYellow,bgBlue' \"yarn graphql-codegen --watch 'src/typeDefs.graphql'\" \"nodemon\"",
     "start": "ts-node src/index.ts",
     "generate": "graphql-codegen --config codegen.ts",
     "reseed": "npx prisma db seed -- --truncateAllData",
@@ -37,9 +37,7 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
     "utility-types": "^3.10.0",
-    "yaml": "^2.3.4"
-  },
-  "peerDependencies": {
+    "yaml": "^2.3.4",
     "@parcel/watcher": "^2.3.0"
   }
 }

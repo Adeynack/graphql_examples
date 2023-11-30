@@ -1,3 +1,10 @@
+#
+# Scalars
+#
+scalar ISO8601DateTime # TODO: Tell CodeGen that it maps to/from `string` (right now, codegen is `ISO8601DateTime: { input: any; output: any; }`)
+#
+# Models
+#
 type User {
   id: ID!
   email: String!
@@ -33,6 +40,9 @@ type Reaction {
   user: User!
 }
 
+#
+# Query
+#
 type Query {
   me: User
   post(id: ID!): Post!
@@ -41,9 +51,15 @@ type Query {
   users: [User!]!
 }
 
+#
+# Mutations, their inputs and responses
+#
 type Mutation {
   logIn(input: LogInInput!): LogInResult!
   logOut(input: LogOutInput!): LogOutResponse!
+  createUser(input: CreateUserInput!): CreateUserResponse!
+  updateUser(input: UpdateUserInput!): UpdateUserResponse!
+  deleteUser(input: DeleteUserInput!): DeleteUserResponse!
 }
 
 input LogInInput {
@@ -66,4 +82,37 @@ type LogOutResponse {
   clientMutationId: ID
 }
 
-scalar ISO8601DateTime # TODO: Tell CodeGen that it maps to/from `string` (right now, codegen is `ISO8601DateTime: { input: any; output: any; }`)
+input CreateUserInput {
+  clientMutationId: ID
+  email: String!
+  name: String!
+  password: String!
+}
+
+type CreateUserResponse {
+  clientMutationId: ID
+  user: User!
+}
+
+input UpdateUserInput {
+  clientMutationId: ID
+  id: ID!
+  email: String
+  name: String
+  password: String
+}
+
+type UpdateUserResponse {
+  clientMutationId: ID
+  user: User!
+}
+
+input DeleteUserInput {
+  clientMutationId: ID
+  id: ID!
+}
+
+type DeleteUserResponse {
+  clientMutationId: ID
+  user: User!
+}

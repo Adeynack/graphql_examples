@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { gql } from 'graphql-request';
 import { expectGqlToFail, getToken, gqlRequest, scenario, setToken } from '../test_utils';
+import { GraphQLError } from 'graphql';
 
 scenario('Authentication', () => {
   test('me is null before first login', async () => {
@@ -16,6 +17,40 @@ scenario('Authentication', () => {
       `,
     });
     expect(result.me).toBe(null);
+  });
+
+  test('login fails if user email does not exist', async () => {
+    const errors = await expectGqlToFail({
+      query: gql`
+        mutation {
+          logIn(input: { email: "foo@bar.com", password: "joe" }) {
+            user {
+              id
+            }
+          }
+        }
+      `,
+    });
+    // Of course, in a production system, you would simply say that the user/pass combination is invalid;
+    // but here, we want to test that it failed for the right reason, hence the security-breach-y approach.
+    expect(errors.map((e) => e.message)).toContain('User not found');
+  });
+
+  test('login fails if password does not match', async () => {
+    const errors = await expectGqlToFail({
+      query: gql`
+        mutation {
+          logIn(input: { email: "joe@example.com", password: "foobar" }) {
+            user {
+              id
+            }
+          }
+        }
+      `,
+    });
+    // Of course, in a production system, you would simply say that the user/pass combination is invalid;
+    // but here, we want to test that it failed for the right reason, hence the security-breach-y approach.
+    expect(errors.map((e) => e.message)).toContain('Incorrect password');
   });
 
   let joeId: string;
@@ -48,6 +83,7 @@ scenario('Authentication', () => {
 
   test('login while already logged in does not create a new token', async () => {
     const result = await gqlRequest({
+      queryIdentifier: 'login again with same user',
       variables: { email: 'joe@example.com', password: 'joe' },
       query: gql`
         mutation ($email: String!, $password: String!) {
@@ -115,8 +151,7 @@ scenario('Authentication', () => {
     expect(error).not.toBe(null);
     if (!error) return;
     expect(error.response.status).toBe(401);
-    expect(error.response.status).toBe(401);
-    expect(error.response.title).toBe('Invalid bearer token');
+    expect(error.response.errors[0].message).toBe('Invalid bearer token');
 
     setToken(null);
   });
@@ -133,39 +168,5 @@ scenario('Authentication', () => {
     });
     expect(result).toHaveProperty('me');
     expect(result.me).toBe(null);
-  });
-
-  test('login fails if user email does not exist', async () => {
-    const errors = await expectGqlToFail({
-      query: gql`
-        mutation {
-          logIn(input: { email: "foo@bar.com", password: "joe" }) {
-            user {
-              id
-            }
-          }
-        }
-      `,
-    });
-    // Of course, in a production system, you would simply say that the user/pass combination is invalid;
-    // but here, we want to test that it failed for the right reason, hence the security-breach-y approach.
-    expect(errors.map((e) => e.message)).toContain('User not found');
-  });
-
-  test('login returns null if user password does not match', async () => {
-    const errors = await expectGqlToFail({
-      query: gql`
-        mutation {
-          logIn(input: { email: "joe@example.com", password: "foobar" }) {
-            user {
-              id
-            }
-          }
-        }
-      `,
-    });
-    // Of course, in a production system, you would simply say that the user/pass combination is invalid;
-    // but here, we want to test that it failed for the right reason, hence the security-breach-y approach.
-    expect(errors.map((e) => e.message)).toContain('Incorrect password');
   });
 });

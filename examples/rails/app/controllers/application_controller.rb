@@ -27,6 +27,6 @@ class ApplicationController < ActionController::Base
 
   def fail_from_invalid_token(session_used:)
     session.delete(:api_session_token) if session_used
-    render json: {status: 401, title: "Invalid bearer token"}, status: :unauthorized
+    render json: {status: 401, errors: [{message: "Invalid bearer token"}]}, status: :unauthorized
   end
 end

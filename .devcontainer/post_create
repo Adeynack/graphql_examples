@@ -1,4 +1,7 @@
 #!/usr/bin/env sh
 
+echo "Installing root NodeJS dependencies"
+yarn install
+
 echo "Launching every example's environment"
 /workspaces/graphql_examples/bin/start_examples

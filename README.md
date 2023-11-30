@@ -16,13 +16,14 @@ languages and frameworks.
   - [Tests](#tests)
   - [Development](#development)
     - [Generate PlantUML Diagrams as Images](#generate-plantuml-diagrams-as-images)
-  - [Service Depdencies and Development Container](#service-depdencies-and-development-container)
+  - [Service Dependencies and Development Container](#service-dependencies-and-development-container)
+    - [Don't want to use vscode?](#dont-want-to-use-vscode)
   - [Ideas for the future](#ideas-for-the-future)
 
 ## Where to find implementations?
 
 In the `examples` folder of this repository, named by convention `language_framework_library`
-(examples: `ruby_on_rails_ruby_graphql`, `rust_juniper`).
+(examples: `rails`, `ts_apollo`).
 
 ## Application to build
 
@@ -70,19 +71,19 @@ Use batch loading when available to the language and framework of choice.
 An implementation agnostic test suite, in _JavaScript_, is in `tests`.
 
 To execute, set the `EXAMPLE` environment variable to the directory name
-you want to test (subdirectory of `examples`) and call `yarn mocha` from
+you want to test (subdirectory of `examples`) and call `yarn test` from
 the `tests` directory.
 
 ```bash
-EXAMPLE=ruby_on_rails_ruby_graphql yarn test
-EXAMPLE=ruby_on_rails_ruby_graphql yarn test tests/scenarios/users.test.ts
+EXAMPLE=rails yarn test
+EXAMPLE=rails yarn test tests/scenarios/users.test.ts
 ```
 
 For watch file and only execute a single file on save:
 
 ```bash
-EXAMPLE=ruby_on_rails_ruby_graphql yarn watch
-EXAMPLE=ruby_on_rails_ruby_graphql yarn watch tests/scenarios/users.test.ts
+EXAMPLE=rails yarn watch
+EXAMPLE=rails yarn watch tests/scenarios/users.test.ts
 ```
 
 ## Development
@@ -92,11 +93,21 @@ EXAMPLE=ruby_on_rails_ruby_graphql yarn watch tests/scenarios/users.test.ts
 At this moment, generating them using the [_PlantUML_ plugin of _VSCode_](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml),
 calling the _PlantUML: Export Workspace Diagrams_ command, and choosing _svg_.
 
-## Service Depdencies and Development Container
+## Service Dependencies and Development Container
 
 This workspace is set up for _Visual Studio Code_ and includes a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers).
 
 Upon opening it up in _Visual Studio Code_, click _Open in container_ in the bottom-right popup that appears. The required services (eg: _PostgreSQL_) and the development environment itself will build (only once) and then you're all set to work on this project, without installing anything else than _Docker_ and _Visual Studio Code_ on your computer.
+
+### Don't want to use vscode?
+
+It is absolutely possible to use the _devcontainer_ without using _Visual Studio Code_. Execute the following command from the root of the workspace, and
+
+```bash
+docker compose -f .devcontainer/docker-compose.yml up
+# in another terminal tab/window
+bin/attach_docker
+```
 
 ## Ideas for the future
 

@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  email          String   @unique
+  name           String
+  passwordDigest String?
+
+  apiSessions ApiSession[] 
+  posts       Post[]
+  reactions   Reaction[]
+}
+
+model ApiSession {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @db.Uuid
+  token     String   @unique
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index(userId)
+}
+
+model Post {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  text      String?
+  parentId  String?  @db.Uuid
+  authorId  String?  @db.Uuid
+
+  parent     Post?      @relation("parent", fields: [parentId], references: [id], onDelete: Cascade)
+  childPosts Post[]     @relation("parent")
+  author     User?      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  reactions  Reaction[]
+
+  @@index([authorId])
+  @@index([parentId])
+}
+
+model Reaction {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  emotion   Emotion
+  postId    String   @db.Uuid
+  userId    String   @db.Uuid
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
+}
+
+enum Emotion {
+  LIKE
+  DISLIKE
+  LOVE
+  LAUGH
+  CRY
+  WOW
+}

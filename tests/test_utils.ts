@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { readFileSync } from 'fs';
 import { execSync } from 'child_process';
-import { GraphQLClient, Variables, gql } from 'graphql-request';
+import { ClientError, GraphQLClient, Variables, gql } from 'graphql-request';
 import { GraphQLError } from 'graphql';
 
 interface ExampleConfig {
@@ -65,29 +65,56 @@ export function setToken(token: string | null): void {
   bearerToken = token;
 }
 
-function prepareHeaders(): Record<string, string> {
+function prepareHeaders({ queryIdentifier }: { queryIdentifier?: string }): Record<string, string> {
   const headers: Record<string, string> = {};
   if (bearerToken) {
     headers['Authorization'] = `Bearer ${bearerToken}`;
   }
+  headers['X-Query-Identifier'] = queryIdentifier || '';
   return headers;
 }
 
-export async function gqlRequest({ query, variables = {} }: { query: string; variables?: Variables }): Promise<any> {
-  return await graphQLClient.request(query, variables, prepareHeaders());
-}
-
-export async function expectGqlToFail({
+export async function gqlRequest({
+  queryIdentifier,
   query,
   variables = {},
 }: {
+  queryIdentifier?: string;
+  query: string;
+  variables?: Variables;
+}): Promise<any> {
+  return await graphQLClient.request(query, variables, prepareHeaders({ queryIdentifier }));
+}
+
+export async function expectGqlToFail({
+  queryIdentifier,
+  query,
+  variables = {},
+}: {
+  queryIdentifier?: string;
   query: string;
   variables?: Variables;
 }): Promise<GraphQLError[]> {
-  const { status, errors } = await graphQLClientForFailures.rawRequest(query, variables, prepareHeaders());
-  if (status !== 200) throw new Error(`Expected status 200, got ${status}`);
-  if (!errors || errors.length === 0) throw new Error('Expected errors, got none');
-  return errors;
+  try {
+    const { status, errors } = await graphQLClientForFailures.rawRequest(
+      query,
+      variables,
+      prepareHeaders({ queryIdentifier })
+    );
+    if (status !== 200) throw new Error(`Expected status 200, got ${status}`);
+    if (!errors || errors.length === 0) throw new Error('Expected errors, got none');
+    return errors;
+  } catch (e) {
+    // todo: `rawRequest` works with the `rails` example, but not with the `ts_apollo` (still throws `ClientError`).
+    if (e instanceof ClientError) {
+      const { status, errors } = e.response;
+      if (status !== 200) throw new Error(`Expected status 200, got ${status}`);
+      if (!errors || errors.length === 0) throw new Error('Expected errors, got none');
+      return errors;
+    } else {
+      throw e;
+    }
+  }
 }
 
 export function login(userName: string): void {

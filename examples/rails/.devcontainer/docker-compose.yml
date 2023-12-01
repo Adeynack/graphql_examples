@@ -1,21 +1,24 @@
 version: '3'
 
-name: graphql_examples_devcontainer
+name: graphql_example-rails
+
 services:
   devcontainer:
     build:
       context: .
       dockerfile: Dockerfile
+    ports:
+      - 30001
     volumes:
-      - ../..:/workspaces:cached
-    # Overrides default command so things don't shut down after the process ends.
+      - ../../../..:/workspaces:cached
     command: sleep infinity
-    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
-    network_mode: service:postgres
+    network_mode: host
 
   postgres:
     image: postgres:15.1
     restart: unless-stopped
+    ports:
+      - 30002:5432
     volumes:
       - postgres-data:/var/lib/postgresql/data
     environment:

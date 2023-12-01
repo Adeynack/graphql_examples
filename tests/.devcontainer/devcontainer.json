@@ -1,0 +1,30 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+  "name": "GraphQL Examples Tests",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "devcontainer",
+  "workspaceFolder": "/workspaces/graphql_examples/${localWorkspaceFolderBasename}",
+  "remoteUser": "root",
+  "postCreateCommand": "yarn install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode-remote.remote-containers",
+        "ms-azuretools.vscode-docker",
+        "darkriszty.markdown-table-prettify",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "rvest.vs-code-prettier-eslint",
+        "wmaurer.change-case",
+        "mquandalle.graphql",
+        "yzhang.markdown-all-in-one",
+        "darkriszty.markdown-table-prettify",
+        "jebbs.plantuml",
+        "trybick.terminal-zoom",
+        "netcorext.uuid-generator",
+        "redhat.vscode-yaml"
+      ]
+    }
+  }
+}

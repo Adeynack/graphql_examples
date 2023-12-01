@@ -1,4 +1,0 @@
-{
-  "dataInitCommand": "npx prisma db seed -- --environment development --truncateAllData",
-  "graphQLEndpoint": "http://localhost:4000/graphql"
-}

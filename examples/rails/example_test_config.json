@@ -1,4 +1,0 @@
-{
-  "dataInitCommand": "bin/rails db:truncate_all db:fixtures:load",
-  "graphQLEndpoint": "http://localhost:3000/graphql"
-}

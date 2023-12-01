@@ -19,7 +19,7 @@ default: &default
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
   host: <%= ENV.fetch("PGHOST", "127.0.0.1") %>
-  port: <%= ENV.fetch("PGPORT", 5432) %>
+  port: <%= ENV.fetch("PGPORT", 30002) %>
   username: <%= ENV.fetch("PGUSER", "postgres") %>
 
 development:

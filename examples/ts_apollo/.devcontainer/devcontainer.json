@@ -1,0 +1,42 @@
+{
+  "name": "ts_apollo (GraphQL Example)",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "devcontainer",
+  "workspaceFolder": "/workspaces/graphql_examples/examples/${localWorkspaceFolderBasename}",
+  "remoteUser": "root",
+  "postCreateCommand": "yarn install && scripts/initialize_databases && ./start",
+  "forwardPorts": [
+    30101,
+    30102
+  ],
+  "portsAttributes": {
+    "30101": {
+      "label": "ts_apollo"
+    },
+    "30102": {
+      "label": "psql"
+    }
+  },
+  "otherPortsAttributes": {
+    "onAutoForward": "ignore"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "rvest.vs-code-prettier-eslint",
+        "ms-vscode-remote.remote-containers",
+        "darkriszty.markdown-table-prettify",
+        "wmaurer.change-case",
+        "mquandalle.graphql",
+        "yzhang.markdown-all-in-one",
+        "darkriszty.markdown-table-prettify",
+        "trybick.terminal-zoom",
+        "netcorext.uuid-generator",
+        "redhat.vscode-yaml",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  }
+}

@@ -1,0 +1,13 @@
+version: '3'
+
+name: graphql_examples-tests
+
+services:
+  devcontainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ../../..:/workspaces:cached
+    command: sleep infinity
+    network_mode: host

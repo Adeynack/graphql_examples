@@ -1,19 +1,19 @@
 {
-  "name": "rails (GraphQL Example)",
+  "name": "ts_apollo (GraphQL Example)",
   "dockerComposeFile": "docker-compose.yml",
   "service": "devcontainer",
   "workspaceFolder": "/workspaces/graphql_examples/examples/${localWorkspaceFolderBasename}",
   "remoteUser": "root",
-  "postCreateCommand": "bundle install && bin/rails db:create && ./start",
+  "postCreateCommand": "yarn install && scripts/initialize_databases && ./start",
   "forwardPorts": [
-    30001,
-    30002
+    30101,
+    30102
   ],
   "portsAttributes": {
-    "30001": {
-      "label": "rails"
+    "30101": {
+      "label": "ts_apollo"
     },
-    "30002": {
+    "30102": {
       "label": "psql"
     }
   },
@@ -23,12 +23,12 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "rvest.vs-code-prettier-eslint",
         "ms-vscode-remote.remote-containers",
-        "shopify.ruby-lsp",
         "darkriszty.markdown-table-prettify",
         "wmaurer.change-case",
-        "zombocom.dead-end-vscode",
-        "kaiwood.endwise",
         "mquandalle.graphql",
         "yzhang.markdown-all-in-one",
         "darkriszty.markdown-table-prettify",

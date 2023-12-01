@@ -1,40 +1,52 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { readFileSync } from 'fs';
-import { execSync } from 'child_process';
 import { ClientError, GraphQLClient, Variables, gql } from 'graphql-request';
 import { GraphQLError } from 'graphql';
-
-interface ExampleConfig {
-  dataInitCommand: string;
-  graphQLEndpoint: string;
-}
+import yaml from 'js-yaml';
 
 const examplePath: string = (function () {
   const exampleName = process.env.EXAMPLE;
   if (!exampleName) {
     throw 'Environment variable EXAMPLE must be set.';
   }
-  return `examples/${exampleName}`;
+  return `../examples/${exampleName}`;
 })();
 
-const config: ExampleConfig = JSON.parse(readFileSync(`${examplePath}/example_test_config.json`).toString());
+// const config: ExampleConfig = JSON.parse(readFileSync(`${examplePath}/example_test_config.json`).toString());
+const exampleDockerComposeConfig = yaml.load(
+  readFileSync(`${examplePath}/.devcontainer/docker-compose.yml`, 'utf-8')
+) as any;
+
+const examplePort = exampleDockerComposeConfig.services.devcontainer.ports[0].toString().split(':')[0];
+const config = {
+  graphQLEndpoint: `http://localhost:${examplePort}/graphql`,
+  dataResetsEndpoint: `http://localhost:${examplePort}/data_resets`,
+};
 
 let bearerToken: string | null;
 
-function dataCleanState(): void {
-  // Clean up database
-  execSync(config.dataInitCommand, { cwd: examplePath });
+async function dataCleanState(): Promise<void> {
+  // Request database cleanup
+  const result = await fetch(config.dataResetsEndpoint, {
+    method: 'POST',
+    body: '{}',
+    headers: { 'content-type': 'text/html' },
+  });
+  if (!result.ok)
+    throw new Error(
+      `Requesting database cleanup resulted in ${result.status} '${result.statusText}': ${await result.text()}`
+    );
 }
 
 function declareScenario(only: boolean, name: string, body: () => void): void {
   const describeBodyWrapper = (): void => {
-    beforeAll(() => {
+    beforeAll(async () => {
       bearerToken = null;
-      dataCleanState();
+      await dataCleanState();
     });
 
-    afterAll(() => {
-      dataCleanState(); // leave a clean state behind
+    afterAll(async () => {
+      await dataCleanState(); // leave a clean state behind
     });
 
     body();

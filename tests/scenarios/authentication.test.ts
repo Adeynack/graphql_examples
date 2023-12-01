@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { gql } from 'graphql-request';
 import { expectGqlToFail, getToken, gqlRequest, scenario, setToken } from '../test_utils';
-import { GraphQLError } from 'graphql';
 
 scenario('Authentication', () => {
   test('me is null before first login', async () => {

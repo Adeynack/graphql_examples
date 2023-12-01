@@ -16,12 +16,12 @@ the `tests` directory.
 
 ```bash
 EXAMPLE=rails yarn test
-EXAMPLE=rails yarn test tests/scenarios/users.test.ts
+EXAMPLE=rails yarn test scenarios/users.test.ts
 ```
 
 For watch file and only execute a single file on save:
 
 ```bash
 EXAMPLE=rails yarn watch
-EXAMPLE=rails yarn watch tests/scenarios/users.test.ts
+EXAMPLE=rails yarn watch scenarios/users.test.ts
 ```

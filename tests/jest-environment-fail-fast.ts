@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import type { Circus } from '@jest/types';
 import { TestEnvironment } from 'jest-environment-node';
 
@@ -20,13 +21,15 @@ class FailFastEnvironment extends TestEnvironment {
     if (super.handleTestEvent) await super.handleTestEvent(event, state);
   }
 
-  private visualFeedback(event: Circus.Event) {
+  private visualFeedback(event: Circus.Event): void {
     switch (event.name) {
       case 'hook_failure':
         console.log(`[FAIL] Hook failure`);
+        logError(event.error);
         break;
       case 'test_fn_failure':
         console.log(`[FAIL] ${event.test.name}`);
+        logError(event.error);
         break;
       case 'test_start':
         if (this.failedTest) console.log(`[SKIP] ${event.test.name}`);
@@ -35,6 +38,14 @@ class FailFastEnvironment extends TestEnvironment {
         console.log(`[ OK ] ${event.test.name}`);
         break;
     }
+  }
+}
+
+function logError(error: Error): void {
+  if (error.stack) {
+    console.error(error.stack);
+  } else {
+    console.error(error.toString());
   }
 }
 

@@ -70,21 +70,7 @@ Use batch loading when available to the language and framework of choice.
 
 An implementation agnostic test suite, in _JavaScript_, is in `tests`.
 
-To execute, set the `EXAMPLE` environment variable to the directory name
-you want to test (subdirectory of `examples`) and call `yarn test` from
-the `tests` directory.
-
-```bash
-EXAMPLE=rails yarn test
-EXAMPLE=rails yarn test tests/scenarios/users.test.ts
-```
-
-For watch file and only execute a single file on save:
-
-```bash
-EXAMPLE=rails yarn watch
-EXAMPLE=rails yarn watch tests/scenarios/users.test.ts
-```
+See [tests/README.md](./tests/README.md).
 
 ## Development
 

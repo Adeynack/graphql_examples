@@ -1,0 +1,33 @@
+{
+  "name": "Rails (GraphQL Example)",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "devcontainer",
+  "workspaceFolder": "/workspaces/graphql_examples/examples/${localWorkspaceFolderBasename}",
+  "remoteUser": "root",
+  "postCreateCommand": "bundle install && bin/rails db:create",
+  // "forwardPorts": [3000],
+  // "portsAttributes": {
+  //   "3000": {
+  //     "label": "rails"
+  //   }
+  // },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode-remote.remote-containers",
+        "shopify.ruby-lsp",
+        "darkriszty.markdown-table-prettify",
+        "wmaurer.change-case",
+        "zombocom.dead-end-vscode",
+        "kaiwood.endwise",
+        "mquandalle.graphql",
+        "yzhang.markdown-all-in-one",
+        "darkriszty.markdown-table-prettify",
+        "trybick.terminal-zoom",
+        "netcorext.uuid-generator",
+        "redhat.vscode-yaml",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  }
+}

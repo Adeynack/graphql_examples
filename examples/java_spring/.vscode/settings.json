@@ -1,7 +1,3 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "[ruby]": {
-    "editor.formatOnSave": false,
-    "editor.defaultFormatter": "Shopify.ruby-lsp"
-  },
+  "java.compile.nullAnalysis.mode": "automatic"
 }

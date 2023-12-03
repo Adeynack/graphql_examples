@@ -24,7 +24,8 @@
     "vscode": {
       "extensions": [
         "ms-vscode-remote.remote-containers",
-        "darkriszty.markdown-table-prettify",
+        "esbenp.prettier-vscode",
+        "rvest.vs-code-prettier-eslint",
         "wmaurer.change-case",
         "mquandalle.graphql",
         "yzhang.markdown-all-in-one",

@@ -35,7 +35,8 @@
         "redhat.vscode-yaml",
         "ms-azuretools.vscode-docker",
         "vscjava.vscode-java-pack",
-        "vmware.vscode-boot-dev-pack"
+        "vmware.vscode-boot-dev-pack",
+        "vscjava.vscode-gradle"
       ]
     }
   }

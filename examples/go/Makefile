@@ -1,6 +1,8 @@
-# Generate GraphQL code
-gqlgen:
+# Generate code (eg: GraphQL)
+gen:
 	go run github.com/99designs/gqlgen gen
+
+g: gen
 
 # Start development server
 dev:

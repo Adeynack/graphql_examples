@@ -9,16 +9,27 @@ import (
 	"fmt"
 
 	"github.com/adeynack/graphql_examples/examples/go/graph/model"
+	"github.com/google/uuid"
 )
 
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+	id := uuid.NewString()
+	todo := &model.Todo{
+		ID:   id,
+		Text: input.Text,
+		User: &model.User{
+			ID:   input.UserID,
+			Name: fmt.Sprintf("user %s", input.UserID),
+		},
+	}
+	r.todos = append(r.todos, todo)
+	return todo, nil
 }
 
 // Todos is the resolver for the todos field.
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: Todos - todos"))
+	return r.todos, nil
 }
 
 // Mutation returns MutationResolver implementation.

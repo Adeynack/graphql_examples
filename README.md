@@ -58,7 +58,7 @@ A user
 
 #### Mutations
 
-See [mutations](mutation.md).
+See [mutations](mutations.md).
 
 ### Goals
 

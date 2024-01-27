@@ -16,12 +16,9 @@ import (
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
 	id := uuid.NewString()
 	todo := &model.Todo{
-		ID:   id,
-		Text: input.Text,
-		User: &model.User{
-			ID:   input.UserID,
-			Name: fmt.Sprintf("user %s", input.UserID),
-		},
+		ID:     id,
+		Text:   input.Text,
+		UserID: input.UserID,
 	}
 	r.todos = append(r.todos, todo)
 	return todo, nil
@@ -32,11 +29,24 @@ func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 	return r.todos, nil
 }
 
+// User is the resolver for the user field.
+func (r *todoResolver) User(ctx context.Context, obj *model.Todo) (*model.User, error) {
+	user := &model.User{
+		ID:   obj.UserID,
+		Name: fmt.Sprintf("user %s", obj.UserID),
+	}
+	return user, nil
+}
+
 // Mutation returns MutationResolver implementation.
 func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+// Todo returns TodoResolver implementation.
+func (r *Resolver) Todo() TodoResolver { return &todoResolver{r} }
+
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+type todoResolver struct{ *Resolver }

@@ -1,6 +1,6 @@
 # Generate code (eg: GraphQL)
 gen:
-	go run github.com/99designs/gqlgen gen
+	go run github.com/99designs/gqlgen generate
 
 g: gen
 

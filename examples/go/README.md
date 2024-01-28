@@ -25,3 +25,14 @@ Adapted from _[Building the server](https://gqlgen.com/getting-started/#building
 │   └── schema.resolvers.go  - the resolver implementation for schema.graphql
 └── server.go                - The entry point to your app. Customize it however you see fit
 ```
+
+## Notes
+
+### Partial patch
+
+Look at this option in `gqlgen.yml`.
+
+```yaml
+# Optional: wrap nullable input fields with Omittable
+# nullable_input_omittable: true
+```

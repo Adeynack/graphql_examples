@@ -37,7 +37,8 @@
         "redhat.vscode-yaml",
         "ms-azuretools.vscode-docker",
         "golang.go",
-        "ms-vscode.makefile-tools"
+        "ms-vscode.makefile-tools",
+        "apollographql.vscode-apollo"
       ]
     }
   }

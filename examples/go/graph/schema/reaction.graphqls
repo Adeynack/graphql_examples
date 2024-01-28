@@ -1,0 +1,7 @@
+type Reaction {
+  id: ID!
+  emotion: Emotion!
+  createdAt: ISO8601DateTime!
+  post: Post!
+  user: User!
+}

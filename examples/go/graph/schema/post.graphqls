@@ -1,0 +1,9 @@
+type Post {
+  id: ID!
+  authorId: ID!
+  author: User!
+  parent: Post
+  text: String!
+  reactions: [Reaction!]!
+  createdAt: ISO8601DateTime!
+}

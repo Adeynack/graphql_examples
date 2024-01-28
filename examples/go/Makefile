@@ -2,31 +2,24 @@
 gen:
 	go generate ./...
 
-g: gen
-
 # Start development server
 dev:
-	go run cmd/server/main.go
-
-d: dev
+	go run github.com/cosmtrek/air
 
 # Build binaries
 build:
 	go build -o bin/server ./cmd/server/*.go
 
-b: build
+# Generate code & build binaries
+gen_build: gen build
 
 # Misc
 
 clean:
 	go clean -cache -testcache
 
-c: clean
-
 test:
 	go test ./...
-
-t: test
 
 ct: clean test
 

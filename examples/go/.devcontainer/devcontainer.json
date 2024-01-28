@@ -39,7 +39,8 @@
         "golang.go",
         "ms-vscode.makefile-tools",
         "apollographql.vscode-apollo",
-        "tamasfe.even-better-toml"
+        "tamasfe.even-better-toml",
+        "neonxp.gotools"
       ]
     }
   }

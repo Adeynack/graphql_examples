@@ -85,3 +85,5 @@ models:
       - github.com/99designs/gqlgen/graphql.Int
       - github.com/99designs/gqlgen/graphql.Int64
       - github.com/99designs/gqlgen/graphql.Int32
+  ISO8601DateTime:
+    model: github.com/adeynack/graphql_examples/examples/go/graph/model.ISO8601DateTime

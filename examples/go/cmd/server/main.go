@@ -7,6 +7,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/adeynack/graphql_examples/examples/go/database"
 	"github.com/adeynack/graphql_examples/examples/go/graph"
 	"github.com/adeynack/graphql_examples/examples/go/graph/resolvers"
 )
@@ -14,12 +15,17 @@ import (
 const defaultPort = "8080"
 
 func main() {
+	db := database.Initialize()
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
 	}
 
-	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &resolvers.Resolver{}}))
+	resolver := &resolvers.Resolver{
+		DB: db,
+	}
+	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: resolver}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)

@@ -1,0 +1,2 @@
+server: make build_watch
+gqlgen: make gen_watch

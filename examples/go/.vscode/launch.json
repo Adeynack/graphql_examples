@@ -19,6 +19,9 @@
       "mode": "auto",
       "program": "${workspaceFolder}/cmd/seed/main.go",
       "cwd": "${workspaceFolder}",
+      "args": [
+        "-truncate"
+      ]
     }
   ]
 }

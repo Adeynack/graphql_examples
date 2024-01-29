@@ -52,7 +52,7 @@ func (r *queryResolver) Post(ctx context.Context, id string) (*model.Post, error
 	}
 	post := &model.Post{
 		ID:        parsedId,
-		AuthorID:  "e642bb00-8f89-4167-9255-4cc2671a1ee9",
+		AuthorID:  uuid.MustParse("e642bb00-8f89-4167-9255-4cc2671a1ee9"),
 		Text:      "Commodo anim veniam et anim consectetur aliquip tempor.",
 		CreatedAt: model.ISO8601DateTime(time.Now()),
 	}

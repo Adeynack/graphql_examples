@@ -5,7 +5,7 @@
 | Topic   | Library                                       |
 | ------- | --------------------------------------------- |
 | GraphQL | [gqlgen](https://gqlgen.com/getting-started/) |
-| ORM     | ?? gorm                                       |
+| ORM     | [gorm](https://gorm.io/docs/)                 |
 
 ## Project Structure
 

@@ -7,6 +7,7 @@ import (
 	"github.com/adeynack/graphql_examples/examples/go/graph/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 func Initialize() *gorm.DB {
@@ -16,7 +17,9 @@ func Initialize() *gorm.DB {
 	pgPort := env("PGPORT")
 
 	dsn := fmt.Sprintf("host=%s user=%s dbname=%s port=%s sslmode=disable", pgHost, pgUser, pgDatabaseName, pgPort)
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
 	if err != nil {
 		panic(fmt.Errorf("error opening Gorm connection: %v", err))
 	}

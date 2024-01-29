@@ -11,6 +11,9 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && apt -y install --
 
 RUN <<EOF cat >> ~/.bashrc
 
+# Shorter prompt (fitting narrow VSCode windows without wrapping)
+export PS1="\[\]${debian_chroot:+($debian_chroot)}\u@\h\$ \[\]"
+
 # Default PostgreSQL Connection
 # Will automatically connect to the devcontainer's attached PostgreSQL
 # database (see "docker-compose.yml") by typing "psql".

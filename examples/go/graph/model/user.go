@@ -11,11 +11,11 @@ import (
 
 type User struct {
 	ID             uuid.UUID       `json:"id" gorm:"type:uuid;default:gen_random_uuid()"`
-	CreatedAt      ISO8601DateTime `json:"createdAt"`
-	UpdatedAt      ISO8601DateTime `json:"updatedAt"`
-	Email          string          `json:"email" gorm:"uniqueIndex"`
-	Name           string          `json:"name"`
-	PasswordDigest string          `json:"-"`
+	CreatedAt      ISO8601DateTime `json:"createdAt" gorm:"not null"`
+	UpdatedAt      ISO8601DateTime `json:"updatedAt" gorm:"not null"`
+	Email          string          `json:"email" gorm:"uniqueIndex;not null"`
+	Name           string          `json:"name" gorm:"not null"`
+	PasswordDigest string          `json:"-" gorm:"not null"`
 	Posts          []*Post         `json:"posts" gorm:"-"`
 	Reactions      []*Reaction     `json:"reactions" gorm:"-"`
 }

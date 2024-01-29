@@ -7,7 +7,7 @@ gen_watch:
 
 # Start development server
 run:
-	go run cmd/server/main.go
+	go run cmd/server/*.go
 
 dev:
 	go run github.com/DarthSim/hivemind Procfile.dev
@@ -46,4 +46,4 @@ db_drop:
 	psql -c 'drop database "go_development"'
 
 db_seed:
-	go run cmd/seed/main.go
+	go run cmd/seed/*.go -truncate

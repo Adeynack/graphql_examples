@@ -18,6 +18,7 @@
     "netcorext.uuid-generator",
     "redhat.vscode-yaml",
     "prisma.prisma",
-    "eamodio.gitlens"
+    "eamodio.gitlens",
+    "janisdd.vscode-edit-csv"
   ]
 }

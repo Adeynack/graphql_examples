@@ -1,0 +1,9 @@
+Category;Feature;rails;ts_apollo;go;Description
+Database;orm;✅;✅ Prisma;✅ GORM;An ORM is chosen, or a decision not to use one is made.
+Database;structure_init;✅;✅;✅;The structure is automatically created and/or migrated.
+Database;seed;✅;✅;✅;"Database can be seeded, using the YML fixtures in the ""rails"" example (as a baseline)."
+Database;not_null;✅;✅;✅;"All columns that should not be null are generated as ""not null"" in the database."
+Database;uuid;✅;✅;✅;Uses UUID as primary key of tables.
+Database;user_password_salted;✅;✅;✅;"In table ""users"", field ""password_digest"" is saved."
+Database;relations;✅;✅;✅;Relations (belongs-to, has-many, has-one) are established in the ORM.
+Database;enums;✅;✅;❌;Database enumerations are used (instead of plain strings).

@@ -9,7 +9,7 @@ type Post struct {
 	AuthorID  uuid.UUID       `json:"authorId" gorm:"not null"`
 	Author    *User           `json:"author" gorm:"-"`
 	ParentID  *uuid.UUID      `json:"parentId"`
-	Parent    *Post           `json:"parent,omitempty" gorm:"-"`
+	Parent    *Post           `json:"parent,omitempty"`
 	Text      string          `json:"text" gorm:"not null"`
-	Reactions []*Reaction     `json:"reactions" gorm:"-"`
+	Reactions []*Reaction     `json:"reactions"`
 }

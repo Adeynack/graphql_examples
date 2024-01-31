@@ -16,8 +16,8 @@ type User struct {
 	Email          string          `json:"email" gorm:"uniqueIndex;not null"`
 	Name           string          `json:"name" gorm:"not null"`
 	PasswordDigest string          `json:"-" gorm:"not null"`
-	Posts          []*Post         `json:"posts" gorm:"-"`
-	Reactions      []*Reaction     `json:"reactions" gorm:"-"`
+	Posts          []*Post         `json:"posts" gorm:"foreignKey:author_id"`
+	Reactions      []*Reaction     `json:"reactions"`
 }
 
 func (user *User) SetPassword(salt, password string) error {

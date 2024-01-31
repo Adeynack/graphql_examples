@@ -47,3 +47,5 @@ db_drop:
 
 db_seed:
 	go run cmd/seed/*.go -truncate
+
+db_full_reset: db_drop db_init db_seed

@@ -17,6 +17,11 @@ func (r *postResolver) ID(ctx context.Context, obj *model.Post) (string, error) 
 	panic(fmt.Errorf("not implemented: ID - id"))
 }
 
+// AuthorID is the resolver for the authorId field.
+func (r *postResolver) AuthorID(ctx context.Context, obj *model.Post) (string, error) {
+	panic(fmt.Errorf("not implemented: AuthorID - authorId"))
+}
+
 // Post returns graph.PostResolver implementation.
 func (r *Resolver) Post() graph.PostResolver { return &postResolver{r} }
 

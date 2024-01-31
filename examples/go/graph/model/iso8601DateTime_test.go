@@ -20,7 +20,7 @@ func Test_Unmarshal_NotAString(t *testing.T) {
 	var value ISO8601DateTime
 	err := value.UnmarshalGQL(12345)
 	if assert.Error(t, err) {
-		assert.Equal(t, err.Error(), "ISO8601DateTime value must be a string")
+		assert.Equal(t, err.Error(), "error parsing ISO8601DateTime: value must be an array of bytes")
 	}
 }
 

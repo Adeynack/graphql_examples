@@ -23,11 +23,14 @@ var (
 
 // UnmarshalGQL implements graphql.Unmarshaler.
 func (dt *ISO8601DateTime) UnmarshalGQL(v interface{}) error {
-	value, ok := v.([]byte)
-	if !ok {
-		return fmt.Errorf("ISO8601DateTime value must be an array of bytes")
+	// TODO: Try removing `UnmarshalGQL` and see if `MarshalText` is enough
+	if value, ok := v.(string); ok {
+		return dt.UnmarshalText([]byte(value))
 	}
-	return dt.UnmarshalText(value) // TODO: Try removing `UnmarshalGQL` and see if `MarshalText` is enough
+	if value, ok := v.([]byte); ok {
+		return dt.UnmarshalText(value)
+	}
+	return fmt.Errorf("error parsing ISO8601DateTime: value must be an array of bytes")
 }
 
 // MarshalGQL implements graphql.Marshaler.

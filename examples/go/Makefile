@@ -9,7 +9,7 @@ gen_watch:
 run:
 	go run cmd/server/*.go
 
-dev:
+dev: gen build
 	go run github.com/DarthSim/hivemind Procfile.dev
 
 # Build binaries

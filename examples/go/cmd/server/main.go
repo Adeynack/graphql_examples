@@ -12,7 +12,7 @@ import (
 	"github.com/adeynack/graphql_examples/examples/go/graph/resolvers"
 )
 
-const defaultPort = "8080"
+const defaultPort = "30301"
 
 func main() {
 	db := model.InitializeDB()

@@ -7,10 +7,10 @@ package resolvers
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/adeynack/graphql_examples/examples/go/graph"
 	"github.com/adeynack/graphql_examples/examples/go/graph/model"
+	"github.com/adeynack/graphql_examples/examples/go/graph/resolvers/query"
 )
 
 // LogIn is the resolver for the logIn field.
@@ -40,18 +40,12 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, input model.DeleteUse
 
 // Me is the resolver for the me field.
 func (r *queryResolver) Me(ctx context.Context) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: Me - me"))
+	return query.Me()
 }
 
 // Post is the resolver for the post field.
 func (r *queryResolver) Post(ctx context.Context, id string) (*model.Post, error) {
-	post := &model.Post{
-		ID:        id,
-		AuthorID:  "e642bb00-8f89-4167-9255-4cc2671a1ee9",
-		Text:      "Commodo anim veniam et anim consectetur aliquip tempor.",
-		CreatedAt: model.ISO8601DateTime(time.Now()),
-	}
-	return post, nil
+	panic(fmt.Errorf("not implemented: Post - post"))
 }
 
 // Posts is the resolver for the posts field.

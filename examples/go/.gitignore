@@ -1,10 +1,6 @@
 # overmind
 .overmind.sock
 
-# gqlgen regenerated files
-graph/model/models_gen.go
-graph/generated.go
-
 # Misc
 bin
 tmp

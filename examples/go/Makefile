@@ -3,21 +3,21 @@ gen:
 	go generate ./...
 
 gen_watch:
-	go run github.com/cosmtrek/air -c .air.gen.toml
+	air -c .air.gen.toml
 
 # Start development server
 run:
 	go run cmd/server/*.go
 
 dev: gen build
-	go run github.com/DarthSim/hivemind Procfile.dev
+	overmind start -f Procfile.dev -p 30301
 
 # Build binaries
 build:
 	go build -o bin/server ./cmd/server/*.go
 
 build_watch:
-	go run github.com/cosmtrek/air -c .air.build.toml
+	air -c .air.build.toml
 
 # Generate code & build binaries
 gen_build: gen build

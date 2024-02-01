@@ -7,7 +7,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt update && apt -y upgrade
 RUN export DEBIAN_FRONTEND=noninteractive && apt update && apt -y upgrade
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && apt -y install --no-install-recommends \
     postgresql-client \
-    pspg
+    pspg \
+    tmux
 
 RUN <<EOF cat >> ~/.bashrc
 

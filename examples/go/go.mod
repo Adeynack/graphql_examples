@@ -4,7 +4,7 @@ go 1.21.5
 
 require (
 	github.com/99designs/gqlgen v0.17.43
-	github.com/DarthSim/hivemind v1.1.0
+	github.com/DarthSim/overmind v2.0.1+incompatible
 	github.com/cosmtrek/air v1.49.0
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.8.4
@@ -16,7 +16,6 @@ require (
 
 require (
 	dario.cat/mergo v1.0.0 // indirect
-	github.com/DarthSim/godotenv v1.3.1 // indirect
 	github.com/agnivade/levenshtein v1.1.1 // indirect
 	github.com/bep/godartsass v1.2.0 // indirect
 	github.com/bep/godartsass/v2 v2.0.0 // indirect
@@ -37,6 +36,7 @@ require (
 	github.com/jackc/puddle/v2 v2.2.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
+	github.com/matoous/go-nanoid v1.5.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
@@ -49,7 +49,6 @@ require (
 	github.com/spf13/afero v1.11.0 // indirect
 	github.com/tdewolff/parse/v2 v2.7.11 // indirect
 	github.com/tdewolff/test v1.0.11-0.20240106005702-7de5f7df4739 // indirect
-	github.com/urfave/cli v1.22.14 // indirect
 	github.com/urfave/cli/v2 v2.27.1 // indirect
 	github.com/xrash/smetrics v0.0.0-20231213231151-1d8dd44e695e // indirect
 	golang.org/x/crypto v0.18.0 // indirect
@@ -60,4 +59,5 @@ require (
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.17.0 // indirect
 	google.golang.org/protobuf v1.32.0 // indirect
+	gopkg.in/urfave/cli.v1 v1.20.0 // indirect
 )

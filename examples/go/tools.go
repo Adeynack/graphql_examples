@@ -5,6 +5,6 @@ package tools
 
 import (
 	_ "github.com/99designs/gqlgen"
-	_ "github.com/DarthSim/hivemind"
+	_ "github.com/DarthSim/overmind"
 	_ "github.com/cosmtrek/air"
 )

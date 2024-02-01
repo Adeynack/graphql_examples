@@ -1,0 +1,6 @@
+#!/bin/bash -e
+
+# DevOps
+go install github.com/DarthSim/overmind@latest
+go install github.com/cosmtrek/air@latest
+go install honnef.co/go/tools/cmd/staticcheck@latest

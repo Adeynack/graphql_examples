@@ -22,7 +22,7 @@ var (
 )
 
 // UnmarshalGQL implements graphql.Unmarshaler.
-func (dt *ISO8601DateTime) UnmarshalGQL(v interface{}) error {
+func (dt *ISO8601DateTime) UnmarshalGQL(v any) error {
 	// TODO: Try removing `UnmarshalGQL` and see if `MarshalText` is enough
 	if value, ok := v.(string); ok {
 		return dt.UnmarshalText([]byte(value))

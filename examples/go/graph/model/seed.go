@@ -41,7 +41,7 @@ func TruncateAllData(db *gorm.DB) error {
 	return nil
 }
 
-func loadFixtures(configurationFile string, into interface{}) error {
+func loadFixtures(configurationFile string, into any) error {
 	path := fmt.Sprintf(
 		"../rails/test/fixtures/%s.yml",
 		configurationFile,

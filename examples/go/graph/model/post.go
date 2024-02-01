@@ -7,7 +7,7 @@ type Post struct {
 	CreatedAt ISO8601DateTime `json:"createdAt" gorm:"not null"`
 	UpdatedAt ISO8601DateTime `json:"updatedAt" gorm:"not null"`
 	AuthorID  uuid.UUID       `json:"authorId" gorm:"not null"`
-	Author    *User           `json:"author" gorm:"-"`
+	Author    *User           `json:"author"`
 	ParentID  *uuid.UUID      `json:"parentId"`
 	Parent    *Post           `json:"parent,omitempty"`
 	Text      string          `json:"text" gorm:"not null"`

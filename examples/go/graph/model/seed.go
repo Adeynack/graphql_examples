@@ -1,4 +1,4 @@
-package seed
+package model
 
 import (
 	"fmt"
@@ -6,22 +6,21 @@ import (
 	"strings"
 	"time"
 
-	"github.com/adeynack/graphql_examples/examples/go/graph/model"
-	"github.com/adeynack/graphql_examples/examples/go/graph/resolvers"
 	"github.com/google/uuid"
 	"gopkg.in/yaml.v3"
+	"gorm.io/gorm"
 )
 
-func SeedData(r *resolvers.Resolver) error {
-	users, err := createUsers(r)
+func SeedData(db *gorm.DB, serverSalt string) error {
+	users, err := createUsers(db, serverSalt)
 	if err != nil {
 		return err
 	}
-	posts, err := createPosts(r, users)
+	posts, err := createPosts(db, users)
 	if err != nil {
 		return err
 	}
-	err = createReactions(r, users, posts)
+	err = createReactions(db, users, posts)
 	if err != nil {
 		return err
 	}
@@ -29,14 +28,14 @@ func SeedData(r *resolvers.Resolver) error {
 	return nil
 }
 
-func TruncateAllData(r *resolvers.Resolver) error {
-	if tx := r.DB.Exec("delete from reactions"); tx.Error != nil {
+func TruncateAllData(db *gorm.DB) error {
+	if tx := db.Exec("delete from reactions"); tx.Error != nil {
 		return fmt.Errorf("failed to delete reactions: %v", tx.Error)
 	}
-	if tx := r.DB.Exec("delete from posts"); tx.Error != nil {
+	if tx := db.Exec("delete from posts"); tx.Error != nil {
 		return fmt.Errorf("failed to delete posts: %v", tx.Error)
 	}
-	if tx := r.DB.Exec("delete from users"); tx.Error != nil {
+	if tx := db.Exec("delete from users"); tx.Error != nil {
 		return fmt.Errorf("failed to delete users: %v", tx.Error)
 	}
 	return nil
@@ -63,22 +62,22 @@ type UserFixture struct {
 	Name  string `yaml:"name"`
 }
 
-func createUsers(r *resolvers.Resolver) (map[string]*model.User, error) {
+func createUsers(db *gorm.DB, serverSalt string) (map[string]*User, error) {
 	var userFixtures map[string]*UserFixture
 	loadFixtures("users", &userFixtures)
 
-	users := make(map[string]*model.User)
+	users := make(map[string]*User)
 	for fixtureName, fixture := range userFixtures {
-		user := &model.User{
+		user := &User{
 			Name:  fixture.Name,
 			Email: fixture.Email,
 		}
-		err := user.SetPassword(r.ServerSalt, fixtureName)
+		err := user.SetPassword(serverSalt, fixtureName)
 		if err != nil {
 			return nil, fmt.Errorf("unable to set password to user fixture %q", fixtureName)
 		}
 
-		if tx := r.DB.Create(user); tx.Error != nil {
+		if tx := db.Create(user); tx.Error != nil {
 			return nil, fmt.Errorf("unable to create user from fixture %q: %v", fixtureName, tx.Error)
 		}
 
@@ -89,31 +88,31 @@ func createUsers(r *resolvers.Resolver) (map[string]*model.User, error) {
 }
 
 type PostFixture struct {
-	Author    string                `yaml:"author"`
-	Parent    string                `yaml:"parent"`
-	Text      string                `yaml:"text"`
-	CreatedAt model.ISO8601DateTime `yaml:"created_at"`
-	UpdatedAt model.ISO8601DateTime `yaml:"updated_at"`
+	Author    string          `yaml:"author"`
+	Parent    string          `yaml:"parent"`
+	Text      string          `yaml:"text"`
+	CreatedAt ISO8601DateTime `yaml:"created_at"`
+	UpdatedAt ISO8601DateTime `yaml:"updated_at"`
 }
 
 func createPosts(
-	r *resolvers.Resolver,
-	users map[string]*model.User,
-) (map[string]*model.Post, error) {
+	db *gorm.DB,
+	users map[string]*User,
+) (map[string]*Post, error) {
 	var postFixtures map[string]*PostFixture
 	loadFixtures("posts", &postFixtures)
 
-	posts := make(map[string]*model.Post)
-	createPostsLevel(r, postFixtures, users, posts)
+	posts := make(map[string]*Post)
+	createPostsLevel(db, postFixtures, users, posts)
 
 	return posts, nil
 }
 
 func createPostsLevel(
-	r *resolvers.Resolver,
+	db *gorm.DB,
 	postFixtures map[string]*PostFixture,
-	users map[string]*model.User,
-	posts map[string]*model.Post,
+	users map[string]*User,
+	posts map[string]*Post,
 ) error {
 	postsCreated := false
 	nextLevelPostFixtures := make(map[string]*PostFixture)
@@ -134,15 +133,15 @@ func createPostsLevel(
 			return fmt.Errorf("could not find user fixture %q (author of post fixture %q)", fixture.Author, fixtureName)
 		}
 
-		post := &model.Post{
-			CreatedAt: model.ISO8601DateTime(time.Now()), //model.ISO8601DateTime(fixture.CreatedAt),
-			UpdatedAt: model.ISO8601DateTime(fixture.UpdatedAt),
+		post := &Post{
+			CreatedAt: ISO8601DateTime(time.Now()), //ISO8601DateTime(fixture.CreatedAt),
+			UpdatedAt: ISO8601DateTime(fixture.UpdatedAt),
 			AuthorID:  author.ID,
 			ParentID:  parentPostId,
 			Text:      fixture.Text,
 		}
 
-		if tx := r.DB.Create(post); tx.Error != nil {
+		if tx := db.Create(post); tx.Error != nil {
 			return fmt.Errorf("unable to create post from fixture %q: %v", fixtureName, tx.Error)
 		}
 
@@ -155,7 +154,7 @@ func createPostsLevel(
 	}
 
 	if len(nextLevelPostFixtures) > 0 {
-		createPostsLevel(r, nextLevelPostFixtures, users, posts)
+		createPostsLevel(db, nextLevelPostFixtures, users, posts)
 	}
 
 	return nil
@@ -168,9 +167,9 @@ type ReactionFixture struct {
 }
 
 func createReactions(
-	r *resolvers.Resolver,
-	users map[string]*model.User,
-	posts map[string]*model.Post,
+	db *gorm.DB,
+	users map[string]*User,
+	posts map[string]*Post,
 ) error {
 	var emotionFixtures map[string]*ReactionFixture
 	loadFixtures("reactions", &emotionFixtures)
@@ -186,18 +185,18 @@ func createReactions(
 			return fmt.Errorf("could not find post fixture %q (post of reaction fixture %q)", fixture.Post, fixtureName)
 		}
 
-		var emotion model.Emotion
+		var emotion Emotion
 		if err := emotion.UnmarshalGQL(strings.ToUpper(fixture.Emotion)); err != nil {
 			return fmt.Errorf("invalid emotion %q (emotion of reaction fixture %q)", fixture.Emotion, fixtureName)
 		}
 
-		reaction := &model.Reaction{
+		reaction := &Reaction{
 			UserId:  user.ID,
 			PostId:  post.ID,
 			Emotion: emotion,
 		}
 
-		if tx := r.DB.Create(reaction); tx.Error != nil {
+		if tx := db.Create(reaction); tx.Error != nil {
 			return fmt.Errorf("unable to create reaction from fixture %q: %v", fixtureName, tx.Error)
 		}
 	}

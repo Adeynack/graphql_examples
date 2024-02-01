@@ -7,15 +7,15 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/adeynack/graphql_examples/examples/go/database"
 	"github.com/adeynack/graphql_examples/examples/go/graph"
+	"github.com/adeynack/graphql_examples/examples/go/graph/model"
 	"github.com/adeynack/graphql_examples/examples/go/graph/resolvers"
 )
 
 const defaultPort = "8080"
 
 func main() {
-	db := database.Initialize()
+	db := model.InitializeDB()
 
 	port := os.Getenv("PORT")
 	if port == "" {

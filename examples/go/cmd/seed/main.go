@@ -7,7 +7,7 @@ import (
 
 	_ "github.com/joho/godotenv/autoload"
 
-	"github.com/adeynack/graphql_examples/examples/go/database/seed"
+	"github.com/adeynack/graphql_examples/examples/go/graph/model"
 	"github.com/adeynack/graphql_examples/examples/go/graph/resolvers"
 )
 
@@ -16,12 +16,12 @@ func main() {
 	resolver := resolvers.InitializeResolver()
 
 	if config.Truncate {
-		if err := seed.TruncateAllData(resolver); err != nil {
+		if err := model.TruncateAllData(resolver.DB); err != nil {
 			panic(err)
 		}
 	}
 
-	if err := seed.SeedData(resolver); err != nil {
+	if err := model.SeedData(resolver.DB, resolver.ServerSalt); err != nil {
 		panic(err)
 	}
 

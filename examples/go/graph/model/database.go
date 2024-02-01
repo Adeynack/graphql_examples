@@ -1,16 +1,15 @@
-package database
+package model
 
 import (
 	"fmt"
 	"os"
 
-	"github.com/adeynack/graphql_examples/examples/go/graph/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
-func Initialize() *gorm.DB {
+func InitializeDB() *gorm.DB {
 	pgHost := env("PGHOST")
 	pgUser := env("PGUSER")
 	pgDatabaseName := env("PGDB", "go_development")
@@ -25,9 +24,9 @@ func Initialize() *gorm.DB {
 	}
 
 	err = db.AutoMigrate(
-		&model.User{},
-		&model.Post{},
-		&model.Reaction{},
+		&User{},
+		&Post{},
+		&Reaction{},
 	)
 	if err != nil {
 		panic(fmt.Errorf("error auto-migrating database: %v", err))

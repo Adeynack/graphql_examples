@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/adeynack/graphql_examples/examples/go/database"
+	"github.com/adeynack/graphql_examples/examples/go/graph/model"
 	"gorm.io/gorm"
 )
 
@@ -20,7 +20,7 @@ type Resolver struct {
 }
 
 func InitializeResolver() *Resolver {
-	database := database.Initialize()
+	database := model.InitializeDB()
 
 	serverSalt := os.Getenv("SERVER_SALT")
 	if serverSalt == "" {

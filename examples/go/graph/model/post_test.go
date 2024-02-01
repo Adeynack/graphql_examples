@@ -3,7 +3,6 @@ package model
 import (
 	"testing"
 
-	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 )
@@ -17,7 +16,7 @@ func Test_Post_AuthorAssociation(t *testing.T) {
 
 		// Setting the author by object should set its author ID automatically when creating.
 		post := &Post{Author: anton, Text: "Bla"}
-		assert.Equal(t, uuid.Nil, post.ID) // no ID set before creation
+		assert.Equal(t, "", post.ID) // no ID set before creation
 		tx := db.Create(post)
 		if !assert.NoError(t, tx.Error) {
 			return
@@ -32,8 +31,8 @@ func Test_Post_AuthorAssociation(t *testing.T) {
 
 func test_Post_DoNotPreloadAuthorByDefault(t *testing.T, db *gorm.DB, originalPost *Post, anton *User) bool {
 	// Retrieving that post by ID should not preload the author when not explicitly requested.
-	var post *Post
-	tx := db.First(&post, originalPost.ID)
+	post := Post{ID: originalPost.ID}
+	tx := db.First(&post)
 	if !assert.NoError(t, tx.Error) {
 		return false
 	}
@@ -44,8 +43,8 @@ func test_Post_DoNotPreloadAuthorByDefault(t *testing.T, db *gorm.DB, originalPo
 
 func test_Post_PreloadAuthorWhenExplicit(t *testing.T, db *gorm.DB, originalPost *Post, anton *User) bool {
 	// Retrieving that post by ID preloading its author should fill both AuthorID and Author.
-	var post *Post
-	tx := db.Preload("Author").First(&post, originalPost.ID)
+	post := Post{ID: originalPost.ID}
+	tx := db.Preload("Author").First(&post)
 	if !assert.NoError(t, tx.Error) {
 		return false
 	}

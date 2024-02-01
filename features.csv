@@ -7,3 +7,7 @@ Database;uuid;✅;✅;✅;Uses UUID as primary key of tables.
 Database;user_password_salted;✅;✅;✅;"In table ""users"", field ""password_digest"" is saved."
 Database;relations;✅;✅;✅;Relations (belongs-to, has-many, has-one) are established in the ORM.
 Database;enums;✅;✅;❌;Database enumerations are used (instead of plain strings).
+GraphQL;lib;✅ ruby-graphql;✅ apollo/server;✅ 99designs/gqlgen;A library for GraphQL server is chosen.
+GraphQL;dev;✅ N/A (code driven);✅ graphql-codegen;✅ 99designs/gqlgen;A library for helping with developping for GraphQL is chosen, if needed.
+GraphQL;no_loading_relation;✅;✅;;Unless a relation is queries through GQL, it is not loaded automatically for nothing.
+GraphQL;n_plus_one;✅;✅;;When loading relation through GQL, no N+1 queries are made to the database.

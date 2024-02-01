@@ -1,12 +1,11 @@
 package model
 
 import (
+	"database/sql"
 	"fmt"
 	"os"
 	"strings"
-	"time"
 
-	"github.com/google/uuid"
 	"gopkg.in/yaml.v3"
 	"gorm.io/gorm"
 )
@@ -98,14 +97,13 @@ type PostFixture struct {
 func createPosts(
 	db *gorm.DB,
 	users map[string]*User,
-) (map[string]*Post, error) {
+) (posts map[string]*Post, err error) {
 	var postFixtures map[string]*PostFixture
 	loadFixtures("posts", &postFixtures)
 
-	posts := make(map[string]*Post)
-	createPostsLevel(db, postFixtures, users, posts)
-
-	return posts, nil
+	posts = make(map[string]*Post)
+	err = createPostsLevel(db, postFixtures, users, posts)
+	return
 }
 
 func createPostsLevel(
@@ -118,10 +116,11 @@ func createPostsLevel(
 	nextLevelPostFixtures := make(map[string]*PostFixture)
 
 	for fixtureName, fixture := range postFixtures {
-		var parentPostId *uuid.UUID
+		var parentPostId sql.NullString
 		if fixture.Parent != "" {
 			if parentPost, ok := posts[fixture.Parent]; ok {
-				parentPostId = &parentPost.ID
+				parentPostId.Valid = true
+				parentPostId.String = parentPost.ID
 			} else {
 				nextLevelPostFixtures[fixtureName] = fixture
 				continue
@@ -134,7 +133,7 @@ func createPostsLevel(
 		}
 
 		post := &Post{
-			CreatedAt: ISO8601DateTime(time.Now()), //ISO8601DateTime(fixture.CreatedAt),
+			CreatedAt: ISO8601DateTime(fixture.CreatedAt),
 			UpdatedAt: ISO8601DateTime(fixture.UpdatedAt),
 			AuthorID:  author.ID,
 			ParentID:  parentPostId,

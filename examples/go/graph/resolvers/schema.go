@@ -11,7 +11,6 @@ import (
 
 	"github.com/adeynack/graphql_examples/examples/go/graph"
 	"github.com/adeynack/graphql_examples/examples/go/graph/model"
-	"github.com/google/uuid"
 )
 
 // LogIn is the resolver for the logIn field.
@@ -46,13 +45,9 @@ func (r *queryResolver) Me(ctx context.Context) (*model.User, error) {
 
 // Post is the resolver for the post field.
 func (r *queryResolver) Post(ctx context.Context, id string) (*model.Post, error) {
-	parsedId, err := uuid.Parse(id)
-	if err != nil {
-		return nil, nil
-	}
 	post := &model.Post{
-		ID:        parsedId,
-		AuthorID:  uuid.MustParse("e642bb00-8f89-4167-9255-4cc2671a1ee9"),
+		ID:        id,
+		AuthorID:  "e642bb00-8f89-4167-9255-4cc2671a1ee9",
 		Text:      "Commodo anim veniam et anim consectetur aliquip tempor.",
 		CreatedAt: model.ISO8601DateTime(time.Now()),
 	}

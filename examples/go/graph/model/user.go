@@ -5,12 +5,10 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"fmt"
-
-	"github.com/google/uuid"
 )
 
 type User struct {
-	ID             uuid.UUID       `json:"id" gorm:"type:uuid;default:gen_random_uuid()"`
+	ID             string          `json:"id" gorm:"type:uuid;default:gen_random_uuid()"`
 	CreatedAt      ISO8601DateTime `json:"createdAt" gorm:"not null"`
 	UpdatedAt      ISO8601DateTime `json:"updatedAt" gorm:"not null"`
 	Email          string          `json:"email" gorm:"uniqueIndex;not null"`

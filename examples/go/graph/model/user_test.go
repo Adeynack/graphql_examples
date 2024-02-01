@@ -1,6 +1,8 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 func createAnton(db *gorm.DB) (user *User, err error) {
 	user = &User{
@@ -13,6 +15,7 @@ func createAnton(db *gorm.DB) (user *User, err error) {
 		return
 	}
 	// Reloading, since timestamps obtained on select are millisecond-truncated vs those set at create in-memory
-	err = db.First(&user, user.ID).Error
+	user = &User{ID: user.ID}
+	err = db.First(&user).Error
 	return
 }

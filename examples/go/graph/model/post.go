@@ -1,14 +1,14 @@
 package model
 
-import "github.com/google/uuid"
+import "database/sql"
 
 type Post struct {
-	ID        uuid.UUID       `json:"id" gorm:"type:uuid;default:gen_random_uuid()"`
+	ID        string          `json:"id" gorm:"type:uuid;default:gen_random_uuid()"`
 	CreatedAt ISO8601DateTime `json:"createdAt" gorm:"not null"`
 	UpdatedAt ISO8601DateTime `json:"updatedAt" gorm:"not null"`
-	AuthorID  uuid.UUID       `json:"authorId" gorm:"not null"`
+	AuthorID  string          `json:"authorId" gorm:"not null"`
 	Author    *User           `json:"author"`
-	ParentID  *uuid.UUID      `json:"parentId"`
+	ParentID  sql.NullString  `json:"parentId"`
 	Parent    *Post           `json:"parent,omitempty"`
 	Text      string          `json:"text" gorm:"not null"`
 	Reactions []*Reaction     `json:"reactions"`

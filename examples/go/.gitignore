@@ -4,3 +4,4 @@
 # Misc
 bin
 tmp
+__debug_bin*

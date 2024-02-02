@@ -1,10 +1,12 @@
 package resolvers
 
 import (
+	"context"
 	"fmt"
 	"os"
 
 	"github.com/adeynack/graphql_examples/examples/go/graph/model"
+	"github.com/adeynack/graphql_examples/examples/go/prj"
 	"gorm.io/gorm"
 )
 
@@ -30,5 +32,13 @@ func InitializeResolver() *Resolver {
 	return &Resolver{
 		DB:         database,
 		ServerSalt: serverSalt,
+	}
+}
+
+func (r *Resolver) ToRequestContext(ctx context.Context) *prj.ReqCtx {
+	return &prj.ReqCtx{
+		Context:    ctx,
+		DB:         r.DB.WithContext(ctx),
+		ServerSalt: r.ServerSalt,
 	}
 }

@@ -10,12 +10,13 @@ import (
 
 	"github.com/adeynack/graphql_examples/examples/go/graph"
 	"github.com/adeynack/graphql_examples/examples/go/graph/model"
+	"github.com/adeynack/graphql_examples/examples/go/graph/resolvers/mutation"
 	"github.com/adeynack/graphql_examples/examples/go/graph/resolvers/query"
 )
 
 // LogIn is the resolver for the logIn field.
 func (r *mutationResolver) LogIn(ctx context.Context, input model.LogInInput) (*model.LogInResult, error) {
-	panic(fmt.Errorf("not implemented: LogIn - logIn"))
+	return mutation.LogIn(r.ToRequestContext(ctx), input)
 }
 
 // LogOut is the resolver for the logOut field.

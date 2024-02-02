@@ -5,26 +5,23 @@ import (
 	"net/http"
 	"os"
 
+	_ "github.com/joho/godotenv/autoload"
+
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/adeynack/graphql_examples/examples/go/graph"
-	"github.com/adeynack/graphql_examples/examples/go/graph/model"
 	"github.com/adeynack/graphql_examples/examples/go/graph/resolvers"
 )
 
 const defaultPort = "30301"
 
 func main() {
-	db := model.InitializeDB()
-
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
 	}
 
-	resolver := &resolvers.Resolver{
-		DB: db,
-	}
+	resolver := resolvers.InitializeResolver()
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: resolver}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/graphql"))

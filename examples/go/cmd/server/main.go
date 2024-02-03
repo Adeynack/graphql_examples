@@ -23,6 +23,8 @@ func main() {
 
 	resolver := resolvers.InitializeResolver()
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: resolver}))
+	srv.SetErrorPresenter(graph.ErrorPresenter)
+	srv.SetRecoverFunc(graph.RecoverFunc)
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/graphql"))
 	http.Handle("/graphql", srv)

@@ -25,6 +25,7 @@ func InitializeDB() *gorm.DB {
 
 	err = db.AutoMigrate(
 		&User{},
+		&ApiSession{},
 		&Post{},
 		&Reaction{},
 	)

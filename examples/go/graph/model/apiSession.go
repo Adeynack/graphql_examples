@@ -12,7 +12,7 @@ type ApiSession struct {
 	UpdatedAt ISO8601DateTime `gorm:"not null"`
 	UserID    string          `gorm:"not null"`
 	User      *User           ``
-	Token     string          `gorm:"not null"`
+	Token     string          `gorm:"not null,index"`
 }
 
 const (

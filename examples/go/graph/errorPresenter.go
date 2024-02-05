@@ -3,6 +3,7 @@ package graph
 import (
 	"context"
 	"errors"
+	"log"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/vektah/gqlparser/v2/gqlerror"
@@ -17,9 +18,11 @@ func ErrorPresenter(ctx context.Context, originalErr error) *gqlerror.Error {
 
 	// Otherwise, just let the user know something went wrong.
 	// This prevents random leaking of implementation details.
+	log.Printf("\n[ERROR] %v\n\n", originalErr)
 	return gqlerror.Errorf("internal server error")
 }
 
 func RecoverFunc(ctx context.Context, err interface{}) error {
+	log.Printf("\n[PANIC] %v\n\n", err)
 	return gqlerror.Errorf("internal server error")
 }

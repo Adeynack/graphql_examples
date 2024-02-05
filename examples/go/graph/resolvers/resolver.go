@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/adeynack/graphql_examples/examples/go/graph/model"
-	"github.com/adeynack/graphql_examples/examples/go/prj"
+	"github.com/adeynack/graphql_examples/examples/go/service"
 	"gorm.io/gorm"
 )
 
@@ -35,10 +35,12 @@ func InitializeResolver() *Resolver {
 	}
 }
 
-func (r *Resolver) ToRequestContext(ctx context.Context) *prj.ReqCtx {
-	return &prj.ReqCtx{
+func (r *Resolver) ToRequestContext(ctx context.Context) *service.ReqCtx {
+	c := &service.ReqCtx{
 		Context:    ctx,
 		DB:         r.DB.WithContext(ctx),
 		ServerSalt: r.ServerSalt,
 	}
+	c.ExtractCtxInformation()
+	return c
 }

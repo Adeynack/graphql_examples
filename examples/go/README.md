@@ -1,5 +1,15 @@
 # Go
 
+## Useful Commands
+
+| Command        | Description                                                                             |
+| -------------- | --------------------------------------------------------------------------------------- |
+| `make dev`     | Starts the project, observing file changes and re-generating/re-building automatically. |
+| `make check`   | Runs tests & lint tools.                                                                |
+| `make db_init` | Creates the development database.                                                       |
+| `make db_seed` | Seeds the database with expected fixtures.                                              |
+| `make db_drop` | Drops the development database.                                                         |
+
 ## Stack
 
 | Topic   | Library                                       |

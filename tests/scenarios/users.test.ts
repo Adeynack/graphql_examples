@@ -21,7 +21,7 @@ scenario('Users', () => {
     expect(errors.map((e) => e.message)).toContain('Not authorized');
   });
 
-  test('updateUser is not accessible not authenticated', async () => {
+  test('updateUser is not accessible when not authenticated', async () => {
     const errors = await expectGqlToFail({
       query: gql`
         mutation UpdateUserName($id: ID!, $name: String!) {
@@ -39,7 +39,7 @@ scenario('Users', () => {
     expect(errors.map((e) => e.message)).toContain('Not authorized');
   });
 
-  test('deleteUser is not accessible not authenticated', async () => {
+  test('deleteUser is not accessible when not authenticated', async () => {
     const errors = await expectGqlToFail({
       query: gql`
         mutation DeleteUser($id: ID!) {
@@ -49,6 +49,21 @@ scenario('Users', () => {
         }
       `,
       variables: { id: 'foo' },
+    });
+    expect(errors.map((e) => e.message)).toContain('Not authorized');
+  });
+
+  test('users is not accessible when not authenticated', async () => {
+    const errors = await expectGqlToFail({
+      query: gql`
+        {
+          users {
+            id
+            email
+            name
+          }
+        }
+      `,
     });
     expect(errors.map((e) => e.message)).toContain('Not authorized');
   });

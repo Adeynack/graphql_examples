@@ -36,7 +36,7 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, input model.UpdateUse
 
 // DeleteUser is the resolver for the deleteUser field.
 func (r *mutationResolver) DeleteUser(ctx context.Context, input model.DeleteUserInput) (*model.DeleteUserResponse, error) {
-	panic(fmt.Errorf("not implemented: DeleteUser - deleteUser"))
+	return mutation.DeleteUser(r.ToRequestContext(ctx), input)
 }
 
 // Me is the resolver for the me field.

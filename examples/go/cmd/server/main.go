@@ -32,6 +32,7 @@ func main() {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
 	router.Use(service.AuthenticationMiddleware(resolver.DB))
+
 	router.Handle("/", playground.Handler("GraphQL playground", "/graphql"))
 	router.Handle("/graphql", srv)
 	router.Post("/data_resets", service.DataResetHandler(resolver.DB, resolver.ServerSalt))

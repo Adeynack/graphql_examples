@@ -41,7 +41,7 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, input model.DeleteUse
 
 // Me is the resolver for the me field.
 func (r *queryResolver) Me(ctx context.Context) (*model.User, error) {
-	return query.Me()
+	return query.Me(*r.ToRequestContext(ctx))
 }
 
 // Post is the resolver for the post field.

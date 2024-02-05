@@ -7,7 +7,7 @@ type Query {
 }
 
 type Mutation {
-  logIn(input: LogInInput!): LogInResult!
+  logIn(input: LogInInput!): LogInResponse!
   logOut(input: LogOutInput!): LogOutResponse!
   createUser(input: CreateUserInput!): CreateUserResponse!
   updateUser(input: UpdateUserInput!): UpdateUserResponse!
@@ -20,7 +20,7 @@ input LogInInput {
   password: String!
 }
 
-type LogInResult {
+type LogInResponse {
   clientMutationId: ID
   token: String!
   user: User!

@@ -15,13 +15,13 @@ import (
 )
 
 // LogIn is the resolver for the logIn field.
-func (r *mutationResolver) LogIn(ctx context.Context, input model.LogInInput) (*model.LogInResult, error) {
+func (r *mutationResolver) LogIn(ctx context.Context, input model.LogInInput) (*model.LogInResponse, error) {
 	return mutation.LogIn(r.ToRequestContext(ctx), input)
 }
 
 // LogOut is the resolver for the logOut field.
 func (r *mutationResolver) LogOut(ctx context.Context, input model.LogOutInput) (*model.LogOutResponse, error) {
-	panic(fmt.Errorf("not implemented: LogOut - logOut"))
+	return mutation.LogOut(r.ToRequestContext(ctx), input)
 }
 
 // CreateUser is the resolver for the createUser field.

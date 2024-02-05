@@ -10,42 +10,42 @@ import (
 	"gorm.io/gorm"
 )
 
-func LogIn(ctx *service.ReqCtx, input model.LogInInput) (*model.LogInResult, error) {
-	result := &model.LogInResult{ClientMutationID: input.ClientMutationID}
+func LogIn(ctx *service.ReqCtx, input model.LogInInput) (*model.LogInResponse, error) {
+	response := &model.LogInResponse{ClientMutationID: input.ClientMutationID}
 
 	// Retrieve user by email
-	result.User = &model.User{Email: input.Email}
-	if err := ctx.DB.Where(result.User).First(result.User).Error; err != nil {
+	response.User = &model.User{Email: input.Email}
+	if err := ctx.DB.Where(response.User).First(response.User).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return result, graph.UserFacingError("User not found")
+			return response, graph.UserFacingError("User not found")
 		} else {
-			return result, fmt.Errorf("error retrieving user: %v", err)
+			return response, fmt.Errorf("error retrieving user: %v", err)
 		}
 	}
 
 	// Check password
-	if passwordOk, err := result.User.CheckPassword(ctx.ServerSalt, input.Password); err != nil {
-		return result, fmt.Errorf("error checking password: %v", err)
+	if passwordOk, err := response.User.CheckPassword(ctx.ServerSalt, input.Password); err != nil {
+		return response, fmt.Errorf("error checking password: %v", err)
 	} else if !passwordOk {
-		return result, graph.UserFacingError("Incorrect password")
+		return response, graph.UserFacingError("Incorrect password")
 	}
 
 	// Check if current session is of the user logging in.
-	if ctx.CurrentUser != nil && ctx.CurrentUser.ID == result.User.ID {
-		result.Token = ctx.ApiSession.Token
-		return result, nil
+	if ctx.CurrentUser != nil && ctx.CurrentUser.ID == response.User.ID {
+		response.Token = ctx.ApiSession.Token
+		return response, nil
 	}
 
 	// Create Session
-	session := &model.ApiSession{User: result.User}
+	session := &model.ApiSession{User: response.User}
 	if err := session.EnsureToken(); err != nil {
-		return result, fmt.Errorf("error creating token: %v", err)
+		return response, fmt.Errorf("error creating token: %v", err)
 	}
 	if err := ctx.DB.Create(session).Error; err != nil {
-		return result, fmt.Errorf("error creating session record: %v", err)
+		return response, fmt.Errorf("error creating session record: %v", err)
 	}
-	result.Token = session.Token
+	response.Token = session.Token
 	ctx.SetTokenCookie(session.Token)
 
-	return result, nil
+	return response, nil
 }

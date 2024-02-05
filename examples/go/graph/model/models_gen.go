@@ -36,7 +36,7 @@ type LogInInput struct {
 	Password         string  `json:"password"`
 }
 
-type LogInResult struct {
+type LogInResponse struct {
 	ClientMutationID *string `json:"clientMutationId,omitempty"`
 	Token            string  `json:"token"`
 	User             *User   `json:"user"`

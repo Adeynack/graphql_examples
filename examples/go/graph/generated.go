@@ -57,7 +57,7 @@ type ComplexityRoot struct {
 		User             func(childComplexity int) int
 	}
 
-	LogInResult struct {
+	LogInResponse struct {
 		ClientMutationID func(childComplexity int) int
 		Token            func(childComplexity int) int
 		User             func(childComplexity int) int
@@ -116,7 +116,7 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	LogIn(ctx context.Context, input model.LogInInput) (*model.LogInResult, error)
+	LogIn(ctx context.Context, input model.LogInInput) (*model.LogInResponse, error)
 	LogOut(ctx context.Context, input model.LogOutInput) (*model.LogOutResponse, error)
 	CreateUser(ctx context.Context, input model.CreateUserInput) (*model.CreateUserResponse, error)
 	UpdateUser(ctx context.Context, input model.UpdateUserInput) (*model.UpdateUserResponse, error)
@@ -177,26 +177,26 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.DeleteUserResponse.User(childComplexity), true
 
-	case "LogInResult.clientMutationId":
-		if e.complexity.LogInResult.ClientMutationID == nil {
+	case "LogInResponse.clientMutationId":
+		if e.complexity.LogInResponse.ClientMutationID == nil {
 			break
 		}
 
-		return e.complexity.LogInResult.ClientMutationID(childComplexity), true
+		return e.complexity.LogInResponse.ClientMutationID(childComplexity), true
 
-	case "LogInResult.token":
-		if e.complexity.LogInResult.Token == nil {
+	case "LogInResponse.token":
+		if e.complexity.LogInResponse.Token == nil {
 			break
 		}
 
-		return e.complexity.LogInResult.Token(childComplexity), true
+		return e.complexity.LogInResponse.Token(childComplexity), true
 
-	case "LogInResult.user":
-		if e.complexity.LogInResult.User == nil {
+	case "LogInResponse.user":
+		if e.complexity.LogInResponse.User == nil {
 			break
 		}
 
-		return e.complexity.LogInResult.User(childComplexity), true
+		return e.complexity.LogInResponse.User(childComplexity), true
 
 	case "LogOutResponse.clientMutationId":
 		if e.complexity.LogOutResponse.ClientMutationID == nil {
@@ -938,8 +938,8 @@ func (ec *executionContext) fieldContext_DeleteUserResponse_user(ctx context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _LogInResult_clientMutationId(ctx context.Context, field graphql.CollectedField, obj *model.LogInResult) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_LogInResult_clientMutationId(ctx, field)
+func (ec *executionContext) _LogInResponse_clientMutationId(ctx context.Context, field graphql.CollectedField, obj *model.LogInResponse) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_LogInResponse_clientMutationId(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -966,9 +966,9 @@ func (ec *executionContext) _LogInResult_clientMutationId(ctx context.Context, f
 	return ec.marshalOID2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_LogInResult_clientMutationId(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_LogInResponse_clientMutationId(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "LogInResult",
+		Object:     "LogInResponse",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -979,8 +979,8 @@ func (ec *executionContext) fieldContext_LogInResult_clientMutationId(ctx contex
 	return fc, nil
 }
 
-func (ec *executionContext) _LogInResult_token(ctx context.Context, field graphql.CollectedField, obj *model.LogInResult) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_LogInResult_token(ctx, field)
+func (ec *executionContext) _LogInResponse_token(ctx context.Context, field graphql.CollectedField, obj *model.LogInResponse) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_LogInResponse_token(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1010,9 +1010,9 @@ func (ec *executionContext) _LogInResult_token(ctx context.Context, field graphq
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_LogInResult_token(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_LogInResponse_token(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "LogInResult",
+		Object:     "LogInResponse",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -1023,8 +1023,8 @@ func (ec *executionContext) fieldContext_LogInResult_token(ctx context.Context, 
 	return fc, nil
 }
 
-func (ec *executionContext) _LogInResult_user(ctx context.Context, field graphql.CollectedField, obj *model.LogInResult) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_LogInResult_user(ctx, field)
+func (ec *executionContext) _LogInResponse_user(ctx context.Context, field graphql.CollectedField, obj *model.LogInResponse) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_LogInResponse_user(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1054,9 +1054,9 @@ func (ec *executionContext) _LogInResult_user(ctx context.Context, field graphql
 	return ec.marshalNUser2ᚖgithubᚗcomᚋadeynackᚋgraphql_examplesᚋexamplesᚋgoᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_LogInResult_user(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_LogInResponse_user(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "LogInResult",
+		Object:     "LogInResponse",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -1146,9 +1146,9 @@ func (ec *executionContext) _Mutation_logIn(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.LogInResult)
+	res := resTmp.(*model.LogInResponse)
 	fc.Result = res
-	return ec.marshalNLogInResult2ᚖgithubᚗcomᚋadeynackᚋgraphql_examplesᚋexamplesᚋgoᚋgraphᚋmodelᚐLogInResult(ctx, field.Selections, res)
+	return ec.marshalNLogInResponse2ᚖgithubᚗcomᚋadeynackᚋgraphql_examplesᚋexamplesᚋgoᚋgraphᚋmodelᚐLogInResponse(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_logIn(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1160,13 +1160,13 @@ func (ec *executionContext) fieldContext_Mutation_logIn(ctx context.Context, fie
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "clientMutationId":
-				return ec.fieldContext_LogInResult_clientMutationId(ctx, field)
+				return ec.fieldContext_LogInResponse_clientMutationId(ctx, field)
 			case "token":
-				return ec.fieldContext_LogInResult_token(ctx, field)
+				return ec.fieldContext_LogInResponse_token(ctx, field)
 			case "user":
-				return ec.fieldContext_LogInResult_user(ctx, field)
+				return ec.fieldContext_LogInResponse_user(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type LogInResult", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type LogInResponse", field.Name)
 		},
 	}
 	defer func() {
@@ -4867,26 +4867,26 @@ func (ec *executionContext) _DeleteUserResponse(ctx context.Context, sel ast.Sel
 	return out
 }
 
-var logInResultImplementors = []string{"LogInResult"}
+var logInResponseImplementors = []string{"LogInResponse"}
 
-func (ec *executionContext) _LogInResult(ctx context.Context, sel ast.SelectionSet, obj *model.LogInResult) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, logInResultImplementors)
+func (ec *executionContext) _LogInResponse(ctx context.Context, sel ast.SelectionSet, obj *model.LogInResponse) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, logInResponseImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	deferred := make(map[string]*graphql.FieldSet)
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("LogInResult")
+			out.Values[i] = graphql.MarshalString("LogInResponse")
 		case "clientMutationId":
-			out.Values[i] = ec._LogInResult_clientMutationId(ctx, field, obj)
+			out.Values[i] = ec._LogInResponse_clientMutationId(ctx, field, obj)
 		case "token":
-			out.Values[i] = ec._LogInResult_token(ctx, field, obj)
+			out.Values[i] = ec._LogInResponse_token(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
 		case "user":
-			out.Values[i] = ec._LogInResult_user(ctx, field, obj)
+			out.Values[i] = ec._LogInResponse_user(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -5827,18 +5827,18 @@ func (ec *executionContext) unmarshalNLogInInput2githubᚗcomᚋadeynackᚋgraph
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNLogInResult2githubᚗcomᚋadeynackᚋgraphql_examplesᚋexamplesᚋgoᚋgraphᚋmodelᚐLogInResult(ctx context.Context, sel ast.SelectionSet, v model.LogInResult) graphql.Marshaler {
-	return ec._LogInResult(ctx, sel, &v)
+func (ec *executionContext) marshalNLogInResponse2githubᚗcomᚋadeynackᚋgraphql_examplesᚋexamplesᚋgoᚋgraphᚋmodelᚐLogInResponse(ctx context.Context, sel ast.SelectionSet, v model.LogInResponse) graphql.Marshaler {
+	return ec._LogInResponse(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNLogInResult2ᚖgithubᚗcomᚋadeynackᚋgraphql_examplesᚋexamplesᚋgoᚋgraphᚋmodelᚐLogInResult(ctx context.Context, sel ast.SelectionSet, v *model.LogInResult) graphql.Marshaler {
+func (ec *executionContext) marshalNLogInResponse2ᚖgithubᚗcomᚋadeynackᚋgraphql_examplesᚋexamplesᚋgoᚋgraphᚋmodelᚐLogInResponse(ctx context.Context, sel ast.SelectionSet, v *model.LogInResponse) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
 		}
 		return graphql.Null
 	}
-	return ec._LogInResult(ctx, sel, v)
+	return ec._LogInResponse(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNLogOutInput2githubᚗcomᚋadeynackᚋgraphql_examplesᚋexamplesᚋgoᚋgraphᚋmodelᚐLogOutInput(ctx context.Context, v interface{}) (model.LogOutInput, error) {

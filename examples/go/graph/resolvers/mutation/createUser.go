@@ -12,10 +12,10 @@ import (
 func CreateUser(ctx service.ReqCtx, input model.CreateUserInput) (*model.CreateUserResponse, error) {
 	response := &model.CreateUserResponse{ClientMutationID: input.ClientMutationID}
 	if err := gqlpolicy.Authenticated(ctx); err != nil {
-		return response, err
+		return nil, err
 	}
 	if err := checkForExistingUserPerEmail(ctx, input.Email); err != nil {
-		return response, err
+		return nil, err
 	}
 
 	// Creating new user
@@ -24,11 +24,12 @@ func CreateUser(ctx service.ReqCtx, input model.CreateUserInput) (*model.CreateU
 		Name:  input.Name,
 	}
 	if err := response.User.SetPassword(ctx.ServerSalt, input.Password); err != nil {
-		return response, fmt.Errorf("error setting new user's password: %v", err)
+		return nil, fmt.Errorf("error setting new user's password: %v", err)
 	}
 	if err := ctx.DB.Create(response.User).Error; err != nil {
-		return response, fmt.Errorf("error creating new user: %v", err)
+		return nil, fmt.Errorf("error creating new user: %v", err)
 	}
+
 	return response, nil
 }
 

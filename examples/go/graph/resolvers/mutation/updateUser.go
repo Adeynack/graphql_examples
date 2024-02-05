@@ -9,7 +9,7 @@ import (
 func UpdateUser(ctx service.ReqCtx, input model.UpdateUserInput) (*model.UpdateUserResponse, error) {
 	response := &model.UpdateUserResponse{ClientMutationID: input.ClientMutationID}
 	if err := gqlpolicy.Authenticated(ctx); err != nil {
-		return response, err
+		return nil, err
 	}
 
 	return response, nil

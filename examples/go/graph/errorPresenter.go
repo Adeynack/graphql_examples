@@ -15,10 +15,14 @@ func ErrorPresenter(ctx context.Context, originalErr error) *gqlerror.Error {
 	if errors.As(originalErr, &userFacingError) {
 		return graphql.DefaultErrorPresenter(ctx, originalErr)
 	}
+	var graphqlError *gqlerror.Error
+	if errors.As(originalErr, &graphqlError) {
+		return graphql.DefaultErrorPresenter(ctx, originalErr)
+	}
 
 	// Otherwise, just let the user know something went wrong.
 	// This prevents random leaking of implementation details.
-	log.Printf("\n🔴[ERROR] %v\n\n", originalErr)
+	log.Printf("\n🔴[ERROR][%T] %v\n\n", originalErr, originalErr)
 	return gqlerror.Errorf("internal server error")
 }
 

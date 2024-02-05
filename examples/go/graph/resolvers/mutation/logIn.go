@@ -17,17 +17,17 @@ func LogIn(ctx service.ReqCtx, input model.LogInInput) (*model.LogInResponse, er
 	response.User = &model.User{Email: input.Email}
 	if err := ctx.DB.Where(response.User).First(response.User).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return response, graph.UserFacingError("User not found")
+			return nil, graph.UserFacingError("User not found")
 		} else {
-			return response, fmt.Errorf("error retrieving user: %v", err)
+			return nil, fmt.Errorf("error retrieving user: %v", err)
 		}
 	}
 
 	// Check password
 	if passwordOk, err := response.User.CheckPassword(ctx.ServerSalt, input.Password); err != nil {
-		return response, fmt.Errorf("error checking password: %v", err)
+		return nil, fmt.Errorf("error checking password: %v", err)
 	} else if !passwordOk {
-		return response, graph.UserFacingError("Incorrect password")
+		return nil, graph.UserFacingError("Incorrect password")
 	}
 
 	// Check if current session is of the user logging in.
@@ -39,10 +39,10 @@ func LogIn(ctx service.ReqCtx, input model.LogInInput) (*model.LogInResponse, er
 	// Create Session
 	session := &model.ApiSession{User: response.User}
 	if err := session.EnsureToken(); err != nil {
-		return response, fmt.Errorf("error creating token: %v", err)
+		return nil, fmt.Errorf("error creating token: %v", err)
 	}
 	if err := ctx.DB.Create(session).Error; err != nil {
-		return response, fmt.Errorf("error creating session record: %v", err)
+		return nil, fmt.Errorf("error creating session record: %v", err)
 	}
 	response.Token = session.Token
 	ctx.SetTokenCookie(session.Token)

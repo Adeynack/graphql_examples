@@ -14,7 +14,7 @@ func LogOut(ctx service.ReqCtx, input model.LogOutInput) (*model.LogOutResponse,
 	if ctx.ApiSession != nil {
 		err := ctx.DB.Delete(ctx.ApiSession).Error
 		if err != nil {
-			return response, fmt.Errorf("error deleting ApiSession with ID %q: %v", ctx.ApiSession.ID, err)
+			return nil, fmt.Errorf("error deleting ApiSession with ID %q: %v", ctx.ApiSession.ID, err)
 		}
 	}
 

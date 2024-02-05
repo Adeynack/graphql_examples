@@ -9,7 +9,7 @@ gen_watch:
 run:
 	go run cmd/server/*.go
 
-dev: gen build
+dev:
 	overmind start -f Procfile.dev -p 30301
 
 # Build binaries

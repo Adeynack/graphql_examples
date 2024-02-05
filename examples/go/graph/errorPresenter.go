@@ -11,7 +11,7 @@ import (
 
 func ErrorPresenter(ctx context.Context, originalErr error) *gqlerror.Error {
 	// Only return error messages explicitly wrapped as user-facing.
-	var userFacingError UserFacingErrorWrapper
+	var userFacingError *UserFacingErrorWrapper
 	if errors.As(originalErr, &userFacingError) {
 		return graphql.DefaultErrorPresenter(ctx, originalErr)
 	}

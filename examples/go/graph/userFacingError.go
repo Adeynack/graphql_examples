@@ -13,10 +13,10 @@ func (e UserFacingErrorWrapper) Error() string {
 	return e.err.Error()
 }
 
-func UserFacingError(text string) UserFacingErrorWrapper {
-	return UserFacingErrorWrapper{errors.New(text)}
+func UserFacingError(text string) *UserFacingErrorWrapper {
+	return &UserFacingErrorWrapper{errors.New(text)}
 }
 
-func UserFacingErrorf(format string, a ...any) UserFacingErrorWrapper {
-	return UserFacingErrorWrapper{fmt.Errorf(format, a...)}
+func UserFacingErrorf(format string, a ...any) *UserFacingErrorWrapper {
+	return &UserFacingErrorWrapper{fmt.Errorf(format, a...)}
 }

@@ -1,7 +1,7 @@
 package model
 
 type JsonError struct {
-	Status uint             `json:"status"`
+	Status int              `json:"status"`
 	Errors []JsonErrorError `json:"errors"`
 }
 

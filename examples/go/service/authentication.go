@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"log"
 	"net/http"
@@ -119,17 +118,7 @@ func failFromInvalidToken(w http.ResponseWriter, r *http.Request) {
 	w.Header().Del(AUTHORIZATION_HEADER)
 
 	// Respond with a JSON error.
-	jsonError := model.JsonError{
-		Status: http.StatusUnauthorized,
-		Errors: []model.JsonErrorError{
-			{Message: "Invalid bearer token"},
-		},
-	}
-	content, err := json.Marshal(jsonError)
-	if err != nil {
-		content = []byte(jsonError.Errors[0].Message)
-	}
-	http.Error(w, string(content), int(jsonError.Status))
+	failWithJson(w, http.StatusUnauthorized, "Invalid bearer token")
 }
 
 func updateTokenCookie(w http.ResponseWriter, token string) {

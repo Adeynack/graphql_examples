@@ -13,6 +13,7 @@ import (
 	"github.com/adeynack/graphql_examples/examples/go/graph/resolvers"
 	"github.com/adeynack/graphql_examples/examples/go/service"
 	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 )
 
 const defaultPort = "30301"
@@ -29,10 +30,11 @@ func main() {
 	srv.SetRecoverFunc(graph.RecoverFunc)
 
 	router := chi.NewRouter()
+	router.Use(middleware.Logger)
 	router.Use(service.AuthenticationMiddleware(resolver.DB))
 	router.Handle("/", playground.Handler("GraphQL playground", "/graphql"))
 	router.Handle("/graphql", srv)
-	router.Handle("/data_resets", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {}))
+	router.Post("/data_resets", service.DataResetHandler(resolver.DB, resolver.ServerSalt))
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))

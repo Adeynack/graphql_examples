@@ -34,6 +34,9 @@ func TruncateAllData(db *gorm.DB) error {
 	if tx := db.Exec("delete from posts"); tx.Error != nil {
 		return fmt.Errorf("failed to delete posts: %v", tx.Error)
 	}
+	if tx := db.Exec("delete from api_sessions"); tx.Error != nil {
+		return fmt.Errorf("failed to delete API sessions: %v", tx.Error)
+	}
 	if tx := db.Exec("delete from users"); tx.Error != nil {
 		return fmt.Errorf("failed to delete users: %v", tx.Error)
 	}

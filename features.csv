@@ -11,3 +11,5 @@ GraphQL;lib;✅ ruby-graphql;✅ apollo/server;✅ 99designs/gqlgen;A library fo
 GraphQL;dev;✅ N/A (code driven);✅ graphql-codegen;✅ 99designs/gqlgen;A library for helping with developping for GraphQL is chosen, if needed.
 GraphQL;no_loading_relation;✅;✅;;Unless a relation is queries through GQL, it is not loaded automatically for nothing.
 GraphQL;n_plus_one;✅;✅;;When loading relation through GQL, no N+1 queries are made to the database.
+Service;auth_with_cookie;✅;?;✅;For convenience, authenticating with a cookie (mutation `logIn` creates it) is also possible (eg: for using `GraphiQL` properly).
+Service;data_reset_endpoint;✅;✅;wip;`POST /data_reset` truncate all DB data and re-seeds it.

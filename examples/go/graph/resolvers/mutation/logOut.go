@@ -7,7 +7,7 @@ import (
 	"github.com/adeynack/graphql_examples/examples/go/service"
 )
 
-func LogOut(ctx *service.ReqCtx, input model.LogOutInput) (*model.LogOutResponse, error) {
+func LogOut(ctx service.ReqCtx, input model.LogOutInput) (*model.LogOutResponse, error) {
 	response := &model.LogOutResponse{ClientMutationID: input.ClientMutationID}
 
 	// Delete session

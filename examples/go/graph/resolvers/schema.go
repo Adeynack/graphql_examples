@@ -26,7 +26,7 @@ func (r *mutationResolver) LogOut(ctx context.Context, input model.LogOutInput) 
 
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUserInput) (*model.CreateUserResponse, error) {
-	panic(fmt.Errorf("not implemented: CreateUser - createUser"))
+	return mutation.CreateUser(r.ToRequestContext(ctx), input)
 }
 
 // UpdateUser is the resolver for the updateUser field.
@@ -41,7 +41,7 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, input model.DeleteUse
 
 // Me is the resolver for the me field.
 func (r *queryResolver) Me(ctx context.Context) (*model.User, error) {
-	return query.Me(*r.ToRequestContext(ctx))
+	return query.Me(r.ToRequestContext(ctx))
 }
 
 // Post is the resolver for the post field.

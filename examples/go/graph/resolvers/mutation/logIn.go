@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func LogIn(ctx *service.ReqCtx, input model.LogInInput) (*model.LogInResponse, error) {
+func LogIn(ctx service.ReqCtx, input model.LogInInput) (*model.LogInResponse, error) {
 	response := &model.LogInResponse{ClientMutationID: input.ClientMutationID}
 
 	// Retrieve user by email

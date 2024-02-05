@@ -35,8 +35,8 @@ func InitializeResolver() *Resolver {
 	}
 }
 
-func (r *Resolver) ToRequestContext(ctx context.Context) *service.ReqCtx {
-	c := &service.ReqCtx{
+func (r *Resolver) ToRequestContext(ctx context.Context) service.ReqCtx {
+	c := service.ReqCtx{
 		Context:    ctx,
 		DB:         r.DB.WithContext(ctx),
 		ServerSalt: r.ServerSalt,

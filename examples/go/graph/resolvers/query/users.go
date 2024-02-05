@@ -11,10 +11,10 @@ import (
 func Users(ctx service.ReqCtx) ([]*model.User, error) {
 	var response []*model.User
 	if err := gqlpolicy.Authenticated(ctx); err != nil {
-		return response, err
+		return nil, err
 	}
-	if err := ctx.DB.Find(&response).Error; err != nil {
-		return response, fmt.Errorf("error selecting users: %v", err)
+	if err := ctx.DB.Order("users.name").Find(&response).Error; err != nil {
+		return nil, fmt.Errorf("error selecting users: %v", err)
 	}
 	return response, nil
 }

@@ -83,24 +83,20 @@ scenario('Users', () => {
         }
       `,
     });
-    const expected = [
+    expect(result.users).toMatchObject([
       {
-        email: 'linda@example.com',
-        name: 'Linda',
-      },
-      {
+        id: expect.stringMatching(/.+/),
         email: 'joe@example.com',
         name: 'Joe',
       },
-    ];
-    expect(result.users).toHaveLength(expected.length);
-    for (const expectedUser of expected) {
-      const actualUser = result.users.find((u: { email: string }) => u.email === expectedUser.email);
-      expect(actualUser).not.toBeNull();
-      expect(actualUser.id).toMatch(/\w+/);
-      expect(actualUser.name).toEqual(expectedUser.name);
-      userIds.set(actualUser.email, actualUser.id);
-    }
+      {
+        id: expect.stringMatching(/.+/),
+        email: 'linda@example.com',
+        name: 'Linda',
+      },
+    ]);
+
+    result.users.forEach((u: any) => userIds.set(u.email, u.id));
   });
 
   test('add user Sylvia', async () => {

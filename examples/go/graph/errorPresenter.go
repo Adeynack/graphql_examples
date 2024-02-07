@@ -9,21 +9,24 @@ import (
 	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
-func ErrorPresenter(ctx context.Context, originalErr error) *gqlerror.Error {
-	// Only return error messages explicitly wrapped as user-facing.
+func ErrorPresenter(ctx context.Context, err error) *gqlerror.Error {
+	// Return error messages explicitly wrapped as user-facing.
 	var userFacingError *UserFacingErrorWrapper
-	if errors.As(originalErr, &userFacingError) {
-		return graphql.DefaultErrorPresenter(ctx, originalErr)
-	}
-	var graphqlError *gqlerror.Error
-	if errors.As(originalErr, &graphqlError) {
-		return graphql.DefaultErrorPresenter(ctx, originalErr)
+	if errors.As(err, &userFacingError) {
+		return graphql.DefaultErrorPresenter(ctx, err)
 	}
 
-	// Otherwise, just let the user know something went wrong.
-	// This prevents random leaking of implementation details.
-	log.Printf("\n🔴[ERROR][%T] %v\n\n", originalErr, originalErr)
-	return gqlerror.Errorf("internal server error")
+	// Otherwise, return only potential user-facing errors
+	// (eg: GQL parsing error)
+	if gqlError, ok := err.(*gqlerror.Error); ok {
+		if gqlError.Err == nil {
+			// Error caused by the GQL library. Bubble up to user.
+			return graphql.DefaultErrorPresenter(ctx, gqlError)
+		}
+	}
+
+	log.Printf("\n🔴[ERROR] %v\n\n", err)
+	return graphql.DefaultErrorPresenter(ctx, gqlerror.Errorf("internal server error"))
 }
 
 func RecoverFunc(ctx context.Context, err interface{}) error {

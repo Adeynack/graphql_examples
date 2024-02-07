@@ -1,4 +1,4 @@
-FROM golang:1.21
+FROM golang:1.22rc2
 
 WORKDIR /workspaces/graphql_examples/examples/go
 

@@ -24,6 +24,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_HOST_AUTH_METHOD: trust
+    command: '-c log_statement=all'
 
 volumes:
   postgres-data:

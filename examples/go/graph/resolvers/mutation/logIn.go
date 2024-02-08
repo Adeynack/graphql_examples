@@ -15,12 +15,10 @@ func LogIn(ctx service.ReqCtx, input model.LogInInput) (*model.LogInResponse, er
 
 	// Retrieve user by email
 	response.User = &model.User{Email: input.Email}
-	if err := ctx.DB.Where(response.User).First(response.User).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, graph.UserFacingError("User not found")
-		} else {
-			return nil, fmt.Errorf("error retrieving user: %v", err)
-		}
+	if err := ctx.DB.Where(response.User).First(response.User).Error; errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, graph.UserFacingError("User not found")
+	} else if err != nil {
+		return nil, fmt.Errorf("error retrieving user: %v", err)
 	}
 
 	// Check password

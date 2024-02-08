@@ -8,7 +8,7 @@ import (
 	"github.com/adeynack/graphql_examples/examples/go/graph/model"
 )
 
-func failWithJson(w http.ResponseWriter, code int, errorMessages ...string) {
+func respondWithJsonError(w http.ResponseWriter, code int, errorMessages ...string) {
 	errors := make([]model.JsonErrorError, len(errorMessages))
 	for i, errorMessage := range errorMessages {
 		errors[i] = model.JsonErrorError{Message: errorMessage}

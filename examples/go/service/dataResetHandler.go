@@ -18,11 +18,11 @@ func DataResetHandler(db *gorm.DB, serverSalt string) http.HandlerFunc {
 
 		if err := model.TruncateAllData(db); err != nil {
 			log.Printf("[error] truncating data: %v", err)
-			failWithJson(w, http.StatusInternalServerError, "failed to truncate data")
+			respondWithJsonError(w, http.StatusInternalServerError, "failed to truncate data")
 		}
 		if err := model.SeedData(db, serverSalt); err != nil {
 			log.Printf("[error] seeding data: %v", err)
-			failWithJson(w, http.StatusInternalServerError, "failed to seed data")
+			respondWithJsonError(w, http.StatusInternalServerError, "failed to seed data")
 		}
 	}
 }

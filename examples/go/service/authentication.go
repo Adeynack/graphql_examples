@@ -26,19 +26,21 @@ var (
 func AuthenticationMiddleware(db *gorm.DB) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			// Register the auth cookie setter.
+			// Register the auth cookie setter in the request's context, so endpoints
+			// controllers can use it (eg: GraphQL mutations).
 			r = r.WithContext(context.WithValue(r.Context(), ctxAuthCookieSetter, func(token string) {
 				updateTokenCookie(w, token)
 			}))
 
-			var session *model.ApiSession
-			if token, goOn := extractToken(w, r); !goOn {
+			// Extract token and validate session.
+			if token, ok := extractToken(w, r); !ok {
 				return
 			} else if token != "" {
-				session = tryAuthenticateWithToken(w, r, db, token)
-				if session == nil {
+				session, ok := authenticateWithToken(w, r, db, token)
+				if !ok {
 					return
 				}
+				// Register the current session in the request's context.
 				r = r.WithContext(context.WithValue(r.Context(), ctxSessionKey, session))
 			}
 
@@ -60,8 +62,7 @@ func extractToken(w http.ResponseWriter, r *http.Request) (string, bool) {
 	}
 
 	// Alternatively, try in the cookies (eg: GraphiQL web session).
-	cookie, err := r.Cookie(API_SESSION_TOKEN_COOKIE)
-	if err == nil {
+	if cookie, err := r.Cookie(API_SESSION_TOKEN_COOKIE); err == nil {
 		return cookie.Value, true
 	}
 
@@ -69,39 +70,20 @@ func extractToken(w http.ResponseWriter, r *http.Request) (string, bool) {
 	return "", true
 }
 
-// authenticateUserFromToken validates the session against the token and
-// returns if the user was authenticated (false = do not continue).
-func authenticateUserFromToken(db *gorm.DB, token string) (*model.ApiSession, error) {
-	// Retrieve session.
+// authenticateUserFromToken validates the session against the token and then
+// returns the session and if the user was authenticated (false = response already written).
+func authenticateWithToken(w http.ResponseWriter, r *http.Request, db *gorm.DB, token string) (*model.ApiSession, bool) {
 	session := &model.ApiSession{Token: token}
-	err := db.Where(session).Preload("User").First(session).Error
-	if err == nil {
-		return session, nil // session found, no error.
-	}
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, nil // no session found, but no error.
-	}
-	return nil, err // unxpected error.
-}
-
-// tryAuthenticateWithToken returns the updated request, or `nil` if the middle chain should stop.
-func tryAuthenticateWithToken(w http.ResponseWriter, r *http.Request, db *gorm.DB, token string) *model.ApiSession {
-	session, err := authenticateUserFromToken(db, token)
-
-	// Error? Log error and fail without content.
-	if err != nil {
+	if err := db.Where(session).Preload("User").First(&session).Error; err == nil {
+		return session, true
+	} else if errors.Is(err, gorm.ErrRecordNotFound) {
+		failFromInvalidToken(w, r)
+		return session, false
+	} else {
 		log.Printf("error while obtaining user's session: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
-		return nil
+		return session, false
 	}
-
-	// No session found for token? Fail and stop.
-	if session == nil {
-		failFromInvalidToken(w, r)
-		return nil
-	}
-
-	return session
 }
 
 func deleteTokenCookie(w http.ResponseWriter, r *http.Request) {
@@ -113,14 +95,12 @@ func deleteTokenCookie(w http.ResponseWriter, r *http.Request) {
 
 func failFromInvalidToken(w http.ResponseWriter, r *http.Request) {
 	deleteTokenCookie(w, r)
-
-	// Delete the Authorization header
 	w.Header().Del(AUTHORIZATION_HEADER)
-
-	// Respond with a JSON error.
-	failWithJson(w, http.StatusUnauthorized, "Invalid bearer token")
+	respondWithJsonError(w, http.StatusUnauthorized, "Invalid bearer token")
 }
 
+// updateTokenCookie sets the cookie containing the authorization token
+// or clears it if `token` is an empty string.
 func updateTokenCookie(w http.ResponseWriter, token string) {
 	authCookie := &http.Cookie{
 		Name:  API_SESSION_TOKEN_COOKIE,

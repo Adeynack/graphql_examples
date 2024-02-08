@@ -26,5 +26,24 @@ func UpdateUser(ctx service.ReqCtx, input model.UpdateUserInput) (*model.UpdateU
 		return nil, fmt.Errorf("error finding user for update: %v", err)
 	}
 
+	for _, inputArg := range graph.DefinedInputArgumentNames(ctx.Context) {
+		switch inputArg {
+		case "id": // NOOP: mandatory argument
+		case "name":
+			if input.Name != nil {
+				response.User.Name = *input.Name
+			}
+		case "email":
+			if input.Email != nil {
+				response.User.Email = *input.Email
+			}
+		default:
+			return nil, fmt.Errorf("mutation UpdateUser: unexpected input argument %q", inputArg)
+		}
+	}
+	if err := ctx.DB.Save(&response.User).Error; err != nil {
+		return nil, fmt.Errorf("error updating user: %v", err)
+	}
+
 	return response, nil
 }

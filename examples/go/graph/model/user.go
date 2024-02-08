@@ -14,9 +14,9 @@ type User struct {
 	Email          string          `json:"email" gorm:"uniqueIndex;not null"`
 	Name           string          `json:"name" gorm:"not null"`
 	PasswordDigest string          `json:"-" gorm:"not null"`
-	Posts          []*Post         `json:"posts" gorm:"foreignKey:author_id;constraint:OnDelete:CASCADE;"`
-	Reactions      []*Reaction     `json:"reactions" gorm:"constraint:OnDelete:CASCADE;"`
-	ApiSessions    []*ApiSession   `json:"-" gorm:"constraint:OnDelete:CASCADE;"`
+	Posts          []*Post         `json:"posts" gorm:"foreignKey:author_id;constraint:OnDelete:CASCADE"`
+	Reactions      []*Reaction     `json:"reactions" gorm:"constraint:OnDelete:CASCADE"`
+	ApiSessions    []*ApiSession   `json:"-" gorm:"constraint:OnDelete:CASCADE"`
 }
 
 func (user *User) SetPassword(salt, password string) error {

@@ -43,7 +43,7 @@ db_init:
 	psql -c 'create database "go_development"'
 
 db_drop:
-	psql -c 'drop database "go_development"'
+	psql -c 'drop database "go_development"'; /bin/true
 
 db_seed:
 	go run cmd/seed/*.go -truncate

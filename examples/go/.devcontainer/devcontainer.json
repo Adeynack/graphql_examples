@@ -4,7 +4,7 @@
   "service": "devcontainer",
   "workspaceFolder": "/workspaces/graphql_examples/examples/${localWorkspaceFolderBasename}",
   "remoteUser": "root",
-  "postCreateCommand": "./install_tools && make gen build",
+  "postCreateCommand": "make gen build",
   "forwardPorts": [
     30301,
     30302

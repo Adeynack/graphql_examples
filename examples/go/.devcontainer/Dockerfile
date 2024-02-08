@@ -21,3 +21,8 @@ export PS1="\[\]gql-ex/go\$ \[\]"
 export PGHOST=127.0.0.1 PGPORT=30102 PGUSER=postgres
 export PAGER=pspg
 EOF
+
+RUN go install -v golang.org/x/tools/gopls@latest
+RUN go install -v github.com/DarthSim/overmind@latest
+RUN go install -v github.com/cosmtrek/air@latest
+RUN go install -v honnef.co/go/tools/cmd/staticcheck@latest

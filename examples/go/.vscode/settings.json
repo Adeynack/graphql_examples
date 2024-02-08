@@ -4,4 +4,5 @@
   "[go]": {
     "editor.defaultFormatter": "golang.go"
   },
+  "go.toolsManagement.autoUpdate": true,
 }

@@ -7,7 +7,9 @@ scenario('Users', () => {
     const errors = await expectGqlToFail({
       query: gql`
         mutation CreateUser($email: String!, $name: String!, $password: String!) {
-          createUser(input: { email: $email, name: $name, password: $password }) {
+          createUser(
+            input: { clientMutationId: "createUser Not Authorized", email: $email, name: $name, password: $password }
+          ) {
             user {
               id
               email
@@ -25,7 +27,7 @@ scenario('Users', () => {
     const errors = await expectGqlToFail({
       query: gql`
         mutation UpdateUserName($id: ID!, $name: String!) {
-          updateUser(input: { id: $id, name: $name }) {
+          updateUser(input: { clientMutationId: "updateUser Not Authorized", id: $id, name: $name }) {
             user {
               id
               email
@@ -102,12 +104,13 @@ scenario('Users', () => {
   test('add user Sylvia', async () => {
     const result = await gqlRequest({
       query: gql`
-        mutation CreateUser($email: String!, $name: String!, $password: String!) {
-          createUser(input: { email: $email, name: $name, password: $password }) {
+        mutation CreateUser($email: String!, $name: String!, $password: String!, $birthDate: ISO8601DateTime) {
+          createUser(input: { email: $email, name: $name, password: $password, birthDate: $birthDate }) {
             user {
               id
               email
               name
+              birthDate
             }
           }
         }
@@ -116,6 +119,7 @@ scenario('Users', () => {
         email: 'sylvia@example.com',
         name: 'Sylvia',
         password: 'sylvia',
+        birthDate: '2004-06-07T00:00:00Z',
       },
     });
     const sylvia_id = result.createUser.user.id;
@@ -138,6 +142,7 @@ scenario('Users', () => {
             id
             email
             name
+            birthDate
           }
         }
       `,
@@ -147,16 +152,19 @@ scenario('Users', () => {
         id: userIds.get('joe@example.com'),
         email: 'joe@example.com',
         name: 'Joe',
+        birthDate: '1990-03-06T01:23:45Z',
       },
       {
         id: userIds.get('linda@example.com'),
         email: 'linda@example.com',
         name: 'Linda',
+        birthDate: null,
       },
       {
         id: userIds.get('sylvia@example.com'),
         email: 'sylvia@example.com',
         name: 'Sylvia',
+        birthDate: '2004-06-07T00:00:00Z',
       },
     ]);
   });
@@ -235,7 +243,9 @@ scenario('Users', () => {
     const errors = await expectGqlToFail({
       query: gql`
         mutation UpdateUserName($id: ID!, $name: String!) {
-          updateUser(input: { id: $id, name: $name }) {
+          updateUser(
+            input: { clientMutationId: "update Linda's name fails because she does not exist", id: $id, name: $name }
+          ) {
             user {
               id
               email
@@ -253,11 +263,12 @@ scenario('Users', () => {
     const result = await gqlRequest({
       query: gql`
         mutation UpdateUserName($id: ID!, $name: String!) {
-          updateUser(input: { id: $id, name: $name }) {
+          updateUser(input: { clientMutationId: "update Sylvia's name", id: $id, name: $name }) {
             user {
               id
               email
               name
+              birthDate
             }
           }
         }
@@ -269,10 +280,82 @@ scenario('Users', () => {
         id: userIds.get('sylvia@example.com'),
         email: 'sylvia@example.com',
         name: 'ヒトミ, ひとみ',
+        birthDate: '2004-06-07T00:00:00Z',
       },
     });
   });
-});
 
-// TODO: Make sure not providing a field is not nullifying the others.
-// TODO: Make sure it's possible to nullify a field.
+  test("update Sylvia's birthDate", async () => {
+    const result = await gqlRequest({
+      query: gql`
+        mutation UpdateUserName($id: ID!, $birthDate: ISO8601DateTime) {
+          updateUser(input: { clientMutationId: "update Sylvia's birthDate", id: $id, birthDate: $birthDate }) {
+            user {
+              id
+              email
+              name
+              birthDate
+            }
+          }
+        }
+      `,
+      variables: { id: userIds.get('sylvia@example.com'), birthDate: '2005-01-01T00:00:00Z' },
+    });
+    expect(result.updateUser).toMatchObject({
+      user: {
+        id: userIds.get('sylvia@example.com'),
+        email: 'sylvia@example.com',
+        name: 'ヒトミ, ひとみ',
+        birthDate: '2005-01-01T00:00:00Z',
+      },
+    });
+  });
+
+  test("erase (nullify) Sylvia's birthDate", async () => {
+    const result = await gqlRequest({
+      query: gql`
+        mutation UpdateUserName($id: ID!, $birthDate: ISO8601DateTime) {
+          updateUser(
+            input: { clientMutationId: "erase (nullify) Sylvia's birthDate", id: $id, birthDate: $birthDate }
+          ) {
+            user {
+              id
+              email
+              name
+              birthDate
+            }
+          }
+        }
+      `,
+      variables: { id: userIds.get('sylvia@example.com'), birthDate: null },
+    });
+    expect(result.updateUser).toMatchObject({
+      user: {
+        id: userIds.get('sylvia@example.com'),
+        email: 'sylvia@example.com',
+        name: 'ヒトミ, ひとみ',
+        birthDate: null,
+      },
+    });
+  });
+
+  test("nullifying Sylvia's name fails", async () => {
+    const errors = await expectGqlToFail({
+      query: gql`
+        mutation UpdateUserName($id: ID!, $name: String) {
+          updateUser(input: { clientMutationId: "nullifying Sylvia's name fails", id: $id, name: $name }) {
+            clientMutationId
+            user {
+              id
+              email
+              name
+              birthDate
+            }
+          }
+        }
+      `,
+      variables: { id: userIds.get('sylvia@example.com'), name: null },
+    });
+    expect(errors.map((e) => e.message)).toContain('name cannot be null');
+  });
+});

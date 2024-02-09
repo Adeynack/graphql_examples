@@ -3,6 +3,7 @@ package mutation
 import (
 	"errors"
 	"fmt"
+	"time"
 
 	"graphql_examples_go/graph"
 	"graphql_examples_go/graph/model"
@@ -12,7 +13,10 @@ import (
 )
 
 func LogIn(ctx service.ReqCtx, input model.LogInInput) (*model.LogInResponse, error) {
-	response := &model.LogInResponse{ClientMutationID: input.ClientMutationID}
+	response := &model.LogInResponse{
+		ClientMutationID: input.ClientMutationID,
+		Now:              model.ISO8601DateTime(time.Now()),
+	}
 
 	// Retrieve user by email
 	response.User = &model.User{Email: input.Email}

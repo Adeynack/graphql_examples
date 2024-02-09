@@ -9,10 +9,11 @@ import (
 )
 
 type CreateUserInput struct {
-	ClientMutationID *string `json:"clientMutationId,omitempty"`
-	Email            string  `json:"email"`
-	Name             string  `json:"name"`
-	Password         string  `json:"password"`
+	ClientMutationID *string          `json:"clientMutationId,omitempty"`
+	Email            string           `json:"email"`
+	Name             string           `json:"name"`
+	Password         string           `json:"password"`
+	BirthDate        *ISO8601DateTime `json:"birthDate,omitempty"`
 }
 
 type CreateUserResponse struct {
@@ -37,9 +38,10 @@ type LogInInput struct {
 }
 
 type LogInResponse struct {
-	ClientMutationID *string `json:"clientMutationId,omitempty"`
-	Token            string  `json:"token"`
-	User             *User   `json:"user"`
+	ClientMutationID *string         `json:"clientMutationId,omitempty"`
+	Token            string          `json:"token"`
+	User             *User           `json:"user"`
+	Now              ISO8601DateTime `json:"now"`
 }
 
 type LogOutInput struct {
@@ -57,11 +59,12 @@ type Query struct {
 }
 
 type UpdateUserInput struct {
-	ClientMutationID *string `json:"clientMutationId,omitempty"`
-	ID               string  `json:"id"`
-	Email            *string `json:"email,omitempty"`
-	Name             *string `json:"name,omitempty"`
-	Password         *string `json:"password,omitempty"`
+	ClientMutationID *string          `json:"clientMutationId,omitempty"`
+	ID               string           `json:"id"`
+	Email            *string          `json:"email,omitempty"`
+	Name             *string          `json:"name,omitempty"`
+	Password         *string          `json:"password,omitempty"`
+	BirthDate        *ISO8601DateTime `json:"birthDate,omitempty"`
 }
 
 type UpdateUserResponse struct {

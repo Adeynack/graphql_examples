@@ -20,8 +20,9 @@ func CreateUser(ctx service.ReqCtx, input model.CreateUserInput) (*model.CreateU
 
 	// Creating new user
 	response.User = &model.User{
-		Email: input.Email,
-		Name:  input.Name,
+		Email:     input.Email,
+		Name:      input.Name,
+		BirthDate: input.BirthDate,
 	}
 	if err := response.User.SetPassword(ctx.ServerSalt, input.Password); err != nil {
 		return nil, fmt.Errorf("error setting new user's password: %v", err)

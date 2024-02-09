@@ -13,6 +13,11 @@ import (
 )
 
 func UpdateUser(ctx service.ReqCtx, input model.UpdateUserInput) (*model.UpdateUserResponse, error) {
+	mutationId := "<nil>"
+	if input.ClientMutationID != nil {
+		mutationId = *input.ClientMutationID
+	}
+	fmt.Printf("\n\n🟢 Mutation UpdateUser -- Mutation ID: %s -- Input: %#v\n\n\n", mutationId, input)
 	response := &model.UpdateUserResponse{
 		ClientMutationID: input.ClientMutationID,
 		User:             &model.User{ID: input.ID},
@@ -29,15 +34,20 @@ func UpdateUser(ctx service.ReqCtx, input model.UpdateUserInput) (*model.UpdateU
 
 	for _, inputArg := range graph.DefinedInputArgumentNames(ctx.Context) {
 		switch inputArg {
-		case "id": // NOOP: mandatory argument
+		case "clientMutationId":
+		case "id":
 		case "name":
-			if input.Name != nil {
-				response.User.Name = *input.Name
+			if input.Name == nil {
+				return nil, graph.UserFacingError("name cannot be null")
 			}
+			response.User.Name = *input.Name
 		case "email":
-			if input.Email != nil {
-				response.User.Email = *input.Email
+			if input.Email == nil {
+				return nil, graph.UserFacingError("email cannot be null")
 			}
+			response.User.Email = *input.Email
+		case "birthDate":
+			response.User.BirthDate = input.BirthDate
 		default:
 			return nil, fmt.Errorf("mutation UpdateUser: unexpected input argument %q", inputArg)
 		}

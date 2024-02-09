@@ -24,6 +24,7 @@ type LogInResponse {
   clientMutationId: ID
   token: String!
   user: User!
+  now: ISO8601DateTime!
 }
 
 input LogOutInput {
@@ -39,6 +40,7 @@ input CreateUserInput {
   email: String!
   name: String!
   password: String!
+  birthDate: ISO8601DateTime
 }
 
 type CreateUserResponse {
@@ -52,6 +54,7 @@ input UpdateUserInput {
   email: String
   name: String
   password: String
+  birthDate: ISO8601DateTime
 }
 
 type UpdateUserResponse {

@@ -60,8 +60,9 @@ func loadFixtures(configurationFile string, into any) error {
 }
 
 type UserFixture struct {
-	Email string `yaml:"email"`
-	Name  string `yaml:"name"`
+	Email     string           `yaml:"email"`
+	Name      string           `yaml:"name"`
+	BirthDate *ISO8601DateTime `yaml:"birth_date"`
 }
 
 func createUsers(db *gorm.DB, serverSalt string) (map[string]*User, error) {
@@ -71,8 +72,9 @@ func createUsers(db *gorm.DB, serverSalt string) (map[string]*User, error) {
 	users := make(map[string]*User)
 	for fixtureName, fixture := range userFixtures {
 		user := &User{
-			Name:  fixture.Name,
-			Email: fixture.Email,
+			Name:      fixture.Name,
+			Email:     fixture.Email,
+			BirthDate: fixture.BirthDate,
 		}
 		err := user.SetPassword(serverSalt, fixtureName)
 		if err != nil {

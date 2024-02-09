@@ -8,15 +8,16 @@ import (
 )
 
 type User struct {
-	ID             string          `json:"id" gorm:"type:uuid;default:gen_random_uuid()"`
-	CreatedAt      ISO8601DateTime `json:"createdAt" gorm:"not null"`
-	UpdatedAt      ISO8601DateTime `json:"updatedAt" gorm:"not null"`
-	Email          string          `json:"email" gorm:"uniqueIndex;not null"`
-	Name           string          `json:"name" gorm:"not null"`
-	PasswordDigest string          `json:"-" gorm:"not null"`
-	Posts          []*Post         `json:"posts" gorm:"foreignKey:author_id;constraint:OnDelete:CASCADE"`
-	Reactions      []*Reaction     `json:"reactions" gorm:"constraint:OnDelete:CASCADE"`
-	ApiSessions    []*ApiSession   `json:"-" gorm:"constraint:OnDelete:CASCADE"`
+	ID             string           `json:"id" gorm:"type:uuid;default:gen_random_uuid()"`
+	CreatedAt      ISO8601DateTime  `json:"createdAt" gorm:"not null"`
+	UpdatedAt      ISO8601DateTime  `json:"updatedAt" gorm:"not null"`
+	Email          string           `json:"email" gorm:"uniqueIndex;not null"`
+	Name           string           `json:"name" gorm:"not null"`
+	PasswordDigest string           `json:"-" gorm:"not null"`
+	BirthDate      *ISO8601DateTime `json:"birthDate"`
+	Posts          []*Post          `json:"posts" gorm:"foreignKey:author_id;constraint:OnDelete:CASCADE"`
+	Reactions      []*Reaction      `json:"reactions" gorm:"constraint:OnDelete:CASCADE"`
+	ApiSessions    []*ApiSession    `json:"-" gorm:"constraint:OnDelete:CASCADE"`
 }
 
 func (user *User) SetPassword(salt, password string) error {

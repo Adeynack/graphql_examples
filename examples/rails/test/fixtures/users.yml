@@ -13,9 +13,10 @@ linda: # create before Joe, so they're not created in alphabetical order on purp
   email: linda@example.com
   name: Linda
   # password: linda
-  password_digest: "$2a$12$59UkKi7JxE9JINwXbyXT6OvRD.GEELKhUSjjLJEckLttKOXDy8ohS"
+  password_digest: '$2a$12$59UkKi7JxE9JINwXbyXT6OvRD.GEELKhUSjjLJEckLttKOXDy8ohS'
 joe:
   email: joe@example.com
   name: Joe
   # password: joe
-  password_digest: "$2a$12$sXtSq5VKRNT8awtMVcRg3.NdH18BFkwmxrbWwwmM.zXjmgO7YhcOe"
+  password_digest: '$2a$12$sXtSq5VKRNT8awtMVcRg3.NdH18BFkwmxrbWwwmM.zXjmgO7YhcOe'
+  birth_date: '1990-03-06T01:23:45Z'

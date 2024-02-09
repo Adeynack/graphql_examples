@@ -59,6 +59,7 @@ type ComplexityRoot struct {
 
 	LogInResponse struct {
 		ClientMutationID func(childComplexity int) int
+		Now              func(childComplexity int) int
 		Token            func(childComplexity int) int
 		User             func(childComplexity int) int
 	}
@@ -107,6 +108,7 @@ type ComplexityRoot struct {
 	}
 
 	User struct {
+		BirthDate func(childComplexity int) int
 		Email     func(childComplexity int) int
 		ID        func(childComplexity int) int
 		Name      func(childComplexity int) int
@@ -183,6 +185,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.LogInResponse.ClientMutationID(childComplexity), true
+
+	case "LogInResponse.now":
+		if e.complexity.LogInResponse.Now == nil {
+			break
+		}
+
+		return e.complexity.LogInResponse.Now(childComplexity), true
 
 	case "LogInResponse.token":
 		if e.complexity.LogInResponse.Token == nil {
@@ -407,6 +416,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.UpdateUserResponse.User(childComplexity), true
+
+	case "User.birthDate":
+		if e.complexity.User.BirthDate == nil {
+			break
+		}
+
+		return e.complexity.User.BirthDate(childComplexity), true
 
 	case "User.email":
 		if e.complexity.User.Email == nil {
@@ -830,6 +846,8 @@ func (ec *executionContext) fieldContext_CreateUserResponse_user(ctx context.Con
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "birthDate":
+				return ec.fieldContext_User_birthDate(ctx, field)
 			case "posts":
 				return ec.fieldContext_User_posts(ctx, field)
 			case "reactions":
@@ -927,6 +945,8 @@ func (ec *executionContext) fieldContext_DeleteUserResponse_user(ctx context.Con
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "birthDate":
+				return ec.fieldContext_User_birthDate(ctx, field)
 			case "posts":
 				return ec.fieldContext_User_posts(ctx, field)
 			case "reactions":
@@ -1068,12 +1088,58 @@ func (ec *executionContext) fieldContext_LogInResponse_user(ctx context.Context,
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "birthDate":
+				return ec.fieldContext_User_birthDate(ctx, field)
 			case "posts":
 				return ec.fieldContext_User_posts(ctx, field)
 			case "reactions":
 				return ec.fieldContext_User_reactions(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _LogInResponse_now(ctx context.Context, field graphql.CollectedField, obj *model.LogInResponse) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_LogInResponse_now(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Now, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(model.ISO8601DateTime)
+	fc.Result = res
+	return ec.marshalNISO8601DateTime2graphql_examples_goᚋgraphᚋmodelᚐISO8601DateTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_LogInResponse_now(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "LogInResponse",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ISO8601DateTime does not have child fields")
 		},
 	}
 	return fc, nil
@@ -1165,6 +1231,8 @@ func (ec *executionContext) fieldContext_Mutation_logIn(ctx context.Context, fie
 				return ec.fieldContext_LogInResponse_token(ctx, field)
 			case "user":
 				return ec.fieldContext_LogInResponse_user(ctx, field)
+			case "now":
+				return ec.fieldContext_LogInResponse_now(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type LogInResponse", field.Name)
 		},
@@ -1558,6 +1626,8 @@ func (ec *executionContext) fieldContext_Post_author(ctx context.Context, field 
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "birthDate":
+				return ec.fieldContext_User_birthDate(ctx, field)
 			case "posts":
 				return ec.fieldContext_User_posts(ctx, field)
 			case "reactions":
@@ -1812,6 +1882,8 @@ func (ec *executionContext) fieldContext_Query_me(ctx context.Context, field gra
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "birthDate":
+				return ec.fieldContext_User_birthDate(ctx, field)
 			case "posts":
 				return ec.fieldContext_User_posts(ctx, field)
 			case "reactions":
@@ -1999,6 +2071,8 @@ func (ec *executionContext) fieldContext_Query_user(ctx context.Context, field g
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "birthDate":
+				return ec.fieldContext_User_birthDate(ctx, field)
 			case "posts":
 				return ec.fieldContext_User_posts(ctx, field)
 			case "reactions":
@@ -2066,6 +2140,8 @@ func (ec *executionContext) fieldContext_Query_users(ctx context.Context, field 
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "birthDate":
+				return ec.fieldContext_User_birthDate(ctx, field)
 			case "posts":
 				return ec.fieldContext_User_posts(ctx, field)
 			case "reactions":
@@ -2443,6 +2519,8 @@ func (ec *executionContext) fieldContext_Reaction_user(ctx context.Context, fiel
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "birthDate":
+				return ec.fieldContext_User_birthDate(ctx, field)
 			case "posts":
 				return ec.fieldContext_User_posts(ctx, field)
 			case "reactions":
@@ -2540,6 +2618,8 @@ func (ec *executionContext) fieldContext_UpdateUserResponse_user(ctx context.Con
 				return ec.fieldContext_User_email(ctx, field)
 			case "name":
 				return ec.fieldContext_User_name(ctx, field)
+			case "birthDate":
+				return ec.fieldContext_User_birthDate(ctx, field)
 			case "posts":
 				return ec.fieldContext_User_posts(ctx, field)
 			case "reactions":
@@ -2678,6 +2758,47 @@ func (ec *executionContext) fieldContext_User_name(ctx context.Context, field gr
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _User_birthDate(ctx context.Context, field graphql.CollectedField, obj *model.User) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_User_birthDate(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.BirthDate, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*model.ISO8601DateTime)
+	fc.Result = res
+	return ec.marshalOISO8601DateTime2ᚖgraphql_examples_goᚋgraphᚋmodelᚐISO8601DateTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_User_birthDate(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ISO8601DateTime does not have child fields")
 		},
 	}
 	return fc, nil
@@ -4579,7 +4700,7 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"clientMutationId", "email", "name", "password"}
+	fieldsInOrder := [...]string{"clientMutationId", "email", "name", "password", "birthDate"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -4614,6 +4735,13 @@ func (ec *executionContext) unmarshalInputCreateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.Password = data
+		case "birthDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("birthDate"))
+			data, err := ec.unmarshalOISO8601DateTime2ᚖgraphql_examples_goᚋgraphᚋmodelᚐISO8601DateTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BirthDate = data
 		}
 	}
 
@@ -4729,7 +4857,7 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"clientMutationId", "id", "email", "name", "password"}
+	fieldsInOrder := [...]string{"clientMutationId", "id", "email", "name", "password", "birthDate"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -4771,6 +4899,13 @@ func (ec *executionContext) unmarshalInputUpdateUserInput(ctx context.Context, o
 				return it, err
 			}
 			it.Password = data
+		case "birthDate":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("birthDate"))
+			data, err := ec.unmarshalOISO8601DateTime2ᚖgraphql_examples_goᚋgraphᚋmodelᚐISO8601DateTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.BirthDate = data
 		}
 	}
 
@@ -4887,6 +5022,11 @@ func (ec *executionContext) _LogInResponse(ctx context.Context, sel ast.Selectio
 			}
 		case "user":
 			out.Values[i] = ec._LogInResponse_user(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "now":
+			out.Values[i] = ec._LogInResponse_now(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -5375,6 +5515,8 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "birthDate":
+			out.Values[i] = ec._User_birthDate(ctx, field, obj)
 		case "posts":
 			out.Values[i] = ec._User_posts(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -6357,6 +6499,22 @@ func (ec *executionContext) marshalOID2ᚖstring(ctx context.Context, sel ast.Se
 	}
 	res := graphql.MarshalID(*v)
 	return res
+}
+
+func (ec *executionContext) unmarshalOISO8601DateTime2ᚖgraphql_examples_goᚋgraphᚋmodelᚐISO8601DateTime(ctx context.Context, v interface{}) (*model.ISO8601DateTime, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var res = new(model.ISO8601DateTime)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOISO8601DateTime2ᚖgraphql_examples_goᚋgraphᚋmodelᚐISO8601DateTime(ctx context.Context, sel ast.SelectionSet, v *model.ISO8601DateTime) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return v
 }
 
 func (ec *executionContext) marshalOPost2ᚖgraphql_examples_goᚋgraphᚋmodelᚐPost(ctx context.Context, sel ast.SelectionSet, v *model.Post) graphql.Marshaler {

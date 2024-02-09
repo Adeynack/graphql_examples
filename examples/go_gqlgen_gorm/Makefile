@@ -40,10 +40,10 @@ check: clean gen build lint test
 
 # Database
 db_init:
-	psql -c 'create database "go_development"'
+	echo "SELECT 'CREATE DATABASE go_development' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'go_development')\gexec" | psql
 
 db_drop:
-	psql -c 'drop database "go_development"'; /bin/true
+	echo 'drop database if exists "go_development"' | psql
 
 db_seed:
 	go run cmd/seed/*.go -truncate

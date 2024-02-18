@@ -13,11 +13,6 @@ import (
 )
 
 func UpdateUser(ctx service.ReqCtx, input model.UpdateUserInput) (*model.UpdateUserResponse, error) {
-	mutationId := "<nil>"
-	if input.ClientMutationID != nil {
-		mutationId = *input.ClientMutationID
-	}
-	fmt.Printf("\n\n🟢 Mutation UpdateUser -- Mutation ID: %s -- Input: %#v\n\n\n", mutationId, input)
 	response := &model.UpdateUserResponse{
 		ClientMutationID: input.ClientMutationID,
 		User:             &model.User{ID: input.ID},

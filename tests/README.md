@@ -22,6 +22,6 @@ EXAMPLE=rails yarn test scenarios/users.test.ts
 For watch file and only execute a single file on save:
 
 ```bash
-EXAMPLE=rails yarn watch
+EXAMPLE=rails yarn watch --watchAll
 EXAMPLE=rails yarn watch scenarios/users.test.ts
 ```

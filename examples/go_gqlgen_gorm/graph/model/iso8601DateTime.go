@@ -24,6 +24,16 @@ func (dt ISO8601DateTime) String() string {
 	return time.Time(dt).Format(time.RFC3339Nano)
 }
 
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (dt *ISO8601DateTime) UnmarshalText(text []byte) error {
+	parsed, err := time.Parse(time.RFC3339Nano, string(text))
+	if err != nil {
+		return fmt.Errorf("error parsing ISO8601DateTime: %v", err)
+	}
+	*dt = ISO8601DateTime(parsed)
+	return nil
+}
+
 // UnmarshalGQL implements graphql.Unmarshaler.
 func (dt *ISO8601DateTime) UnmarshalGQL(v any) error {
 	if value, ok := v.(string); ok {
@@ -38,14 +48,4 @@ func (dt *ISO8601DateTime) UnmarshalGQL(v any) error {
 // MarshalGQL implements graphql.Marshaler.
 func (dt ISO8601DateTime) MarshalGQL(w io.Writer) {
 	w.Write([]byte(strconv.Quote(dt.String())))
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (dt *ISO8601DateTime) UnmarshalText(text []byte) error {
-	parsed, err := time.Parse(time.RFC3339Nano, string(text))
-	if err != nil {
-		return fmt.Errorf("error parsing ISO8601DateTime: %v", err)
-	}
-	*dt = ISO8601DateTime(parsed)
-	return nil
 }

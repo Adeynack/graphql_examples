@@ -1,6 +1,5 @@
 import { gql } from 'graphql-request';
 import { expectGqlToFail, gqlRequest, login, scenario } from '../test_utils';
-import { NoUnusedVariablesRule } from 'graphql';
 
 scenario('Custom Scalar, Nullable Values & Partial Update', () => {
   const userIds = new Map<string, string>();

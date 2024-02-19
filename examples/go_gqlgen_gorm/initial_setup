@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+echo ""
+echo "Setup Database"
+make db_create db_seed

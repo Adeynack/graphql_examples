@@ -1,0 +1,7 @@
+# overmind
+.overmind.sock
+
+# Misc
+bin
+tmp
+__debug_bin*

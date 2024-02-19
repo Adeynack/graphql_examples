@@ -70,6 +70,7 @@ scenario('Authentication', () => {
       `,
     });
     expect(result.logIn.token).not.toBe(null);
+    expect(result.logIn.token).not.toEqual('');
     setToken(result.logIn.token);
 
     joeId = result.logIn.user.id;

@@ -1,0 +1,8 @@
+enum Emotion {
+  LIKE
+  DISLIKE
+  LOVE
+  LAUGH
+  CRY
+  WOW
+}

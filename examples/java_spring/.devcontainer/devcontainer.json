@@ -1,0 +1,43 @@
+{
+  "name": "java_spring (GraphQL Example)",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "devcontainer",
+  "workspaceFolder": "/workspaces/graphql_examples/examples/${localWorkspaceFolderBasename}",
+  "remoteUser": "root",
+  // "postCreateCommand": "",
+  "forwardPorts": [
+    30201,
+    30202
+  ],
+  "portsAttributes": {
+    "30201": {
+      "label": "spring"
+    },
+    "30202": {
+      "label": "psql"
+    }
+  },
+  "otherPortsAttributes": {
+    "onAutoForward": "ignore"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode-remote.remote-containers",
+        "esbenp.prettier-vscode",
+        "rvest.vs-code-prettier-eslint",
+        "wmaurer.change-case",
+        "mquandalle.graphql",
+        "yzhang.markdown-all-in-one",
+        "darkriszty.markdown-table-prettify",
+        "trybick.terminal-zoom",
+        "netcorext.uuid-generator",
+        "redhat.vscode-yaml",
+        "ms-azuretools.vscode-docker",
+        "vscjava.vscode-java-pack",
+        "vmware.vscode-boot-dev-pack",
+        "vscjava.vscode-gradle"
+      ]
+    }
+  }
+}

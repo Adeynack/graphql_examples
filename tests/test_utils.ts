@@ -113,14 +113,14 @@ export async function expectGqlToFail({
       variables,
       prepareHeaders({ queryIdentifier })
     );
-    if (status !== 200) throw new Error(`Expected status 200, got ${status}`);
+    if (status !== 200 && status !== 422) throw new Error(`Expected status 200 or 422, got ${status}`);
     if (!errors || errors.length === 0) throw new Error('Expected errors, got none');
     return errors;
   } catch (e) {
     // todo: `rawRequest` works with the `rails` example, but not with the `ts_apollo` (still throws `ClientError`).
     if (e instanceof ClientError) {
       const { status, errors } = e.response;
-      if (status !== 200) throw new Error(`Expected status 200, got ${status}`);
+      if (status !== 200 && status !== 422) throw new Error(`Expected status 200, got ${status}`);
       if (!errors || errors.length === 0) throw new Error('Expected errors, got none');
       return errors;
     } else {

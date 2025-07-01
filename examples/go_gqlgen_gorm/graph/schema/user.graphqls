@@ -1,0 +1,8 @@
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  birthDate: ISO8601DateTime
+  posts: [Post!]!
+  reactions: [Reaction!]!
+}

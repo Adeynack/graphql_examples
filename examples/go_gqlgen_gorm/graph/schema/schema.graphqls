@@ -1,0 +1,73 @@
+type Query {
+  me: User
+  post(id: ID!): Post!
+  posts: [Post!]!
+  user(id: ID, email: String): User!
+  users: [User!]!
+}
+
+type Mutation {
+  logIn(input: LogInInput!): LogInResponse!
+  logOut(input: LogOutInput!): LogOutResponse!
+  createUser(input: CreateUserInput!): CreateUserResponse!
+  updateUser(input: UpdateUserInput!): UpdateUserResponse!
+  deleteUser(input: DeleteUserInput!): DeleteUserResponse!
+}
+
+input LogInInput {
+  clientMutationId: ID
+  email: String!
+  password: String!
+}
+
+type LogInResponse {
+  clientMutationId: ID
+  token: String!
+  user: User!
+  now: ISO8601DateTime!
+}
+
+input LogOutInput {
+  clientMutationId: ID
+}
+
+type LogOutResponse {
+  clientMutationId: ID
+}
+
+input CreateUserInput {
+  clientMutationId: ID
+  email: String!
+  name: String!
+  password: String!
+  birthDate: ISO8601DateTime
+}
+
+type CreateUserResponse {
+  clientMutationId: ID
+  user: User!
+}
+
+input UpdateUserInput {
+  clientMutationId: ID
+  id: ID!
+  email: String
+  name: String
+  password: String
+  birthDate: ISO8601DateTime
+}
+
+type UpdateUserResponse {
+  clientMutationId: ID
+  user: User!
+}
+
+input DeleteUserInput {
+  clientMutationId: ID
+  id: ID!
+}
+
+type DeleteUserResponse {
+  clientMutationId: ID
+  user: User!
+}

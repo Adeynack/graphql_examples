@@ -7,7 +7,9 @@ scenario('Users', () => {
     const errors = await expectGqlToFail({
       query: gql`
         mutation CreateUser($email: String!, $name: String!, $password: String!) {
-          createUser(input: { email: $email, name: $name, password: $password }) {
+          createUser(
+            input: { clientMutationId: "createUser Not Authorized", email: $email, name: $name, password: $password }
+          ) {
             user {
               id
               email
@@ -21,11 +23,11 @@ scenario('Users', () => {
     expect(errors.map((e) => e.message)).toContain('Not authorized');
   });
 
-  test('updateUser is not accessible not authenticated', async () => {
+  test('updateUser is not accessible when not authenticated', async () => {
     const errors = await expectGqlToFail({
       query: gql`
         mutation UpdateUserName($id: ID!, $name: String!) {
-          updateUser(input: { id: $id, name: $name }) {
+          updateUser(input: { clientMutationId: "updateUser Not Authorized", id: $id, name: $name }) {
             user {
               id
               email
@@ -39,7 +41,7 @@ scenario('Users', () => {
     expect(errors.map((e) => e.message)).toContain('Not authorized');
   });
 
-  test('deleteUser is not accessible not authenticated', async () => {
+  test('deleteUser is not accessible when not authenticated', async () => {
     const errors = await expectGqlToFail({
       query: gql`
         mutation DeleteUser($id: ID!) {
@@ -49,6 +51,21 @@ scenario('Users', () => {
         }
       `,
       variables: { id: 'foo' },
+    });
+    expect(errors.map((e) => e.message)).toContain('Not authorized');
+  });
+
+  test('users is not accessible when not authenticated', async () => {
+    const errors = await expectGqlToFail({
+      query: gql`
+        {
+          users {
+            id
+            email
+            name
+          }
+        }
+      `,
     });
     expect(errors.map((e) => e.message)).toContain('Not authorized');
   });
@@ -68,24 +85,20 @@ scenario('Users', () => {
         }
       `,
     });
-    const expected = [
+    expect(result.users).toMatchObject([
       {
-        email: 'linda@example.com',
-        name: 'Linda',
-      },
-      {
+        id: expect.stringMatching(/.+/),
         email: 'joe@example.com',
         name: 'Joe',
       },
-    ];
-    expect(result.users).toHaveLength(expected.length);
-    for (const expectedUser of expected) {
-      const actualUser = result.users.find((u: { email: string }) => u.email === expectedUser.email);
-      expect(actualUser).not.toBeNull();
-      expect(actualUser.id).toMatch(/\w+/);
-      expect(actualUser.name).toEqual(expectedUser.name);
-      userIds.set(actualUser.email, actualUser.id);
-    }
+      {
+        id: expect.stringMatching(/.+/),
+        email: 'linda@example.com',
+        name: 'Linda',
+      },
+    ]);
+
+    result.users.forEach((u: any) => userIds.set(u.email, u.id));
   });
 
   test('add user Sylvia', async () => {
@@ -224,7 +237,9 @@ scenario('Users', () => {
     const errors = await expectGqlToFail({
       query: gql`
         mutation UpdateUserName($id: ID!, $name: String!) {
-          updateUser(input: { id: $id, name: $name }) {
+          updateUser(
+            input: { clientMutationId: "update Linda's name fails because she does not exist", id: $id, name: $name }
+          ) {
             user {
               id
               email
@@ -242,7 +257,7 @@ scenario('Users', () => {
     const result = await gqlRequest({
       query: gql`
         mutation UpdateUserName($id: ID!, $name: String!) {
-          updateUser(input: { id: $id, name: $name }) {
+          updateUser(input: { clientMutationId: "update Sylvia's name", id: $id, name: $name }) {
             user {
               id
               email
@@ -262,6 +277,3 @@ scenario('Users', () => {
     });
   });
 });
-
-// TODO: Make sure not providing a field is not nullifying the others.
-// TODO: Make sure it's possible to nullify a field.

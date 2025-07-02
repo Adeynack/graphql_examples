@@ -3,21 +3,21 @@ gen:
 	go generate ./...
 
 gen_watch:
-	air -c .air.gen.toml
+	go tool air -c .air.gen.toml
 
 # Start development server
 run:
 	go run cmd/server/*.go
 
 dev:
-	overmind start -f Procfile.dev -p 30301
+	go tool overmind start -f Procfile.dev -p 30301
 
 # Build binaries
 build:
 	go build -o bin/server ./cmd/server/*.go
 
 build_watch:
-	air -c .air.build.toml
+	go tool air -c .air.build.toml
 
 # Generate code & build binaries
 gen_build: gen build

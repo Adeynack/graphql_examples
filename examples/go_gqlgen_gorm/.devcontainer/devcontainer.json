@@ -5,10 +5,7 @@
   "workspaceFolder": "/workspaces/graphql_examples/examples/${localWorkspaceFolderBasename}",
   "remoteUser": "root",
   "postCreateCommand": "make gen build",
-  "forwardPorts": [
-    30301,
-    30302
-  ],
+  "forwardPorts": [30301, 30302],
   "portsAttributes": {
     "30301": {
       "label": "server"

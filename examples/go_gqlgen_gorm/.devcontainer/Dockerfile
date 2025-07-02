@@ -19,3 +19,6 @@ export PS1="\[\]gql-ex/go_gqlgen_gorm\$ \[\]"
 export PGHOST=127.0.0.1 PGPORT=30102 PGUSER=postgres
 export PAGER=pspg
 EOF
+
+# Install Go development tools
+RUN go install -v github.com/go-delve/delve/cmd/dlv@latest

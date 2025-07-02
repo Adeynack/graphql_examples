@@ -2,10 +2,20 @@ package model
 
 import (
 	"bytes"
+	"encoding"
+	"fmt"
 	"testing"
 	"time"
 
+	"github.com/99designs/gqlgen/graphql"
 	"github.com/stretchr/testify/assert"
+)
+
+var ( // Ensure that ISO8601DateTime implements the necessary interfaces.
+	_ fmt.Stringer             = (*ISO8601DateTime)(nil)
+	_ encoding.TextUnmarshaler = (*ISO8601DateTime)(nil)
+	_ graphql.Marshaler        = (*ISO8601DateTime)(nil)
+	_ graphql.Unmarshaler      = (*ISO8601DateTime)(nil)
 )
 
 func Test_Marshal_DateWithSecondFraction(t *testing.T) {
@@ -13,14 +23,16 @@ func Test_Marshal_DateWithSecondFraction(t *testing.T) {
 	assert.NoError(t, err)
 	writer := new(bytes.Buffer)
 	ISO8601DateTime(timeValue).MarshalGQL(writer)
-	assert.Equal(t, "2022-06-14T19:06:43.123Z", writer.String())
+	assert.Equal(t, `"2022-06-14T19:06:43.123Z"`, writer.String())
 }
 
 func Test_Unmarshal_NotAString(t *testing.T) {
 	var value ISO8601DateTime
 	err := value.UnmarshalGQL(12345)
 	if assert.Error(t, err) {
-		assert.Equal(t, err.Error(), "error parsing ISO8601DateTime: value must be an array of bytes")
+		if assert.ErrorIs(t, err, ErrUnableToUnmarshalISO8601FromType) {
+			assert.Equal(t, err.Error(), "error parsing ISO8601DateTime: value must be string, got int")
+		}
 	}
 }
 
@@ -28,7 +40,9 @@ func Test_Unmarshal_EmptyString(t *testing.T) {
 	var value ISO8601DateTime
 	err := value.UnmarshalGQL("")
 	if assert.Error(t, err) {
-		assert.Contains(t, err.Error(), "error parsing ISO8601DateTime")
+		if assert.ErrorIs(t, err, ErrParsingISO8601DateTime) {
+			assert.Contains(t, err.Error(), "error parsing ISO8601DateTime")
+		}
 	}
 }
 
